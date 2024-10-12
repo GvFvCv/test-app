@@ -1,0 +1,8 @@
+{
+  "name": "MinutIA",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite",
+  "id": "600c80ad"
+}

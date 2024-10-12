@@ -1,0 +1,50 @@
+/* Fondo negro para toda la página */
+.tab-3 {
+background: #ffffff; /* Fondo negro */
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100%;
+color: rgb(255, 255, 255); /* Texto en blanco para contraste */
+text-align: center; /* Alineación central del texto */
+}
+
+/* Estilos para el título en el header */
+
+ion-title {
+    font-size: 1.2rem; /* Tamaño de fuente */
+    font-weight:bold;
+    text-transform: uppercase; /* Texto en mayúsculas */
+    color: rgb(221, 70, 221);
+}
+
+/* Asegurar que ExploreContainer esté también centrado */
+.explore-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+
+h1{
+    display: flex;
+    font-size:1.8rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom:5%;
+    background-color: #501d5e;
+    padding: 5%;
+    align-items: center;
+    justify-content: center;
+}
+
+.boton-1{
+    color: purple;
+    font-size:90%;
+}
+
+.boton-2 {
+    color: tomato;
+    font-size:80%;
+}

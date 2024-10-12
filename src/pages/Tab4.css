@@ -1,0 +1,32 @@
+/* Fondo negro para toda la página */
+.tab-4 {
+  --background: #ffffff; /* Fondo negro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: rgb(255, 255, 255); /* Texto en blanco para contraste */
+  text-align: center; /* Alineación central del texto */
+}
+
+/* Estilos para el título en el header */
+ion-title {
+  font-size: 1.2rem; /* Tamaño de fuente */
+  font-weight:bold;
+  text-transform: uppercase; /* Texto en mayúsculas */
+  color: rgb(221, 70, 221);
+}
+
+/* Asegurar que ExploreContainer esté también centrado */
+.explore-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+/* Ajustes para un título grande colapsado */
+ion-header[collapse="condense"] ion-title {
+  font-size: 1.2rem; /* Tamaño ajustado para el título colapsado */
+  color: #f4f4f5; /* Color gris claro */
+}
