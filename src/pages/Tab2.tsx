@@ -4,9 +4,11 @@ import './Tab2.css';
 const Tab2: React.FC = () => {
   return (
     <IonPage>
-      <IonContent color={'light'}>
-        <h1>ESTAS EN DISPENSA</h1>
-        <IonList inset={true}>
+      <IonContent className='tab-2' fullscreen>
+        <div className='ccc'>
+          <h2 className='cca'>DISPENSA</h2>
+        </div>
+        <IonList className='listas' inset={true}>
           <IonItem>
             <IonList>
               <IonLabel>id_alimento</IonLabel>

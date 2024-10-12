@@ -1,40 +1,55 @@
 /* Fondo negro para toda la página */
 .tab-2 {
-    --background: #ffffff; /* Fondo negro */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    color: rgb(0, 0, 0); /* Texto en blanco para contraste */
-    text-align: center; /* Alineación central del texto */
-  }
+  --background: #ffffff; /* Fondo negro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center; /* Alineación central del texto */
+}
   
   /* Estilos para el título en el header */
-  ion-title {
-    font-size: 1.2rem; /* Tamaño de fuente */
-    font-weight:bold;
-    text-transform: uppercase; /* Texto en mayúsculas */
-    color: rgb(221, 70, 221);
-  }
+ion-title {
+  font-size: 1.2rem; /* Tamaño de fuente */
+  font-weight:bold;
+  text-transform: uppercase; /* Texto en mayúsculas */
+  color: rgb(221, 70, 221);
+}
   
-  /* Personalización del toolbar */
-  ion-toolbar {
-    --background: #000000; /* Fondo oscuro del toolbar */
-    --ion-color-primary: #ffffff; /* Texto del toolbar en blanco */
-    --ion-color-secondary: #f4f4f5; /* Color secundario claro */
-  }
   
   /* Asegurar que ExploreContainer esté también centrado */
-  .explore-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-  }
+.explore-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
   
   /* Ajustes para un título grande colapsado */
-  ion-header[collapse="condense"] ion-title {
-    font-size: 1.2rem; /* Tamaño ajustado para el título colapsado */
-    color: #f4f4f5; /* Color gris claro */
-  }
-  
+ion-header[collapse="condense"] ion-title {
+  font-size: 1.2rem; /* Tamaño ajustado para el título colapsado */
+  color: #f4f4f5; /* Color gris claro */
+}
+
+.ccc {
+  color: #ffffff;
+  margin-bottom: 2rem;
+  background-color:#7045ff;
+  padding: 1%;
+  align-items: center;
+  justify-content: center;  
+}
+
+.cca {
+  font-weight: bold;
+  font-size: 2.5rem;
+  color: #ffffff;
+  background-color:#7045ff;
+  padding: 4% 1%;
+  align-items: center;
+  justify-content: center;
+}
+
+.listas{
+
+}

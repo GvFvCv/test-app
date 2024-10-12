@@ -1,5 +1,5 @@
 /* Fondo negro para toda la página */
-.tab-4 {
+.tab-4{
   --background: #ffffff; /* Fondo negro */
   display: flex;
   justify-content: center;
@@ -9,13 +9,6 @@
   text-align: center; /* Alineación central del texto */
 }
 
-/* Estilos para el título en el header */
-ion-title {
-  font-size: 1.2rem; /* Tamaño de fuente */
-  font-weight:bold;
-  text-transform: uppercase; /* Texto en mayúsculas */
-  color: rgb(221, 70, 221);
-}
 
 /* Asegurar que ExploreContainer esté también centrado */
 .explore-container {
@@ -23,10 +16,31 @@ ion-title {
   justify-content: center;
   align-items: center;
   height: 100%;
+  background-color: rgb(96,48,255);
 }
 
 /* Ajustes para un título grande colapsado */
 ion-header[collapse="condense"] ion-title {
   font-size: 1.2rem; /* Tamaño ajustado para el título colapsado */
   color: #f4f4f5; /* Color gris claro */
+}
+.aaa{
+  font-size: 2.5rem;
+  color: #ffffff;
+  margin-bottom: 2rem;
+  background-color:rgb(103, 42, 200);
+  padding: 1%;
+  align-items: center;
+  justify-content: center;
+}
+
+.aab{
+  font-size: 90%;
+  font-weight: bold;
+  font-size: 2.5rem;
+  color: #ffffff;
+  background-color:rgb(103, 42, 200);
+  padding: 4% 1%;
+  align-items: center;
+  justify-content: center;
 }

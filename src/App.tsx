@@ -16,7 +16,7 @@ import Tab3 from './pages/Tab3';
 import Tab4 from './pages/Tab4';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import { AuthProvider, useAuth } from './pages/AuthContext';
+import { AuthProvider} from './pages/AuthContext';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -57,18 +57,18 @@ const App: React.FC = () => (
               </Route>
             </Switch>
           </IonRouterOutlet>
-          <IonTabBar slot="bottom">
+          <IonTabBar slot="bottom" color={'tertiary'}>
             <IonTabButton tab="tab1" href="/tab1">
-              <IonIcon aria-hidden="true" icon={listSharp} />
+              <IonIcon color='light' aria-hidden="true" icon={listSharp} />
             </IonTabButton>
             <IonTabButton tab="tab2" href="/tab2">
-              <IonIcon aria-hidden="true" icon={cartSharp} />
+              <IonIcon color='light' aria-hidden="true" icon={cartSharp} />
             </IonTabButton>
             <IonTabButton tab="tab3" href="/tab3">
-              <IonIcon aria-hidden="true" icon={scanSharp} />
+              <IonIcon color='light' aria-hidden="true" icon={scanSharp} />
             </IonTabButton>
             <IonTabButton tab="tab4" href="/tab4">
-              <IonIcon aria-hidden="true" icon={settingsSharp} />
+              <IonIcon color='light' aria-hidden="true" icon={settingsSharp} />
             </IonTabButton>
           </IonTabBar>
         </IonTabs>

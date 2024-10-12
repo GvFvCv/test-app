@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonItem, IonLabel, IonButton } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonItem, IonLabel, IonButton, IonSelect, IonText, IonSelectOption } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import './Register.css';
 
@@ -15,22 +15,32 @@ const Register: React.FC = () => {
 
   return (
     <IonPage className="page-register">
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Registro</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent className="centered-content">
         <div className="register-header">Crear una cuenta</div>
         <IonItem className="register-input">
-          <IonLabel position="floating">Email</IonLabel>
-          <IonInput value={email} onIonChange={e => setEmail(e.detail.value!)} />
+          <IonInput label='Nombre' value={email} onIonChange={e => setEmail(e.detail.value!)} />
         </IonItem>
         <IonItem className="register-input">
-          <IonLabel position="floating">Contraseña</IonLabel>
-          <IonInput type="password" value={password} onIonChange={e => setPassword(e.detail.value!)} />
+          <IonInput label='Apellido' type="password" value={password} onIonChange={e => setPassword(e.detail.value!)} />
+        </IonItem><IonItem className="register-input">
+          <IonInput label='Fecha de Nacimiento' value={email} onIonChange={e => setEmail(e.detail.value!)} />
         </IonItem>
-        <IonButton className="register-button" expand="full" onClick={handleRegister}>Registrar</IonButton>
+        <IonItem>
+          <IonSelect placeholder=''>
+            <div slot='label'>
+             Ocupación <IonText color="danger">(Requerido)</IonText>
+            </div>
+            <IonSelectOption value="trabajador">trabajador</IonSelectOption>
+            <IonSelectOption value="estudiante">estudiante</IonSelectOption>
+            <IonSelectOption value="dueño de casa">dueño de casa</IonSelectOption>
+          </IonSelect>
+        </IonItem>
+        
+        <IonButton className="register-button" shape='round' 
+          onClick={handleRegister}>Registrar       
+        </IonButton>
+
+
         <div className="register-login-link">
           <a href="/Login">¿Ya tienes una cuenta? Inicia sesión</a>
         </div>

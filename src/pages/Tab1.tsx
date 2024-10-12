@@ -1,10 +1,10 @@
-import { IonCard, IonCardContent, IonCardHeader, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonCard, IonCardContent, IonCardHeader, IonContent, IonHeader, IonPage, IonTitle, IonToolbar,IonFooter } from '@ionic/react';
 import './Tab1.css';
 
 const Tab1: React.FC = () => {
   return (
     <IonPage>
-      <IonContent  className='tab-1' fullscreen>
+      <IonContent  className='tab-1'>
         <h1>ESTAS EN TU MINUTA</h1>
         <IonCard>
           <IonCardHeader>No existe  minuta creada</IonCardHeader>
