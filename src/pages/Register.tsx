@@ -1,49 +1,107 @@
 import React, { useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonItem, IonLabel, IonButton, IonSelect, IonText, IonSelectOption } from '@ionic/react';
-import { useHistory } from 'react-router-dom';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSelect, IonSelectOption, IonLabel, IonItem, IonInput, IonButton } from '@ionic/react';
 import './Register.css';
+import { registerapp } from '../services/register';
 
 const Register: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const history = useHistory();
+  const [formData, setFormData] = useState({
+    name_user: '',
+    last_name_user: '',
+    year_user: '',
+    user_type: ''
+  });
 
-  const handleRegister = () => {
-    console.log("Registro exitoso", { email, password });
-    history.push('/Login');
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    console.log(`Input Change - Name: ${name}, Value: ${value}`);
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const handleSelectChange = (e: CustomEvent) => {
+    const { value } = e.detail;
+    const name = (e.target as HTMLSelectElement).name;
+    console.log(`Select Change - Name: ${name}, Value: ${value}`);
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('Form Submitted', formData);
+    try {
+      const response = await registerapp(formData);
+      console.log('Registro exitoso:', response);
+      setFormData({
+        name_user: '',
+        last_name_user: '',
+        year_user: '',
+        user_type: ''
+      });
+    } catch (error) {
+      console.error('Error en el registro:', error);
+    }
   };
 
   return (
-    <IonPage className="page-register">
-      <IonContent className="centered-content">
-        <div className="register-header">Crear una cuenta</div>
-        <IonItem className="register-input">
-          <IonInput label='Nombre' value={email} onIonChange={e => setEmail(e.detail.value!)} />
-        </IonItem>
-        <IonItem className="register-input">
-          <IonInput label='Apellido' type="password" value={password} onIonChange={e => setPassword(e.detail.value!)} />
-        </IonItem><IonItem className="register-input">
-          <IonInput label='Fecha de Nacimiento' value={email} onIonChange={e => setEmail(e.detail.value!)} />
-        </IonItem>
-        <IonItem>
-          <IonSelect placeholder=''>
-            <div slot='label'>
-             Ocupación <IonText color="danger">(Requerido)</IonText>
-            </div>
-            <IonSelectOption value="trabajador">trabajador</IonSelectOption>
-            <IonSelectOption value="estudiante">estudiante</IonSelectOption>
-            <IonSelectOption value="dueño de casa">dueño de casa</IonSelectOption>
-          </IonSelect>
-        </IonItem>
-        
-        <IonButton className="register-button" shape='round' 
-          onClick={handleRegister}>Registrar       
-        </IonButton>
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Registro</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <form onSubmit={handleSubmit}>
+          <IonItem>
+            <IonLabel position="floating">Nombre</IonLabel>
+            <IonInput
+              type="text"
+              name="name_user"
+              value={formData.name_user}
+              onIonChange={handleInputChange}
+            />
+          </IonItem>
 
+          <IonItem>
+            <IonLabel position="floating">Apellido</IonLabel>
+            <IonInput
+              type="text"
+              name="last_name_user"
+              value={formData.last_name_user}
+              onIonChange={handleInputChange}
+            />
+          </IonItem>
 
-        <div className="register-login-link">
-          <a href="/Login">¿Ya tienes una cuenta? Inicia sesión</a>
-        </div>
+          <IonItem>
+            <IonLabel position="floating">Edad</IonLabel>
+            <IonInput
+              type="number"
+              name="year_user"
+              value={formData.year_user}
+              onIonChange={handleInputChange}
+            />
+          </IonItem>
+
+          <IonItem>
+            <IonLabel>Opciones</IonLabel>
+            <IonSelect
+              name="user_type"
+              value={formData.user_type}
+              placeholder="Seleccione una ocupación"
+              onIonChange={handleSelectChange}
+            >
+              <IonSelectOption value="Estudiante">Estudiante</IonSelectOption>
+              <IonSelectOption value="Trabajador">Trabajador</IonSelectOption>
+              <IonSelectOption value="Dueño de casa">Dueño de casa</IonSelectOption>
+            </IonSelect>
+          </IonItem>
+
+          <IonButton expand="full" type="submit">Enviar</IonButton>
+        </form>
       </IonContent>
     </IonPage>
   );

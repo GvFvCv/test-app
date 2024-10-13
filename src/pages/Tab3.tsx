@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonImg, IonIcon, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonModal, IonCheckbox, IonLabel, IonItem, IonInput, IonList } from '@ionic/react';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { camera, checkmark, close, arrowBack, pencil, information, addCircleOutline } from 'ionicons/icons';
+import { camera, checkmark, close, arrowBack, pencil, information, addCircleOutline, image } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
-import { jsPDF } from 'jspdf'; // Importar jsPDF
+import { enviarDatos } from '../services/ingresoboleta';
 import './Tab3.css'
 
 const Tab3: React.FC = () => {
@@ -15,6 +15,7 @@ const Tab3: React.FC = () => {
   const [foodItems, setFoodItems] = useState<string[]>([]); // Estado para almacenar alimentos ingresados
   const [food, setFood] = useState<string>(""); // Estado para manejar el input de alimentos
   const history = useHistory();
+  let imageboleta = "";
 
   useEffect(() => {
     const hideInstructions = localStorage.getItem('hideInstructions');
@@ -35,21 +36,14 @@ const Tab3: React.FC = () => {
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
-      resultType: CameraResultType.DataUrl,
+      resultType: CameraResultType.Uri,
       source: CameraSource.Camera,
     });
-    setPhoto(image.dataUrl);
+    setPhoto(image.webPath);
   };
 
   const retakePhoto = () => {
     setPhoto(undefined);
-  };
-
-  const generatePDF = () => {
-    if (!photo) return;
-    const doc = new jsPDF();
-    doc.addImage(photo, 'JPEG', 10, 10, 180, 240);
-    doc.save('captura_boleta.pdf');
   };
 
   const handleDontShowAgain = async () => {
@@ -77,6 +71,22 @@ const Tab3: React.FC = () => {
       setFood(""); // Limpiar el input después de agregar
     }
   };
+
+  const EnviarBoletaEP = () => {
+    // Enviar la boleta al endpoint
+    try {
+      const response =  enviarDatos(2, photo);
+      console.log('Respuesta del servidor:', response);
+      /* setAlertMessage(`Respuesta del servidor: ${JSON.stringify(response)}`); */
+      /* setShowAlert(true); */
+    }
+    catch (error) {
+      console.error('Error al enviar la foto:', error);
+      /* setAlertMessage(`Error al enviar la foto: ${error.message}`);
+      setShowAlert(true); */
+    }
+
+};
 
   return (
     <IonPage color={'light'}>
@@ -106,7 +116,7 @@ const Tab3: React.FC = () => {
               <IonIcon icon={close} slot="start" />
             </IonButton>
 
-            <IonButton color="success" expand="block" shape="round">
+            <IonButton color="success" expand="block" shape="round" onClick={EnviarBoletaEP}>{/* se debe integrar onclick */}
               Aceptar
               <IonIcon icon={checkmark} slot="start" />
             </IonButton>
