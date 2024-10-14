@@ -8,7 +8,7 @@ const Tab4: React.FC = () => {
       </IonHeader>
       <IonContent className='tab-4' fullscreen>
         <div className='aaa'>
-          <h2 className='aab'>AJUSTES</h2>
+          <h1 className='aab'>AJUSTES</h1>
         </div>
       </IonContent>
     </IonPage>

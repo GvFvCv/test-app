@@ -1,63 +1,61 @@
 .page-login {
+  --background: #ffffff; /* Fondo blanco */
+  display: flex;
+  flex-direction: column; /* Para alinear verticalmente */
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: rgb(255, 255, 255); /* Texto en blanco para contraste */
+  text-align: center; /* Alineación central del texto */
+}
+
+/* Estilo del título "Minuta IA" */
+.login-header {
+  font-size: 2.5rem; /* Tamaño del texto del título */
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  background-color: #7045ff;
+  padding: 9%; /* Ajuste de espaciado */
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Ancho completo */
+}
+
+/* Estilo del saludo "Hola (usuario)" */
+.saludo {
+  font-weight: bold;
+  font-size: 2rem; /* Tamaño del texto del saludo */
+  color: #ffffff;
+  background-color: #7045ff;
+  padding: 1.5rem 0;
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Ancho completo */
+  margin-bottom: 2rem;
+}
+
+/* Para centrar el contenido y mantener el botón más abajo */
+.centered-content {
+  background-color: rgb(106, 47, 202);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  flex-grow: 1; /* Para que el contenido crezca y empuje el botón hacia abajo */
+  width: 100%;
 }
 
-.login-header {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #ffffff;
-  margin-bottom:5%;
-  background-color:#7045ff;
-  padding: 8% 6%;
-  align-items: center;
-  justify-content: center;
-}
-
-.saludo {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #ffffff;
-  margin-bottom:30%;
-  background-color:#7045ff;
-  padding: 5%;
-  align-items: center;
-  justify-content: center;
-}
-
-.centered-content {
-  background-color:rgb(106, 47, 202);
-}
-.login-input {
-  width: 90%;
-  max-width: 400px;
-  margin-bottom: 1rem;
-}
-
+/* Estilo del botón de ingreso */
 .login-button {
-  width: 90%;
+  width: 50%; /* Ancho del botón para que tenga margen a los lados */
   max-width: 400px;
-  margin-top: 1rem;
-  padding: 12%;
-  margin-top: 10%;
-}
-  
-.login-register-link {
-  margin-top:10%;
-  color: #4a90e2;
-}
-
-
-h1{
-  font-size: 2.5rem;
+  padding: 0.5rem; /* Espaciado dentro del botón */
+  background-color: #0047FF;
+  color: white;
+  border-radius: 8px;
+  margin-top: 20rem; /* Para empujar el botón hacia abajo */
+  text-align: center;
+  font-size: 1.2rem;
   font-weight: bold;
-  color: #ffffff;
-  margin-bottom: 2rem;
-  background-color:rgb(103, 42, 200);
-  padding: 5%;
-  align-items: center;
-  justify-content: center;
 }

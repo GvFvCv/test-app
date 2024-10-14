@@ -6,7 +6,7 @@ const Tab2: React.FC = () => {
     <IonPage>
       <IonContent className='tab-2' fullscreen>
         <div className='ccc'>
-          <h2 className='cca'>DISPENSA</h2>
+          <h1 className='cca'>DISPENSA</h1>
         </div>
         <IonList className='listas' inset={true}>
           <IonItem>

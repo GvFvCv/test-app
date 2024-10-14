@@ -16,22 +16,14 @@ const Login: React.FC = () => {
   return (
     <IonPage className="page-login">
       <IonContent className="centered-content">
-        <div  className="login-header">Minuta IA</div>
+        <div  className="login-header">MINUT-IA</div>
         <div className='saludo'>Hola (usuario)</div>
         
         
         <IonButton className="login-button" shape='round' 
          onClick={handleLogin}>  Ingresar
         </IonButton>
-        <div className="login-register-link">
-          <a href="/Register">¿No tienes una cuenta? Regístrate</a>
-        </div>
       </IonContent>
-      <IonFooter className='login-footer'>
-        <IonToolbar>
-          <IonTitle>DUOC UC</IonTitle>
-        </IonToolbar>
-      </IonFooter>
     </IonPage>
   );
 };
