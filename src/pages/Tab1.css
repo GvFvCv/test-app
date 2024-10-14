@@ -16,16 +16,7 @@
   background-color: rgb(96,48,255);
 }
 
-/* Ajustes para el título grande centrado */
-h1 {
-  font-size: 3rem; /* Tamaño del texto del título */
-  color: white; /* Color del texto */
-  background-color: #7045ff; /* Fondo del título */
-  text-align: center; /* Centrar el texto */
-  margin: 0 auto; /* Márgenes automáticos para centrar en la página */
-  padding: 1rem 0; /* Espaciado interno */
-  width: 90%; /* Ancho para dejar margen a los lados */
-}
+
 
 ion-header[collapse="condense"] ion-title {
   font-size: 1.2rem; /* Tamaño ajustado para el título colapsado */

@@ -55,12 +55,10 @@ const Dispensa: React.FC = () => {
   }
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Dispensa</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+    <IonPage  color='light'>
+      <div className='ccc'>
+        <h1 className='cca'>DISPENSA</h1>
+      </div>
       <IonContent>
         <IonList>
           {alimentos.map((alimento) => (
