@@ -72,21 +72,47 @@ const Tab3: React.FC = () => {
     }
   };
 
-  const EnviarBoletaEP = () => {
+  const getStoredResponse = () => {
+    const storedResponse = localStorage.getItem('serverResponse');
+    if (storedResponse) {
+      return JSON.parse(storedResponse);
+    }
+    return null;
+  };
+
+  const EnviarBoletaEP = async () => {
+    // Recuperar el objeto de usuario del localStorage
+    const user = localStorage.getItem('registerResponse');
+    if (!user) {
+      console.error('No se encontró el objeto de usuario en el localStorage');
+      return;
+    }
+
+    const userObj = JSON.parse(user);
+    const userId = userObj.id_user;
+    if (!userId) {
+      console.error('No se encontró el ID de usuario en el objeto de usuario');
+      return;
+    }
+
     // Enviar la boleta al endpoint
     try {
-      const response =  enviarDatos(2, photo);
+      const response = await enviarDatos(userId, photo);
       console.log('Respuesta del servidor:', response);
+
+      // Guardar la respuesta en el localStorage
+      localStorage.setItem('serverResponse', JSON.stringify(response));
+
       /* setAlertMessage(`Respuesta del servidor: ${JSON.stringify(response)}`); */
       /* setShowAlert(true); */
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Error al enviar la foto:', error);
       /* setAlertMessage(`Error al enviar la foto: ${error.message}`);
       setShowAlert(true); */
     }
+  };
 
-};
+const storedResponse = getStoredResponse();
 
   return (
     <IonPage color={'light'}>
