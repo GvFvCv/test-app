@@ -18,8 +18,30 @@ const Dispensa: React.FC = () => {
   useEffect(() => {
     const fetchAlimentos = async () => {
       try {
-        // Cambiar la ruta a tu archivo local data.json
-        const response = await fetch('public/data.json');
+        // Recuperar user_id y dispensa_id del localStorage
+        const user = localStorage.getItem('registerResponse');
+        if (!user) {
+          throw new Error('No se encontró el objeto de usuario en el localStorage');
+        }
+
+        const userObj = JSON.parse(user);
+        const userId = userObj.id_user;
+        const dispensa = userObj.dispensa; // Asegúrate de que dispensa_id esté en el objeto
+
+        if (!userId || !dispensa) {
+          throw new Error('No se encontró el ID de usuario o el ID de la dispensa en el objeto de usuario');
+        }
+
+        // Construir la URL con user_id y dispensa_id como parámetros
+        const url = `http://127.0.0.1:8000/app/dispensa_detail/?user_id=${userId}&dispensa_id=${dispensa}`;
+
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
         if (!response.ok) {
           throw new Error('Error al obtener los alimentos');
         }
