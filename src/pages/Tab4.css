@@ -1,5 +1,4 @@
-.tab-3 {
-  --background: #ffffff; /* Fondo blanco */
+.tab-4 {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,7 +6,7 @@
   color: rgb(255, 255, 255); /* Texto en blanco para contraste */
   text-align: center; /* Alineación central del texto */
 }
-
+/* 
 .explore-container {
   display: flex;
   justify-content: center;
@@ -15,24 +14,16 @@
   height: 100%;
   background-color: rgb(96,48,255);
 }
-
+ */
 /* Ajustes para el título grande centrado */
-h1 {
-  font-size: 3rem; /* Tamaño del texto del título */
-  color: white; /* Color del texto */
-  background-color: #7045ff; /* Fondo del título */
-  text-align: center; /* Centrar el texto */
-  margin: 0 auto; /* Márgenes automáticos para centrar en la página */
-  padding: 1rem 0; /* Espaciado interno */
-  width: 90%; /* Ancho para dejar margen a los lados */
-}
+
 
 ion-header[collapse="condense"] ion-title {
   font-size: 1.2rem; /* Tamaño ajustado para el título colapsado */
   color: #f4f4f5; /* Color gris claro */
 }
 
-.aaa {
+.eee-1 {
   font-size: 1rem;
   color: #ffffff;
   margin-bottom: 0rem;
@@ -42,7 +33,8 @@ ion-header[collapse="condense"] ion-title {
   justify-content: center;
 }
 
-.aab {
+/* Título de la página "AJUSTES" */
+.eef-2{
   font-weight: bold;
   font-size: 2.5rem;
   color: #ffffff;
@@ -50,4 +42,36 @@ ion-header[collapse="condense"] ion-title {
   padding: 4% 1%;
   align-items: center;
   justify-content: center;
+}
+
+/* .op-1, .op-2, .op-3 {
+  font-weight: bold;
+  font-size: 1.5rem; /* Tamaño más grande para mayor legibilidad 
+  color: #000000;
+  margin: 1rem 0; /* Más espacio entre las opciones */
+/*}
+
+
+
+/* Estilo para los textos de las opciones */
+/*.op-11, .op-22, .op-33 {
+  font-size: 1.5rem; /* Aumenta el tamaño del texto 
+  padding: 0.5rem 0; /* Espaciado adicional para una lectura más cómoda 
+  text-align: left;
+/*} */
+
+/* Estilo general para los ítems de las listas */
+.list-1 {
+  --background: #ffffff; /* Fondo claro para los ítems */
+  border-radius: 10px; /* Bordes redondeados para dar un toque moderno */
+  margin: 0.5rem 0; /* Espaciado entre ítems */
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Sombra sutil para resaltar cada opción */
+}
+
+/* Personalización de los toggles */
+.togle-1 .togle-2 {
+  --handle-background: #483f97; /* Color del toggle (punto) */
+  --background-checked: #000000; /* Color cuando está activado */
+  --background: #cc0909; /* Color cuando está desactivado */
 }

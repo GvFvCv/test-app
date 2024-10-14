@@ -48,13 +48,11 @@ const Register: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Registro</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
+    <IonPage color='light'>
+      <div className='register-1'>
+        <h1 className='register-2'>REGISTRATE AQUÍ</h1>
+      </div>
+      <IonContent className='register-page'>
         <form onSubmit={handleSubmit}>
           <IonItem>
             <IonLabel position="floating">Nombre</IonLabel>
@@ -100,7 +98,10 @@ const Register: React.FC = () => {
             </IonSelect>
           </IonItem>
 
-          <IonButton expand="full" type="submit">Enviar</IonButton>
+          <IonButton className='register-buton' shape='round' type="submit"
+          onClick={handleInputChange}>
+            Enviar
+          </IonButton>
         </form>
       </IonContent>
     </IonPage>
