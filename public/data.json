@@ -1,0 +1,126 @@
+{
+    "id_dispensa": 2,
+    "alimentos": [
+        {
+            "alimento": {
+                "id_alimento": 41,
+                "name_alimento": "ACEITE MAXIMA",
+                "unit_measurement": "lt",
+                "load_alimento": "5.0"
+            }
+        },
+        {
+            "alimento": {
+                "id_alimento": 42,
+                "name_alimento": "HAMB SJ",
+                "unit_measurement": "gr",
+                "load_alimento": "90.0"
+            }
+        },
+        {
+            "alimento": {
+                "id_alimento": 43,
+                "name_alimento": "CROQ MER 100 G GOL",
+                "unit_measurement": "gr",
+                "load_alimento": "200.0"
+            }
+        },
+        {
+            "alimento": {
+                "id_alimento": 44,
+                "name_alimento": "CREMA 157GR",
+                "unit_measurement": "gr",
+                "load_alimento": "157.0"
+            }
+        },
+        {
+            "alimento": {
+                "id_alimento": 45,
+                "name_alimento": "PASTA SALAME REC A",
+                "unit_measurement": "kg",
+                "load_alimento": "1.0"
+            }
+        },
+        {
+            "alimento": {
+                "id_alimento": 46,
+                "name_alimento": "JUREL SAN JOSE",
+                "unit_measurement": "gr",
+                "load_alimento": "300.0"
+            }
+        },
+        {
+            "alimento": {
+                "id_alimento": 47,
+                "name_alimento": "GALL MOROCHA",
+                "unit_measurement": "gr",
+                "load_alimento": "50.0"
+            }
+        },
+        {
+            "alimento": {
+                "id_alimento": 48,
+                "name_alimento": "MANTECA CRUCINA WA",
+                "unit_measurement": "kg",
+                "load_alimento": "1.0"
+            }
+        },
+        {
+            "alimento": {
+                "id_alimento": 49,
+                "name_alimento": "HIER MANZ SUP 20 B",
+                "unit_measurement": "kg",
+                "load_alimento": "20.0"
+            }
+        },
+        {
+            "alimento": {
+                "id_alimento": 50,
+                "name_alimento": "GALLETA CAPUC 130G",
+                "unit_measurement": "gr",
+                "load_alimento": "130.0"
+            }
+        },
+        {
+            "alimento": {
+                "id_alimento": 51,
+                "name_alimento": "FRAC CLASICA 110 G",
+                "unit_measurement": "gr",
+                "load_alimento": "110.0"
+            }
+        },
+        {
+            "alimento": {
+                "id_alimento": 52,
+                "name_alimento": "ARR G1 L AN C C 1K",
+                "unit_measurement": "kg",
+                "load_alimento": "1.0"
+            }
+        },
+        {
+            "alimento": {
+                "id_alimento": 53,
+                "name_alimento": "AT LOM AC ANT91GR",
+                "unit_measurement": "gr",
+                "load_alimento": "91.0"
+            }
+        },
+        {
+            "alimento": {
+                "id_alimento": 54,
+                "name_alimento": "HALL STA ISABEL",
+                "unit_measurement": "kg",
+                "load_alimento": "1.0"
+            }
+        },
+        {
+            "alimento": {
+                "id_alimento": 55,
+                "name_alimento": "SALCH SUR SJ 1 KG",
+                "unit_measurement": "kg",
+                "load_alimento": "1.0"
+            }
+        }
+    ],
+    "ultima_actualizacion": "2024-10-12 21:26:24 -03-0300"
+}
