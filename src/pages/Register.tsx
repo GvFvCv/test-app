@@ -8,7 +8,8 @@ const Register: React.FC = () => {
     name_user: '',
     last_name_user: '',
     year_user: '',
-    user_type: ''
+    user_type: '',
+    user_sex: ''
   });
 
   const handleInputChange = (e: any) => {
@@ -40,7 +41,8 @@ const Register: React.FC = () => {
         name_user: '',
         last_name_user: '',
         year_user: '',
-        user_type: ''
+        user_type: '',
+        user_sex: ''
       });
     } catch (error) {
       console.error('Error en el registro:', error);
@@ -93,8 +95,22 @@ const Register: React.FC = () => {
               onIonChange={handleSelectChange}
             >
               <IonSelectOption value="Estudiante">Estudiante</IonSelectOption>
-              <IonSelectOption value="Trabajador">Trabajador</IonSelectOption>
-              <IonSelectOption value="Dueño de casa">Dueño de casa</IonSelectOption>
+              <IonSelectOption value="Trabajador">Trabajador/a</IonSelectOption>
+              <IonSelectOption value="Ama de casa">Ama/o de casa</IonSelectOption>
+            </IonSelect>
+          </IonItem>
+
+          <IonItem>
+            <IonLabel>Opciones</IonLabel>
+            <IonSelect
+              name="user_sex"
+              value={formData.user_sex}
+              placeholder="Seleccione un sexo"
+              onIonChange={handleSelectChange}
+            >
+              <IonSelectOption value="H">Hombre</IonSelectOption>
+              <IonSelectOption value="M">Mujer</IonSelectOption>
+              <IonSelectOption value="O">Otro</IonSelectOption>
             </IonSelect>
           </IonItem>
 
