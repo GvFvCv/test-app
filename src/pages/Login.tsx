@@ -1,28 +1,45 @@
-import React from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonFooter } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
+import { IonContent, IonPage, IonButton } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import { useAuth } from './AuthContext'; // Importamos el contexto de autenticación
 import './Login.css';
 
 const Login: React.FC = () => {
-  const { login } = useAuth(); // Usamos la función de login del contexto
   const history = useHistory();
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const user = localStorage.getItem('registerResponse');
+    if (user) {
+      setIsRegistered(true);
+      const userData = JSON.parse(user);
+      setUserName(userData.name_user);
+    }
+  }, []);
 
   const handleLogin = () => {
-    login(); // Iniciamos sesión utilizando el contexto
     history.replace('/tab1'); // Redirigimos a la primera pestaña después de iniciar sesión
+  };
+
+  const handleRegisterRedirect = () => {
+    history.push('/Register'); // Redirigimos a la página de registro
   };
 
   return (
     <IonPage className="page-login">
       <IonContent className="centered-content">
-        <div  className="login-header">MINUT-IA</div>
-        <div className='saludo'>Hola (usuario)</div>
+        <div className="login-header">MINUT-IA</div>
+        <div className='saludo'>Bienvenido  {isRegistered ? userName : 'Visitante'}</div>
         
-        
-        <IonButton className="login-button" shape='round' 
-         onClick={handleLogin}>  Ingresar
-        </IonButton>
+        {isRegistered ? (
+          <IonButton className="login-button" shape='round' onClick={handleLogin}>
+            Ingresar
+          </IonButton>
+        ) : (
+          <IonButton className="register-button" shape='round' onClick={handleRegisterRedirect}>
+            Registrarse
+          </IonButton>
+        )}
       </IonContent>
     </IonPage>
   );
