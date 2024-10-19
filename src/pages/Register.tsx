@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSelect, IonSelectOption, IonLabel, IonItem, IonInput, IonButton } from '@ionic/react';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSelect, IonSelectOption, IonLabel, IonItem, IonInput, IonButton, IonFooter } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import './Register.css';
 import { registerapp } from '../services/register';
@@ -55,48 +55,59 @@ const Register: React.FC = () => {
 
   return (
     <IonPage color='light'>
-      <div className='register-1'>
-        <h1 className='register-2'>REGISTRATE AQUÍ</h1>
+      <div className='form-title'>
+        <h1 className=''>REGISTRATE AQUÍ</h1>
       </div>
       <IonContent className='register-page'>
-        <form onSubmit={handleSubmit}>
-          <IonItem>
-            <IonLabel position="floating">Nombre</IonLabel>
+        <form onSubmit={handleSubmit} className='form-content'>
+          <IonItem className='form-item'>
+            <IonLabel position="floating" className="styled-label">Nombre</IonLabel>
             <IonInput
               type="text"
               name="name_user"
               value={formData.name_user}
               onIonChange={handleInputChange}
+              required
+              className='styled-input'
             />
           </IonItem>
-
-          <IonItem>
-            <IonLabel position="floating">Apellido</IonLabel>
+          
+          {/* Apellido */}
+          <IonItem className='form-item'>
+            <IonLabel position="floating" className="styled-label">Apellido</IonLabel>
             <IonInput
               type="text"
               name="last_name_user"
               value={formData.last_name_user}
               onIonChange={handleInputChange}
+              required
+              className='styled-input'
             />
           </IonItem>
 
-          <IonItem>
-            <IonLabel position="floating">Edad</IonLabel>
+          {/* Edad */}
+          <IonItem className='form-item'>
+            <IonLabel position="floating" className="styled-label">Edad</IonLabel>
             <IonInput
               type="number"
               name="year_user"
               value={formData.year_user}
               onIonChange={handleInputChange}
+              required
+              className='styled-input'
             />
           </IonItem>
 
-          <IonItem>
-            <IonLabel>Opciones</IonLabel>
+
+          {/* Ocupacion */}
+          <IonItem className='form-item'>
+            <IonLabel position="floating" className="styled-label">Ocupacion</IonLabel>
             <IonSelect
               name="user_type"
               value={formData.user_type}
               placeholder="Seleccione una ocupación"
               onIonChange={handleSelectChange}
+              className='styled-select'
             >
               <IonSelectOption value="Estudiante">Estudiante</IonSelectOption>
               <IonSelectOption value="Trabajador">Trabajador/a</IonSelectOption>
@@ -104,13 +115,15 @@ const Register: React.FC = () => {
             </IonSelect>
           </IonItem>
 
-          <IonItem>
-            <IonLabel>Opciones</IonLabel>
+          {/* Sexo */}
+          <IonItem className='form-item'>
+            <IonLabel position="floating" className="styled-label">Sexo</IonLabel>
             <IonSelect
               name="user_sex"
               value={formData.user_sex}
               placeholder="Seleccione un sexo"
               onIonChange={handleSelectChange}
+              className='styled-select'
             >
               <IonSelectOption value="M">Hombre</IonSelectOption>
               <IonSelectOption value="F">Mujer</IonSelectOption>
@@ -118,11 +131,17 @@ const Register: React.FC = () => {
             </IonSelect>
           </IonItem>
 
-          <IonButton className='register-buton' shape='round' type="submit">
+
+          {/* Boton de envio */}
+          <div className='form-button'>
+          <IonButton type="submit" expand='block' className='styled-button'>
             Enviar
           </IonButton>
+          </div>
+          
         </form>
       </IonContent>
+      <IonFooter className='footer-bar'/>
     </IonPage>
   );
 };

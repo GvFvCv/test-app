@@ -70,7 +70,7 @@ const MainContent: React.FC = () => {
                 <Route path="/tab3" component={Tab3} />
                 <Route path="/tab4" component={Tab4} />
                 <Route path="/" exact>
-                  <Redirect to="/tab1" />
+                  <Redirect to="/login" />
                 </Route>
               </IonRouterOutlet>
 
