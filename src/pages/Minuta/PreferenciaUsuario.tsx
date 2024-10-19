@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonSelect, IonSelectOption, IonList, IonCheckbox, IonButton, IonInput, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCardSubtitle, IonIcon } from '@ionic/react';
 import { restaurant, cafe, moon} from 'ionicons/icons';
-import './Tab2.css'
+import '../Minuta/PreferenciaUsuario.css';
 
 const Tab2: React.FC = () => {
-  const [userCount, setUserCount] = useState<number>();
-  const [dietType, setDietType] = useState<string>();
-  const [selectedMeals, setSelectedMeals] = useState<{ desayuno: boolean; almuerzo: boolean; cena: boolean }>({
+  const [people_number, setpeople_number] = useState<number>();
+  const [dietary_preference, setdietary_preference] = useState<string>();
+  const [type_food, settype_food] = useState<{ desayuno: boolean; almuerzo: boolean; cena: boolean }>({
     desayuno: false,
     almuerzo: false,
     cena: false,
@@ -16,15 +16,15 @@ const Tab2: React.FC = () => {
 
   // Función para manejar los cambios en las comidas
   const handleMealChange = (meal: 'desayuno' | 'almuerzo' | 'cena') => {
-    setSelectedMeals(prev => ({ ...prev, [meal]: !prev[meal] }));
+    settype_food(prev => ({ ...prev, [meal]: !prev[meal] }));
   };
 
   // Función para manejar el envío de preferencias
   const handleSubmit = () => {
     const preferences = {
-      userCount,
-      dietType,
-      selectedMeals,
+      people_number,
+      dietary_preference,
+      type_food,
       hasRestrictions,
       restrictions,
     };
@@ -49,7 +49,7 @@ const Tab2: React.FC = () => {
           {/* Combobox para la cantidad de usuarios */}
           <IonItem>
             <IonLabel>Cantidad de personas</IonLabel>
-            <IonSelect value={userCount} placeholder="Selecciona" onIonChange={e => setUserCount(e.detail.value)}>
+            <IonSelect value={people_number} placeholder="Selecciona" onIonChange={e => setpeople_number(e.detail.value)}>
               <IonSelectOption value={1}>1 Persona</IonSelectOption>
               <IonSelectOption value={2}>2 Personas</IonSelectOption>
               <IonSelectOption value={3}>3 Personas</IonSelectOption>
@@ -61,7 +61,7 @@ const Tab2: React.FC = () => {
           {/* Combobox para el tipo de dieta/preferencia */}
           <IonItem>
             <IonLabel>Tipo de Dieta</IonLabel>
-            <IonSelect value={dietType} placeholder="Selecciona" onIonChange={e => setDietType(e.detail.value)}>
+            <IonSelect value={dietary_preference} placeholder="Selecciona" onIonChange={e => setdietary_preference(e.detail.value)}>
               <IonSelectOption value="normal">Normal (balanceada)</IonSelectOption>
               <IonSelectOption value="vegetariana">Vegetariana</IonSelectOption>
               <IonSelectOption value="vegana">Vegana</IonSelectOption>
@@ -80,17 +80,17 @@ const Tab2: React.FC = () => {
             <IonItem>
               <IonIcon slot="start" icon={cafe}></IonIcon>
               <IonLabel>Desayuno</IonLabel>
-              <IonCheckbox justify="end" checked={selectedMeals.desayuno} onIonChange={() => handleMealChange('desayuno')} />
+              <IonCheckbox justify="end" checked={type_food.desayuno} onIonChange={() => handleMealChange('desayuno')} />
             </IonItem>
             <IonItem>
               <IonIcon slot="start" icon={restaurant}></IonIcon>
               <IonLabel>   Almuerzo</IonLabel>
-              <IonCheckbox justify="end" checked={selectedMeals.almuerzo} onIonChange={() => handleMealChange('almuerzo')} />
+              <IonCheckbox justify="end" checked={type_food.almuerzo} onIonChange={() => handleMealChange('almuerzo')} />
             </IonItem>
             <IonItem>
               <IonIcon slot="start" icon={moon}></IonIcon>
               <IonLabel>Cena</IonLabel>
-              <IonCheckbox justify="end" checked={selectedMeals.cena} onIonChange={() => handleMealChange('cena')} />
+              <IonCheckbox justify="end" checked={type_food.cena} onIonChange={() => handleMealChange('cena')} />
             </IonItem>
           </IonList>
 
@@ -117,3 +117,5 @@ const Tab2: React.FC = () => {
 };
 
 export default Tab2;
+
+
