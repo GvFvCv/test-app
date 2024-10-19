@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSelect, IonSelectOption, IonLabel, IonItem, IonInput, IonButton } from '@ionic/react';
+import { useHistory } from 'react-router-dom';
 import './Register.css';
 import { registerapp } from '../services/register';
 
@@ -8,8 +9,11 @@ const Register: React.FC = () => {
     name_user: '',
     last_name_user: '',
     year_user: '',
-    user_type: ''
+    user_type: '',
+    user_sex: ''
   });
+
+  const history = useHistory();
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
@@ -40,21 +44,21 @@ const Register: React.FC = () => {
         name_user: '',
         last_name_user: '',
         year_user: '',
-        user_type: ''
+        user_type: '',
+        user_sex: ''
       });
+      history.push('/tab1');
     } catch (error) {
       console.error('Error en el registro:', error);
     }
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Registro</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
+    <IonPage color='light'>
+      <div className='register-1'>
+        <h1 className='register-2'>REGISTRATE AQUÍ</h1>
+      </div>
+      <IonContent className='register-page'>
         <form onSubmit={handleSubmit}>
           <IonItem>
             <IonLabel position="floating">Nombre</IonLabel>
@@ -95,12 +99,28 @@ const Register: React.FC = () => {
               onIonChange={handleSelectChange}
             >
               <IonSelectOption value="Estudiante">Estudiante</IonSelectOption>
-              <IonSelectOption value="Trabajador">Trabajador</IonSelectOption>
-              <IonSelectOption value="Dueño de casa">Dueño de casa</IonSelectOption>
+              <IonSelectOption value="Trabajador">Trabajador/a</IonSelectOption>
+              <IonSelectOption value="Ama de casa">Ama/o de casa</IonSelectOption>
             </IonSelect>
           </IonItem>
 
-          <IonButton expand="full" type="submit">Enviar</IonButton>
+          <IonItem>
+            <IonLabel>Opciones</IonLabel>
+            <IonSelect
+              name="user_sex"
+              value={formData.user_sex}
+              placeholder="Seleccione un sexo"
+              onIonChange={handleSelectChange}
+            >
+              <IonSelectOption value="M">Hombre</IonSelectOption>
+              <IonSelectOption value="F">Mujer</IonSelectOption>
+              <IonSelectOption value="O">Otro</IonSelectOption>
+            </IonSelect>
+          </IonItem>
+
+          <IonButton className='register-buton' shape='round' type="submit">
+            Enviar
+          </IonButton>
         </form>
       </IonContent>
     </IonPage>
