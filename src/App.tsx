@@ -1,4 +1,4 @@
-import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import {
   IonApp,
   IonIcon,
@@ -39,70 +39,42 @@ import './theme/variables.css';
 
 setupIonicReact();
 
-const App: React.FC = () => {
-  return (
-    <AuthProvider>
-      <IonApp>
-        <IonReactRouter>
-          <MainContent />
-        </IonReactRouter>
-      </IonApp>
-    </AuthProvider>
-  );
-};
-
-const MainContent: React.FC = () => {
-  const location = useLocation();
-  const showTabs = !['/Login', '/Register'].includes(location.pathname);
-
-  return (
-    <>
-      <IonRouterOutlet>
-        <Switch>
-          <Route path="/Register" component={Register} />
-          <Route path="/Login" component={Login} />
-
-          {showTabs && (
-            <IonTabs>
-              <IonRouterOutlet>
-                <Route path="/tab1" component={Tab1} />
-                <Route path="/tab2" component={Tab2} />
-                <Route path="/tab3" component={Tab3} />
-                <Route path="/tab4" component={Tab4} />
-                <Route path="/" exact>
-                  <Redirect to="/tab1" />
-                </Route>
-              </IonRouterOutlet>
-
-              <IonTabBar slot="bottom" color={'tertiary'}>
-                <IonTabButton tab="tab1" href="/tab1">
-                  <IonIcon color='light' aria-hidden="true" icon={listSharp} />
-                </IonTabButton>
-                <IonTabButton tab="tab2" href="/tab2">
-                  <IonIcon color='light' aria-hidden="true" icon={cartSharp} />
-                </IonTabButton>
-                <IonTabButton tab="tab3" href="/tab3">
-                  <IonIcon color='light' aria-hidden="true" icon={scanSharp} />
-                </IonTabButton>
-                <IonTabButton tab="tab4" href="/tab4">
-                  <IonIcon color='light' aria-hidden="true" icon={settingsSharp} />
-                </IonTabButton>
-              </IonTabBar>
-            </IonTabs>
-          )}
-
-          {/* Rutas para tabs también se pueden manejar aquí si es necesario */}
-          <Route path="/tab1" component={Tab1} />
-          <Route path="/tab2" component={Tab2} />
-          <Route path="/tab3" component={Tab3} />
-          <Route path="/tab4" component={Tab4} />
-          <Route path="/" exact>
-            <Redirect to="/Login" />
-          </Route>
-        </Switch>
-      </IonRouterOutlet>
-    </>
-  );
-};
+const App: React.FC = () => (
+  <AuthProvider>
+    <IonApp>
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Switch>
+              <Route path="/Register" component={Register}/>
+              <Route path="/Login" component={Login}/>
+              <Route path="/tab1" component={Tab1}/>
+              <Route path="/tab2" component={Tab2}/>
+              <Route path="/tab3" component={Tab3}/>
+              <Route path="/tab4" component={Tab4}/> 
+              <Route path="/" exact>
+                <Redirect to="/Login" />
+              </Route>
+            </Switch>
+          </IonRouterOutlet>
+          <IonTabBar slot="bottom" color={'tertiary'}>
+            <IonTabButton tab="tab1" href="/tab1">
+              <IonIcon color='light' aria-hidden="true" icon={listSharp} />
+            </IonTabButton>
+            <IonTabButton tab="tab2" href="/tab2">
+              <IonIcon color='light' aria-hidden="true" icon={cartSharp} />
+            </IonTabButton>
+            <IonTabButton tab="tab3" href="/tab3">
+              <IonIcon color='light' aria-hidden="true" icon={scanSharp} />
+            </IonTabButton>
+            <IonTabButton tab="tab4" href="/tab4">
+              <IonIcon color='light' aria-hidden="true" icon={settingsSharp} />
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+    </IonApp>
+  </AuthProvider>
+);
 
 export default App;
