@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonPage, IonButton } from '@ionic/react';
+import { IonContent, IonPage, IonButton, IonTabBar, IonFooter } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import './Login.css';
 
@@ -32,17 +32,26 @@ const Login: React.FC = () => {
         <div className='saludo'>Bienvenido  {isRegistered ? userName : 'Visitante'}</div>
         
         {isRegistered ? (
-          <IonButton className="login-button" shape='round' onClick={handleLogin}>
-            Ingresar
-          </IonButton>
-        ) : (
-          <IonButton className="register-button" shape='round' onClick={handleRegisterRedirect}>
-            Registrarse
-          </IonButton>
+         <IonButton
+         className="login-button styled-button"
+         shape="round"
+         onClick={handleLogin}
+       >
+         Ingresar
+       </IonButton>
+     ) : (
+       <IonButton
+         className="register-button styled-button"
+         shape="round"
+         onClick={handleRegisterRedirect}
+       >
+         Registrarse
+       </IonButton>
         )}
       </IonContent>
+      <IonFooter className='footer-bar'/>
     </IonPage>
   );
-};
+};  
 
 export default Login;

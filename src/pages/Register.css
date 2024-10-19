@@ -8,37 +8,129 @@
   text-align: center; /* Alineación central del texto */
 }
 
-
-.register-input {
-  width: 90%;
-  max-width: 400px;
-  margin-bottom: 1rem;
-  color: #121212;
-  background: #501d5e;
-  background-color: #7045ff;
-}
-
-.register-button {
-  width: 90%;
-  max-width: 400px;
-  margin-top: 1rem;
-  padding: 5%;
-  margin-top: 10%;
-}
-  
-.register-login-link {
+/* Estilos para el contenedor general del formulario */
+.form-container {
+  display: flex;
   justify-content: center;
   align-items: center;
-  padding:0% 1% 0% 12%;
-  margin-top:1%;
-  color: #4a90e2;
+  height: 100%;
+  background-color: #f9f9f9;
 }
 
-.centered-content {
-  background: #501d5e;
+/* Contenedor del formulario */
+.form-content {
+  width: 100%;
+  max-width: 400px;
+  padding: 18px;
+  background-color:#ccbdfc;
+  border-radius: 4px;
+  margin: auto;
+  box-shadow: 0 6px 8px #b9a3ff;
 }
 
-.register-1 {
+/* Título del formulario */
+.form-title h1 {
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  background-color: #6b46c1; /* Color púrpura */
+  padding: 8%;
+  margin: auto;
+  width: 100%;
+  margin-bottom: 10%;
+  font-size: 2.2rem;
+  background-color: #7045ff;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Elementos individuales del formulario */
+.form-item {
+  margin-bottom: 15px;
+  border-radius: 10px;
+}
+
+/* Mejoras en el diseño de los IonItem */
+.styled-item {
+  --highlight-background: #f9f9f9;
+  --min-height: 56px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 10px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Botón de enviar */
+.form-button {
+  width: 100%;
+  margin-top: 70px;
+  margin-bottom: 2px;
+  padding: 0.5%;
+  font-size: 4rem;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+}
+.form-button ion-button {
+  --background: #0047FF; /* Color azul */
+  --background-hover:'success';
+}
+
+
+.styled-item:hover {
+  border-color: #805ad5;
+}
+
+.styled-item.ion-focused {
+  border-color: #805ad5;
+  box-shadow: 0 0 8px rgba(128, 90, 213, 0.3);
+}
+
+/* Estilos para las etiquetas (labels) */
+.styled-label {
+  font-size: 1.1rem;
+  color: #4a5568;
+  transition: color 0.3s ease;
+}
+
+.styled-item.ion-focused .styled-label {
+  color: #6b46c1;
+}
+
+/* Inputs personalizados */
+.styled-input, .styled-select {
+  font-size: 1rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #2d3748;
+}
+
+.styled-input::placeholder, .styled-select::placeholder {
+  color: #a0aec0;
+}
+
+/* Botón de enviar */
+.form-button {
+  margin-top: 25px;
+}
+
+.styled-button {
+  --background: #0047FF;
+  --background-hover: #3cde72;
+  --border-radius: 20px;
+  --padding-start: 15px;
+  --padding-end: 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.styled-button:hover {
+  filter: brightness(1.1);
+}
+
+
+/* .register-1 {
   font-size: 2.5rem;
   color: #ffffff;
   margin-bottom: 0rem;
@@ -56,17 +148,4 @@
   padding: 4% 1%;
   align-items: center;
   justify-content: center;
-}
-
-.register-buton {
-  width: 50%; /* Ancho del botón para que tenga margen a los lados */
-  max-width: 400px;
-  padding: 0.5rem; /* Espaciado dentro del botón */
-  background-color: #0047FF;
-  color: white;
-  border-radius: 8px;
-  margin-top: 15rem; /* Para empujar el botón hacia abajo */
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: bold;
-}
+} */
