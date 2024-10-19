@@ -37,64 +37,51 @@ const MinutaOn: React.FC = () => {
   useEffect(() => {
     // Simulación de la llamada a la API
     const fetchMinutas = async () => {
-      const apiResponse: ApiResponse = {
-        "state_minuta": "True",
-        "lista_minuta": {
-            "id_lista_minuta": 20,
-            "nombre_lista_minuta": "TestPruebas",
-            "fecha_creacion": "2024-10-18",
-            "fecha_inicio": "2024-10-20",
-            "fecha_termino": "2024-10-25"
-        },
-        "info_minuta": {
-            "tipo_dieta": "economica",
-            "cantidad_personas": 1
-        },
-        "minutas": [
-            {
-                "id_minuta": 100,
-                "type_food": "Almuerzo",
-                "name_food": "Atún con pasta en salsa de tomate",
-                "fecha": "2024-10-20"
-            },
-            {
-                "id_minuta": 101,
-                "type_food": "Almuerzo",
-                "name_food": "Salteado de verduras con huevo",
-                "fecha": "2024-10-21"
-            },
-            {
-                "id_minuta": 102,
-                "type_food": "Almuerzo",
-                "name_food": "Galletas con crema y manjar",
-                "fecha": "2024-10-22"
-            },
-            {
-                "id_minuta": 103,
-                "type_food": "Almuerzo",
-                "name_food": "Sopa de Jurel con croquetas de merluza",
-                "fecha": "2024-10-23"
-            },
-            {
-                "id_minuta": 104,
-                "type_food": "Almuerzo",
-                "name_food": "Pasta con salsa de tomate y salchichas",
-                "fecha": "2024-10-24"
-            },
-            {
-                "id_minuta": 105,
-                "type_food": "Almuerzo",
-                "name_food": "Ensalada de gallina con galletas",
-                "fecha": "2024-10-25"
-            }
-        ]
-    };
+      try {
+        // Recuperar user_id 
+        const user = localStorage.getItem('registerResponse');
+        if (!user) {
+          throw new Error('No se encontró el objeto de usuario en el localStorage');
+        }
+
+        const userObj = JSON.parse(user);
+        const userId = userObj.id_user;
+        
+
+        if (!userId ) {
+          throw new Error('No se encontró el ID de usuario');
+        }
+
+        // Construir la URL con user_id y dispensa_id como parámetros
+        const url = `http://127.0.0.1:8000/app/minuta_detail/?user_id=${userId}`;
+
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Error al obtener los alimentos');
+        }
+        const data = await response.json();
+        console.log(data);
+
+      const apiResponse: ApiResponse = data;
 
       setMinutas(apiResponse.minutas);
       const today = new Date().toISOString().split('T')[0];
       setSelectedDay(today);
       const todayRecipes = apiResponse.minutas.filter(item => item.fecha === today);
       setRecipesForDay(todayRecipes);
+
+        
+       
+      } catch (error: any) {
+        console.error('Error al obtener la minuta:', error);
+        setMinutas([]);
+      }
     };
 
     fetchMinutas();
