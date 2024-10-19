@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSelect, IonSelectOption, IonLabel, IonItem, IonInput, IonButton } from '@ionic/react';
+import { useHistory } from 'react-router-dom';
 import './Register.css';
 import { registerapp } from '../services/register';
 
@@ -11,6 +12,8 @@ const Register: React.FC = () => {
     user_type: '',
     user_sex: ''
   });
+
+  const history = useHistory();
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
@@ -44,6 +47,7 @@ const Register: React.FC = () => {
         user_type: '',
         user_sex: ''
       });
+      history.push('/tab1');
     } catch (error) {
       console.error('Error en el registro:', error);
     }
@@ -108,14 +112,13 @@ const Register: React.FC = () => {
               placeholder="Seleccione un sexo"
               onIonChange={handleSelectChange}
             >
-              <IonSelectOption value="H">Hombre</IonSelectOption>
-              <IonSelectOption value="M">Mujer</IonSelectOption>
+              <IonSelectOption value="M">Hombre</IonSelectOption>
+              <IonSelectOption value="F">Mujer</IonSelectOption>
               <IonSelectOption value="O">Otro</IonSelectOption>
             </IonSelect>
           </IonItem>
 
-          <IonButton className='register-buton' shape='round' type="submit"
-          onClick={handleInputChange}>
+          <IonButton className='register-buton' shape='round' type="submit">
             Enviar
           </IonButton>
         </form>
