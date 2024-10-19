@@ -4,36 +4,47 @@ import MinutaOff from './Minuta/MinutaOff';
 import MinutaOn from './Minuta/MinutaOn';
 
 const PantallaPrincipal: React.FC = () => {
-  const [minuta, setMinuta] = useState<any | null>(null); // Estado para la minuta
+  const [stateMinuta, setStateMinuta] = useState<string | null>(null); // Estado para el estado de la minuta
   const [loading, setLoading] = useState<boolean>(true);  // Estado de carga
 
   useEffect(() => {
-    // Simula la obtención de datos de una API
     const fetchMinuta = async () => {
       try {
-        // Simulación de la llamada a la API
-        const mockMinuta = [
-          {
-            day: '2024-10-12',
-            recipes: [
-              {
-                name: 'Ensalada de pollo',
-                ingredients: ['pollo', 'lechuga', 'tomate'],
-                instructions: 'Cortar el pollo y mezclar con vegetales.',
-              },
-            ],
-          },
-          // Otras fechas y recetas...
-        ];
+        // Recuperar user_id 
+        const user = localStorage.getItem('registerResponse');
+        if (!user) {
+          throw new Error('No se encontró el objeto de usuario en el localStorage');
+        }
 
-        // Simular el retardo de una llamada a una API
-        setTimeout(() => {
-          setMinuta(mockMinuta.length > 0 ? mockMinuta : null); // Si hay datos, asigna la minuta, si no, null
-          setLoading(false); // Detén la carga
-        }, 1000); // Simula un retardo de 1 segundo
+        const userObj = JSON.parse(user);
+        const userId = userObj.id_user;
+
+        if (!userId) {
+          throw new Error('No se encontró el ID de usuario');
+        }
+
+        // Construir la URL con user_id como parámetro
+        const url = `http://127.0.0.1:8000/app/statusminute/?user_id=${userId}`;
+
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Error al obtener el estado de la minuta');
+        }
+        const data = await response.json();
+        console.log(data);
+
+        // Actualizar el estado de stateMinuta basado en la respuesta
+        setStateMinuta(data.state_minuta);
       } catch (error) {
         console.error('Error al obtener la minuta:', error);
-        setMinuta(null); // Si hay un error, indica que no hay minuta
+        setStateMinuta(null); // Si hay un error, indica que no hay minuta
+      } finally {
         setLoading(false); // Detén la carga
       }
     };
@@ -48,8 +59,8 @@ const PantallaPrincipal: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
-        {/* Si minuta tiene datos, muestra MinutaOn, si no, MinutaOff */}
-        {minuta ? <MinutaOn /> : <MinutaOff />}
+        {/* Si stateMinuta es "True", muestra MinutaOn, si es "False", muestra MinutaOff */}
+        {stateMinuta === "True" ? <MinutaOn /> : <MinutaOff />}
       </IonContent>
     </IonPage>
   );
