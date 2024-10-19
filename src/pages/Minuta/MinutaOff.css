@@ -127,3 +127,21 @@ ion-header[collapse="condense"] ion-title {
     margin-right: auto;
     /* Alineación automática a la derecha */
 }
+
+ion-checkbox {
+    --size: 20px;
+    --checkbox-background-checked: #2DD55B;
+}
+
+ion-checkbox::part(container) {
+    border-radius: 6px;
+    border: 2px solid #2DD55B;
+}
+
+/* Asegúrate de que los checkboxes estén alineados a la izquierda */
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Alinea el contenido a la izquierda */
+  }
+  
