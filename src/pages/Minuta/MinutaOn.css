@@ -1,0 +1,173 @@
+/* Fondo negro para toda la página */
+.tab-1 {
+    --background: #ffffff;
+    /* Fondo negro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: rgb(255, 255, 255);
+    /* Texto en blanco para contraste */
+    text-align: center;
+    /* Alineación central del texto */
+}
+
+/* Estilos para el título en el header */
+ion-title {
+    font-size: 1.2rem;
+    /* Tamaño de fuente */
+    font-weight: bold;
+    text-transform: uppercase;
+    /* Texto en mayúsculas */
+    color: rgb(221, 70, 221);
+}
+
+/* Personalización del toolbar */
+ion-toolbar {
+    --background: #000000;
+    /* Fondo oscuro del toolbar */
+    --ion-color-primary: #ffffff;
+    /* Texto del toolbar en blanco */
+    --ion-color-secondary: #f4f4f5;
+    /* Color secundario claro */
+}
+
+/* Asegurar que ExploreContainer esté también centrado */
+.explore-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* Ajustes para un título grande colapsado */
+ion-header[collapse="condense"] ion-title {
+    font-size: 1.2rem;
+    /* Tamaño ajustado para el título colapsado */
+    color: #f4f4f5;
+    /* Color gris claro */
+}
+
+.recipe-dot {
+    height: 0.5rem;
+    width: 0.5rem;
+    background-color: #2dd36f;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+.bba {
+    font-size: 1rem;
+    color: #ffffff;
+    margin-bottom: 0rem;
+    background-color: #7045ff;
+    padding: 1%;
+    align-items: center;
+    justify-content: center;
+}
+
+.bbb {
+    font-weight: bold;
+    font-size: 2.5rem;
+    color: #ffffff;
+    background-color: #7045ff;
+    padding: 4% 1%;
+    align-items: center;
+    justify-content: center;
+}
+
+.react-calendar {
+    width: 90%; /* Se ajusta al 100% del ancho del contenedor */
+    max-width: 600px; /* Limita el tamaño máximo */
+    height: auto; /* Ajusta automáticamente la altura */
+    margin: 0 auto; /* Centra el calendario horizontalmente */
+    border: none;
+    color: #7045ff;
+}
+
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Personaliza la cabecera del calendario (días de la semana) */
+.react-calendar__month-view__weekdays {
+  background-color: #f5f5f5;
+  text-transform: uppercase;
+  font-weight:bold;
+}
+
+/* Personaliza los días (celdas del calendario) */
+.react-calendar__tile {
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+/* Color de los días seleccionados */
+.react-calendar__tile--active {
+  background-color: #4CAF50; /* Verde */
+  color: white;
+}
+
+/* Hover sobre los días */
+.react-calendar__tile:hover {
+  background-color: #e0f7fa;
+}
+
+/* Estilo del borde del calendario */
+.react-calendar__tile--now {
+  background-color: #FFEB3B; /* Color para el día actual */
+}
+
+/* Personaliza los botones de navegación (anterior/siguiente) */
+.react-calendar__navigation button {
+  color: #2dd36f;
+  font-size: 18px;
+}
+
+.recipes-section-1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  background-color: whitesmoke;
+  padding: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  margin: 1rem auto;
+  width: 90%;
+  max-height: 60vh; /* Fijar la altura máxima */
+  overflow-y: auto; /* Activar el scroll vertical si el contenido excede el tamaño */
+  overflow-x: hidden;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #7045ff;
+}
+
+.instructions-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
