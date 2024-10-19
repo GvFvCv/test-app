@@ -120,10 +120,7 @@ const storedResponse = getStoredResponse();
         <h1 className='bbb'>CAPTURAR</h1>
       </div>
       <IonContent className="ion-padding">
-        <IonButton onClick={() => history.goBack()} fill="clear">
-          <IonIcon icon={arrowBack} slot="start" color='success' />
-        </IonButton>
-        <br />
+       
 
         <IonCard color="medium">
           <IonCardHeader>

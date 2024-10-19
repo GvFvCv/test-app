@@ -1,0 +1,70 @@
+{
+    "lista_minuta": {
+        "id_lista_minuta": 18,
+        "nombre_lista_minuta": "testnewminuta",
+        "fecha_creacion": "2024-10-10",
+        "fecha_inicio": "2024-10-09",
+        "fecha_termino": "2024-10-11",
+        "state_minuta": "True"
+    },
+    "info_minuta": {
+        "tipo_dieta": "economica",
+        "cantidad_personas": 2
+    },
+    "minutas": [
+        {
+            "id_minuta": 83,
+            "type_food": "Desayuno",
+            "name_food": "Desayuno: Galletas con crema y cafe",
+            "fecha": "2024-10-18"
+        },
+        {
+            "id_minuta": 84,
+            "type_food": "Almuerzo",
+            "name_food": "Almuerzo: Pasta al salame con verduras",
+            "fecha": "2024-10-18"
+        },
+        {
+            "id_minuta": 85,
+            "type_food": "Cena",
+            "name_food": "Cena: Chorizo con papas y ensalada",
+            "fecha": "2024-10-18"
+        },
+        {
+            "id_minuta": 86,
+            "type_food": "Desayuno",
+            "name_food": "Desayuno: Croquetas de merluza",
+            "fecha": "2024-10-19"
+        },
+        {
+            "id_minuta": 87,
+            "type_food": "Almuerzo",
+            "name_food": "Almuerzo: Longaniza 50 con arroz y vegetales",
+            "fecha": "2024-10-19"
+        },
+        {
+            "id_minuta": 88,
+            "type_food": "Cena",
+            "name_food": "Cena: Pechuga deshuesada con ensalada",
+            "fecha": "2024-10-19"
+        },
+        {
+            "id_minuta": 89,
+            "type_food": "Desayuno",
+            "name_food": "Desayuno: Galletas de avena con leche",
+            "fecha": "2024-10-20"
+        },
+        {
+            "id_minuta": 90,
+            "type_food": "Almuerzo",
+            "name_food": "Almuerzo: Camarones al ajillo con arroz",
+            "fecha": "2024-10-20"
+        },
+        {
+            "id_minuta": 91,
+            "type_food": "Cena",
+            "name_food": "Cena: Hamburguesas con ensalada",
+            "fecha": "2024-10-20"
+        }
+    ]
+}
