@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonImg, IonIcon, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonModal, IonCheckbox, IonLabel, IonItem, IonInput, IonList } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonImg, IonIcon, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonModal, IonCheckbox, IonLabel, IonItem, IonInput, IonList, IonSelect, IonSelectOption, IonFooter } from '@ionic/react';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { camera, checkmark, close, arrowBack, pencil, information, addCircleOutline, image } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import { enviarDatos } from '../services/ingresoboleta';
+//import { registerFood } from '../services/foodService'; // RREMPLAZAR POR SERVICIO REAAL
 import './Tab3.css'
 
 const Tab3: React.FC = () => {
@@ -16,6 +17,50 @@ const Tab3: React.FC = () => {
   const [food, setFood] = useState<string>(""); // Estado para manejar el input de alimentos
   const history = useHistory();
   let imageboleta = "";
+
+  const [formData, setFormData] = useState({
+    user_id: '',
+    name_aliment: '',
+    unit_measurement: '',
+    load_alimento: ''
+  });
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    console.log(`Input Change - Name: ${name}, Value: ${value}`);
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const handleSelectChange = (e: CustomEvent) => {
+    const { value } = e.detail;
+    const name = (e.target as HTMLSelectElement).name;
+    console.log(`Select Change - Name: ${name}, Value: ${value}`);
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const dataToSubmit = { ...formData, user_id }; // Incluir user_id en el envío
+      const response = await registerFood(dataToSubmit); // Implementa esta función en tu servicio
+      console.log('Registro de alimento exitoso:', response);
+      setFormData({
+        user_id: '',
+        name_aliment: '',
+        unit_measurement: '',
+        load_alimento: ''
+      });
+      history.push('/tab3'); // Redirige a otra página después del registro
+    } catch (error) {
+      console.error('Error en el registro del alimento:', error);
+    }
+  };
 
   useEffect(() => {
     const hideInstructions = localStorage.getItem('hideInstructions');
@@ -112,7 +157,7 @@ const Tab3: React.FC = () => {
     }
   };
 
-const storedResponse = getStoredResponse();
+  const storedResponse = getStoredResponse();
 
   return (
     <IonPage color={'light'}>
@@ -120,8 +165,6 @@ const storedResponse = getStoredResponse();
         <h1 className='bbb'>CAPTURAR</h1>
       </div>
       <IonContent className="ion-padding">
-       
-
         <IonCard color="medium">
           <IonCardHeader>
             <IonCardTitle>Extraer alimentos desde una boleta de compra</IonCardTitle>
@@ -203,33 +246,67 @@ const storedResponse = getStoredResponse();
 
         {/* Modal de ingreso manual */}
         <IonModal isOpen={showManualInputModal}>
-          <IonHeader>
-            <IonToolbar color={'light'}>
-              <IonTitle>Ingreso Manual de Alimentos</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent className="ion-padding">
-            <IonItem>
-              <IonLabel position="floating">Ingresa un alimento</IonLabel>
-              <IonInput value={food} onIonChange={e => setFood(e.detail.value!)} />
-            </IonItem>
+          <div className='form-title'>
+            <h1>REGISTRO DE ALIMENTOS</h1>
+          </div>
+          <IonContent className='food-entry-page'>
+            <form onSubmit={handleSubmit} className='form-content'>
+              {/* Nombre del alimento */}
+              <IonItem className='form-item'>
+                <IonInput
+                  label='Nombre del Alimento'
+                  labelPlacement='floating'
+                  type="text"
+                  name="name_aliment"
+                  value={formData.name_aliment}
+                  onIonChange={handleInputChange}
+                  required
+                />
+              </IonItem>
 
-            <IonButton color="success" expand="block" shape="round" onClick={addFoodItem}>
-              Agregar Alimento
-              <IonIcon icon={addCircleOutline} slot="start" />
-            </IonButton>
+              {/* Unidad de medida */}
+              <IonItem className='form-item'>
+                <IonSelect
+                  name="unit_measurement"
+                  label='Unidad de Medida'
+                  labelPlacement='floating'
+                  value={formData.unit_measurement}
+                  placeholder="Seleccione una unidad de medida"
+                  onIonChange={handleSelectChange}
+                >
+                  <IonSelectOption value="kg">kg</IonSelectOption>
+                  <IonSelectOption value="g">g</IonSelectOption>
+                  <IonSelectOption value="mg">mg</IonSelectOption>
+                  <IonSelectOption value="L">L</IonSelectOption>
+                  <IonSelectOption value="ml">ml</IonSelectOption>
+                </IonSelect>
+              </IonItem>
 
-            {/* Mostrar la lista de alimentos ingresados */}
-            <IonList>
-              {foodItems.map((item, index) => (
-                <IonItem key={index}>{item}</IonItem>
-              ))}
-            </IonList>
+              {/* Cantidad */}
+              <IonItem className='form-item'>
+                <IonInput
+                  label='Cantidad'
+                  labelPlacement='floating'
+                  type="number"
+                  name="load_alimento"
+                  placeholder='0'
+                  value={formData.load_alimento}
+                  onIonChange={handleInputChange}
+                  required
+                />
+              </IonItem>
 
-            <IonButton expand="block" shape="round" color="danger" onClick={() => setShowManualInputModal(false)}>
-              Cerrar
-              <IonIcon icon={close} slot="start" />
-            </IonButton>
+              {/* Botón de envío */}
+              <div className='form-button'>
+                <IonButton expand="block" shape="round" color="success" type="submit">
+                  Registrar Alimento
+                </IonButton>
+                <IonButton expand="block" shape="round" color="danger" onClick={() => setShowManualInputModal(false)}>
+                  Cancelar
+                </IonButton>
+
+              </div>
+            </form>
           </IonContent>
         </IonModal>
       </IonContent>

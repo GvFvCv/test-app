@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { IonPage, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonSelect, IonSelectOption, IonList, IonButton, IonInput, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCardSubtitle, IonIcon } from '@ionic/react';
+import { IonPage, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonSelect, IonSelectOption, IonCheckbox,IonList, IonButton, IonInput, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCardSubtitle, IonIcon } from '@ionic/react';
 import './MinutaOff.css';
 import { useHistory } from 'react-router-dom';
-import { restaurant, cafe, moon } from 'ionicons/icons';
+import { restaurant, cafe, moon, colorFill } from 'ionicons/icons';
 
 const MinutaOff: React.FC = () => {
   // Simulación de datos: lista de minutas
@@ -114,6 +114,23 @@ const MinutaOff: React.FC = () => {
     }
   };
 
+  // Función para manejar los cambios de selección
+const handleCheckboxChange = (event: any) => {
+  const { value, checked } = event.target;
+  let updatedTypeFood = formData.type_food.split(',').map(item => item.trim());
+
+  if (checked) {
+    // Si está marcado, añadimos el valor al string
+    updatedTypeFood.push(value);
+  } else {
+    // Si está desmarcado, lo removemos del string
+    updatedTypeFood = updatedTypeFood.filter(item => item !== value);
+  }
+
+  // Actualizamos type_food como una cadena concatenada
+  setFormData({ ...formData, type_food: updatedTypeFood.join(', ') });
+};
+
   return (
     <IonPage>
       <IonContent className='tab-1'>
@@ -155,6 +172,7 @@ const MinutaOff: React.FC = () => {
                 <IonCardHeader>
                   <IonCardTitle> Preferencias </IonCardTitle>
                   <IonCardSubtitle> Seleccione las preferencias para la creación de su minuta. </IonCardSubtitle>
+                  <br />
                 </IonCardHeader>
 
                 {/* Input para el nombre de la minuta */}
@@ -172,7 +190,7 @@ const MinutaOff: React.FC = () => {
                 {/* Combobox para la cantidad de usuarios */}
                 <IonItem>
                   <IonLabel>Cantidad de personas</IonLabel>
-                  <IonSelect name="people_number" value={formData.people_number} placeholder="Selecciona" onIonChange={handleSelectChange}>
+                  <IonSelect slot='end' name="people_number" value={formData.people_number} placeholder="Selecciona" onIonChange={handleSelectChange}>
                     <IonSelectOption value="1">1 Persona</IonSelectOption>
                     <IonSelectOption value="2">2 Personas</IonSelectOption>
                     <IonSelectOption value="3">3 Personas</IonSelectOption>
@@ -184,7 +202,7 @@ const MinutaOff: React.FC = () => {
                 {/* Combobox para el tipo de dieta/preferencia */}
                 <IonItem>
                   <IonLabel>Tipo de Dieta</IonLabel>
-                  <IonSelect name="dietary_preference" value={formData.dietary_preference} placeholder="Selecciona" onIonChange={handleSelectChange}>
+                  <IonSelect slot='end' name="dietary_preference" value={formData.dietary_preference} placeholder="Selecciona" onIonChange={handleSelectChange}>
                     <IonSelectOption value="normal">Normal (balanceada)</IonSelectOption>
                     <IonSelectOption value="vegetariana">Vegetariana</IonSelectOption>
                     <IonSelectOption value="vegana">Vegana</IonSelectOption>
@@ -199,20 +217,48 @@ const MinutaOff: React.FC = () => {
                   </IonSelect>
                 </IonItem>
 
-                {/* Combobox para seleccionar tipo de comida */}
-                <IonItem>
-                  <IonLabel>Tipo de Comida</IonLabel>
-                  <IonSelect name="type_food" value={formData.type_food} placeholder="Selecciona" onIonChange={handleSelectChange}>
-                    <IonSelectOption value="desayuno">Desayuno</IonSelectOption>
-                    <IonSelectOption value="almuerzo">Almuerzo</IonSelectOption>
-                    <IonSelectOption value="cena">Cena</IonSelectOption>
-                  </IonSelect>
-                </IonItem>
+                {/* Checkbox para seleccionar tipo de comida */}
+                <IonList>
+                  <IonItem>
+                    <IonLabel>Tipo de Comida</IonLabel>
+                  </IonItem>
 
+                  <IonItem>
+                    <IonLabel>Desayuno</IonLabel>
+                    <IonCheckbox
+                      slot="end"
+                      value="desayuno"
+                      checked={formData.type_food.includes("desayuno")}
+                      onIonChange={handleCheckboxChange}
+                    />
+                  </IonItem>
+
+                  <IonItem>
+                    <IonLabel>Almuerzo</IonLabel>
+                    <IonCheckbox
+                      slot="end"
+                      value="almuerzo"
+                      checked={formData.type_food.includes("almuerzo")}
+                      onIonChange={handleCheckboxChange}
+                    />
+                  </IonItem>
+
+                  <IonItem>
+                    <IonLabel>Cena</IonLabel>
+                    <IonCheckbox
+                      slot="end"
+                      value="cena"
+                      checked={formData.type_food.includes("cena")}
+                      onIonChange={handleCheckboxChange}
+                    />
+                  </IonItem>
+                </IonList>
+                <br /><br />
                 {/* Botón para guardar las preferencias */}
                 <IonButton expand="block" shape="round" color="success" type="submit">
                   Crear minuta
                 </IonButton>
+                <br />
                 <IonButton expand="block" shape="round" color="danger" onClick={() => setShowModal(false)}>
                   Cancelar
                 </IonButton>
