@@ -100,3 +100,16 @@ ion-header[collapse="condense"] ion-title {
   margin-left: auto; /* Alineación automática a la izquierda */
   margin-right: auto; /* Alineación automática a la derecha */
 }
+
+
+.custom-loading-tech .loading-wrapper {
+  background-color: #b9d0ff; /* Fondo oscuro */
+  color: #2c08a4; /* Color del texto */
+  font-size: 1.2rem; /* Tamaño del texto */
+  
+  border-radius: 12px; /* Bordes redondeados para modernidad */
+}
+
+.custom-loading-tech .spinner-lines {
+  stroke: #2112f8; /* Color vivo para las líneas */
+}
