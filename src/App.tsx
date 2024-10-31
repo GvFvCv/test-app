@@ -16,7 +16,10 @@ import Tab3 from './pages/Tab3';
 import Tab4 from './pages/Tab4';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import { AuthProvider} from './pages/AuthContext';
+import { AuthProvider } from './pages/AuthContext';
+import React, { useState, useEffect } from 'react';
+import Notification from './components/Notification'; // Importa el componente de notificación
+import notificationService from './services/notificationService'; // Importa el servicio de notificaciones
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -36,6 +39,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import { NotificationType } from '@capacitor/haptics';
 
 setupIonicReact();
 
@@ -54,6 +58,21 @@ const App: React.FC = () => {
 const MainContent: React.FC = () => {
   const location = useLocation();
   const showTabs = !['/Login', '/Register'].includes(location.pathname);
+
+  const [notifications, setNotifications] = useState<{ id: string; message: string; type: 'success' | 'error' | 'info' }[]>([]); // Estado para almacenar las notificaciones
+
+  // useEffect para suscribirse a las notificaciones del servicio
+  useEffect(() => {
+    const handleNewNotification = (notification: { id: string; message: string; type: 'success' | 'error' | 'info' }) => {
+      setNotifications((prev) => [...prev, notification]); // Agrega la nueva notificación al estado
+    };
+
+    notificationService.subscribe(handleNewNotification); // Suscribe el listener al servicio
+
+    return () => {
+      notificationService.unsubscribe(handleNewNotification); // Cancela la suscripción cuando el componente se desmonta
+    };
+  }, []);
 
   return (
     <>
@@ -101,6 +120,11 @@ const MainContent: React.FC = () => {
           </Route>
         </Switch>
       </IonRouterOutlet>
+
+      {/* Renderiza el componente de notificación para cada notificación en el estado */}
+      {notifications.map((notif) => (
+        <Notification key={notif.id} message={notif.message} type={notif.type} />
+      ))}
     </>
   );
 };
