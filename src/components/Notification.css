@@ -1,0 +1,24 @@
+/* src/components/Notification.css */
+.notification {
+    position: fixed; /* Fija la posición de la notificación en la pantalla */
+    top: 300px; /* Distancia desde la parte superior de la pantalla */
+    right: 20px; /* Distancia desde la parte derecha de la pantalla */
+    padding: 2rem; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    color: white; /* Color del texto */
+    z-index: 1000; /* Asegura que la notificación esté por encima de otros elementos */
+    opacity: 0.9; /* Opacidad de la notificación */
+    transition: opacity 0.5s ease-in-out; /* Transición suave para la opacidad */
+}
+
+.notification.success {
+    background-color: #4caf50; /* Color de fondo para notificaciones de éxito */
+}
+
+.notification.error {
+    background-color: #f44336; /* Color de fondo para notificaciones de error */
+}
+
+.notification.info {
+    background-color: #2196f3; /* Color de fondo para notificaciones informativas */
+}

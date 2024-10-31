@@ -3,6 +3,7 @@ import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSelect, IonSel
 import { useHistory } from 'react-router-dom';
 import './Register.css';
 import { registerapp } from '../services/register';
+/* import notificationService from '../services/notificationService'; */
 
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -140,6 +141,7 @@ const Register: React.FC = () => {
           </div>
           
         </form>
+        {/* notificacionService.addNotification('Registro exitoso', 'success'); */}
       </IonContent>
       <IonFooter className='footer-bar'/>
     </IonPage>
