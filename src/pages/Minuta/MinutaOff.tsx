@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { IonPage, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonSelect, IonSelectOption, IonList, IonCheckbox, IonButton, IonInput, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCardSubtitle, IonIcon } from '@ionic/react';
+import React, { useState, useEffect } from 'react';
+import { IonPage, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonSelect, IonSelectOption, IonCheckbox,IonList, IonButton, IonInput, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCardSubtitle, IonIcon } from '@ionic/react';
 import './MinutaOff.css';
-import { restaurant, cafe, moon } from 'ionicons/icons';
+import { useHistory } from 'react-router-dom';
+import { restaurant, cafe, moon, colorFill } from 'ionicons/icons';
 
 const MinutaOff: React.FC = () => {
   // Simulación de datos: lista de minutas
@@ -12,47 +13,123 @@ const MinutaOff: React.FC = () => {
 
   // Consolidar todos los campos en un solo estado
   const [formData, setFormData] = useState({
-    people_number: undefined,
+    user_id: '',
+    dispensa_id: '',
+    name_minuta: '',
+    start_date: '',
+    people_number: '',
     dietary_preference: '',
-    desayuno: false,
-    almuerzo: false,
-    cena: false,
-    hasRestrictions: false,
-    restrictions: ''
+    type_food: ''
   });
+  const history = useHistory();
+
+  // Cargar user_id y dispensa_id desde el localStorage cuando el componente se monta
+  useEffect(() => {
+    const user = localStorage.getItem('registerResponse');
+    if (user) {
+      const userObj = JSON.parse(user);
+      const userId = userObj.id_user;
+      const dispensaId = userObj.dispensa;
+
+      if (userId && dispensaId) {
+        setFormData(prevFormData => ({
+          ...prevFormData,
+          user_id: userId,
+          dispensa_id: dispensaId
+        }));
+      }
+    }
+  }, []);
 
   // Función para manejar cambios en los inputs
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
+    console.log(`Input Change - Name: ${name}, Value: ${value}`);
     setFormData({
       ...formData,
       [name]: value
     });
   };
 
-  // Función para manejar cambios en los checkboxes y selects
+  // Función para manejar cambios en los selects
   const handleSelectChange = (e: CustomEvent) => {
     const { value } = e.detail;
     const name = (e.target as HTMLSelectElement).name;
+    console.log(`Select Change - Name: ${name}, Value: ${value}`);
     setFormData({
       ...formData,
       [name]: value
     });
   };
 
-  // Función para manejar cambios en los checkboxes de comida
-  const handleMealChange = (meal: 'desayuno' | 'almuerzo' | 'cena') => {
-    setFormData(prev => ({
-      ...prev,
-      [meal]: !prev[meal]
-    }));
+  // Función para manejar el envío de preferencias
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('Form Submitted', formData);
+
+    // Verificar que user_id y dispensa_id estén presentes
+    if (!formData.user_id || !formData.dispensa_id) {
+      console.error('user_id o dispensa_id no están presentes en formData');
+      return;
+    }
+
+    // Convertir valores enteros a números
+    const formDataToSend = {
+      ...formData,
+    };
+
+    console.log('Form Data to Send:', formDataToSend);
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/app/create_minuta/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Error al crear la minuta: ${errorData.detail || response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('Registro exitoso:', data);
+
+      setFormData({
+        user_id: '',
+        dispensa_id: '',
+        name_minuta: '',
+        start_date: '',
+        people_number: '',
+        dietary_preference: '',
+        type_food: ''
+      });
+
+      setShowModal(false);
+      //history.push('/tab2');
+    } catch (error: any) {
+      console.error('Error en el registro:', error.message);
+    }
   };
 
-  // Función para manejar el envío de preferencias
-  const handleSubmit = () => {
-    console.log("Preferencias guardadas:", formData);
-    // Aquí puedes manejar la lógica para pasar estos valores a la generación de la minuta
-  };
+  // Función para manejar los cambios de selección
+const handleCheckboxChange = (event: any) => {
+  const { value, checked } = event.target;
+  let updatedTypeFood = formData.type_food.split(',').map(item => item.trim());
+
+  if (checked) {
+    // Si está marcado, añadimos el valor al string
+    updatedTypeFood.push(value);
+  } else {
+    // Si está desmarcado, lo removemos del string
+    updatedTypeFood = updatedTypeFood.filter(item => item !== value);
+  }
+
+  // Actualizamos type_food como una cadena concatenada
+  setFormData({ ...formData, type_food: updatedTypeFood.join(', ') });
+};
 
   return (
     <IonPage>
@@ -91,67 +168,101 @@ const MinutaOff: React.FC = () => {
             </div>
             <br /><br />
             <IonCard color="light">
-              <IonCardHeader>
-                <IonCardTitle> Preferencias </IonCardTitle>
-                <IonCardSubtitle> Seleccione las preferencias para la creación de su minuta. </IonCardSubtitle>
-              </IonCardHeader>
+              <form onSubmit={handleSubmit} className='form-content'>
+                <IonCardHeader>
+                  <IonCardTitle> Preferencias </IonCardTitle>
+                  <IonCardSubtitle> Seleccione las preferencias para la creación de su minuta. </IonCardSubtitle>
+                  <br />
+                </IonCardHeader>
 
-              {/* Combobox para la cantidad de usuarios */}
-              <IonItem>
-                <IonLabel>Cantidad de personas</IonLabel>
-                <IonSelect name="people_number" value={formData.people_number} placeholder="Selecciona" onIonChange={handleSelectChange}>
-                  <IonSelectOption value={1}>1 Persona</IonSelectOption>
-                  <IonSelectOption value={2}>2 Personas</IonSelectOption>
-                  <IonSelectOption value={3}>3 Personas</IonSelectOption>
-                  <IonSelectOption value={4}>4 Personas</IonSelectOption>
-                  <IonSelectOption value={5}>5 Personas</IonSelectOption>
-                </IonSelect>
-              </IonItem>
-
-              {/* Combobox para el tipo de dieta/preferencia */}
-              <IonItem>
-                <IonLabel>Tipo de Dieta</IonLabel>
-                <IonSelect name="dietary_preference" value={formData.dietary_preference} placeholder="Selecciona" onIonChange={handleSelectChange}>
-                  <IonSelectOption value="normal">Normal (balanceada)</IonSelectOption>
-                  <IonSelectOption value="vegetariana">Vegetariana</IonSelectOption>
-                  <IonSelectOption value="vegana">Vegana</IonSelectOption>
-                  <IonSelectOption value="cetogenica">Cetogénica (keto)</IonSelectOption>
-                  <IonSelectOption value="mediterranea">Mediterránea</IonSelectOption>
-                  <IonSelectOption value="hipocalorica">Hipocalórica</IonSelectOption>
-                  <IonSelectOption value="detox">Detox</IonSelectOption>
-                  <IonSelectOption value="hiperproteica">Hiperproteica</IonSelectOption>
-                  <IonSelectOption value="gluten">Sin gluten</IonSelectOption>
-                  <IonSelectOption value="flexitariana">Flexitariana</IonSelectOption>
-                </IonSelect>
-              </IonItem>
-
-              {/* Checklist para seleccionar desayuno, almuerzo o cena */}
-              <IonList>
-                <IonItem className="checkbox-item">
-                  <IonIcon slot="start" icon={cafe}></IonIcon>
-                  <IonLabel>Desayuno</IonLabel>
-                  <IonCheckbox checked={formData.desayuno} onIonChange={() => handleMealChange('desayuno')} />
+                {/* Input para el nombre de la minuta */}
+                <IonItem>
+                  <IonLabel position="floating">Nombre de la minuta</IonLabel>
+                  <IonInput type="text" name="name_minuta" value={formData.name_minuta} onIonChange={handleInputChange} required></IonInput>
                 </IonItem>
-                <IonItem className="checkbox-item">
-                  <IonIcon slot="start" icon={restaurant}></IonIcon>
-                  <IonLabel>Almuerzo</IonLabel>
-                  <IonCheckbox checked={formData.almuerzo} onIonChange={() => handleMealChange('almuerzo')} />
-                </IonItem>
-                <IonItem className="checkbox-item">
-                  <IonIcon slot="start" icon={moon}></IonIcon>
-                  <IonLabel>Cena</IonLabel>
-                  <IonCheckbox checked={formData.cena} onIonChange={() => handleMealChange('cena')} />
-                </IonItem>
-              </IonList>
 
-              {/* Botón para guardar las preferencias */}
-              <IonButton expand="block" shape="round" color="success" onClick={handleSubmit}>
-                Crear minuta
-              </IonButton>
-              <IonButton expand="block" shape="round" color="danger" onClick={() => setShowModal(false)}>
-                Cancelar
-              </IonButton>
+                {/* Input para la fecha de inicio */}
+                <IonItem>
+                  <IonLabel position="floating">Fecha de inicio</IonLabel>
+                  <IonInput type="date" name="start_date" value={formData.start_date} onIonChange={handleInputChange} required></IonInput>
+                </IonItem>
 
+                {/* Combobox para la cantidad de usuarios */}
+                <IonItem>
+                  <IonLabel>Cantidad de personas</IonLabel>
+                  <IonSelect slot='end' name="people_number" value={formData.people_number} placeholder="Selecciona" onIonChange={handleSelectChange}>
+                    <IonSelectOption value="1">1 Persona</IonSelectOption>
+                    <IonSelectOption value="2">2 Personas</IonSelectOption>
+                    <IonSelectOption value="3">3 Personas</IonSelectOption>
+                    <IonSelectOption value="4">4 Personas</IonSelectOption>
+                    <IonSelectOption value="5">5 Personas</IonSelectOption>
+                  </IonSelect>
+                </IonItem>
+
+                {/* Combobox para el tipo de dieta/preferencia */}
+                <IonItem>
+                  <IonLabel>Tipo de Dieta</IonLabel>
+                  <IonSelect slot='end' name="dietary_preference" value={formData.dietary_preference} placeholder="Selecciona" onIonChange={handleSelectChange}>
+                    <IonSelectOption value="normal">Normal (balanceada)</IonSelectOption>
+                    <IonSelectOption value="vegetariana">Vegetariana</IonSelectOption>
+                    <IonSelectOption value="vegana">Vegana</IonSelectOption>
+                    <IonSelectOption value="cetogenica">Cetogénica (keto)</IonSelectOption>
+                    <IonSelectOption value="mediterranea">Mediterránea</IonSelectOption>
+                    <IonSelectOption value="hipocalorica">Hipocalórica</IonSelectOption>
+                    <IonSelectOption value="detox">Detox</IonSelectOption>
+                    <IonSelectOption value="hiperproteica">Hiperproteica</IonSelectOption>
+                    <IonSelectOption value="gluten">Sin gluten</IonSelectOption>
+                    <IonSelectOption value="flexitariana">Flexitariana</IonSelectOption>
+                    <IonSelectOption value="economica">Económica</IonSelectOption>
+                  </IonSelect>
+                </IonItem>
+
+                {/* Checkbox para seleccionar tipo de comida */}
+                <IonList>
+                  <IonItem>
+                    <IonLabel>Tipo de Comida</IonLabel>
+                  </IonItem>
+
+                  <IonItem>
+                    <IonLabel>Desayuno</IonLabel>
+                    <IonCheckbox
+                      slot="end"
+                      value="desayuno"
+                      checked={formData.type_food.includes("desayuno")}
+                      onIonChange={handleCheckboxChange}
+                    />
+                  </IonItem>
+
+                  <IonItem>
+                    <IonLabel>Almuerzo</IonLabel>
+                    <IonCheckbox
+                      slot="end"
+                      value="almuerzo"
+                      checked={formData.type_food.includes("almuerzo")}
+                      onIonChange={handleCheckboxChange}
+                    />
+                  </IonItem>
+
+                  <IonItem>
+                    <IonLabel>Cena</IonLabel>
+                    <IonCheckbox
+                      slot="end"
+                      value="cena"
+                      checked={formData.type_food.includes("cena")}
+                      onIonChange={handleCheckboxChange}
+                    />
+                  </IonItem>
+                </IonList>
+                <br /><br />
+                {/* Botón para guardar las preferencias */}
+                <IonButton expand="block" shape="round" color="success" type="submit">
+                  Crear minuta
+                </IonButton>
+                <br />
+                <IonButton expand="block" shape="round" color="danger" onClick={() => setShowModal(false)}>
+                  Cancelar
+                </IonButton>
+              </form>
             </IonCard>
           </IonContent>
         </IonModal>

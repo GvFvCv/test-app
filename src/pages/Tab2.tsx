@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonSpinner } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonIcon, IonList, IonItem, IonLabel, IonSpinner, IonItemSliding, IonItemOptions, IonItemOption } from '@ionic/react';
 import './Tab2.css';
+import { pencil, trash } from 'ionicons/icons';
 
 // Interfaz para los alimentos en la dispensa
 interface Alimento {
@@ -14,6 +15,16 @@ const Dispensa: React.FC = () => {
   const [alimentos, setAlimentos] = useState<Alimento[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  const handleEdit = (item: string) => {
+    console.log(`Editar: ${item}`);
+    // Editar 
+  };
+
+  const handleDelete = (item: string) => {
+    console.log(`Eliminar: ${item}`);
+    // Eliminar logica
+  };
 
   useEffect(() => {
     const fetchAlimentos = async () => {
@@ -77,20 +88,39 @@ const Dispensa: React.FC = () => {
   }
 
   return (
-    <IonPage  color='light'>
+    <IonPage color='light'>
       <div className='ccc'>
         <h1 className='cca'>DISPENSA</h1>
       </div>
       <IonContent>
         <IonList>
-          {alimentos.map((alimento) => (
-            <IonItem key={alimento.id_alimento}>
-              <IonLabel>
-                <h2>{alimento.name_alimento}</h2>
-                <p>Cantidad: {alimento.load_alimento} {alimento.unit_measurement}</p>
-              </IonLabel>
-            </IonItem>
-          ))}
+          <IonItemSliding>
+            {alimentos.map((alimento) => (
+              <IonItem>
+                <IonLabel>
+                  <h2>{alimento.name_alimento}</h2>
+                </IonLabel>
+                <IonLabel slot='end'>
+                  <p>{alimento.unit_measurement}</p>
+                </IonLabel>
+              </IonItem>
+            ))}
+            {/* Opciones de deslizar a la izquierda */}
+            <IonItemOptions side="start">
+              <IonItemOption color="success" onClick={() => handleEdit('Carne')}>
+                <IonIcon slot="start" icon={pencil} />
+                Editar
+              </IonItemOption>
+            </IonItemOptions>
+
+            {/* Opciones de deslizar a la derecha */}
+            <IonItemOptions side="end">
+              <IonItemOption color="danger" onClick={() => handleDelete('Carne')}>
+                <IonIcon slot="start" icon={trash} />
+                Eliminar
+              </IonItemOption>
+            </IonItemOptions>
+          </IonItemSliding>
         </IonList>
       </IonContent>
     </IonPage>
