@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IonPage, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonSelect, IonSelectOption, IonCheckbox,IonList, IonButton, IonInput, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCardSubtitle, IonIcon } from '@ionic/react';
+import { IonAlert, IonPage, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonSelect, IonSelectOption, IonList, IonButton, IonInput, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCardSubtitle, IonIcon, IonToast, IonCheckbox } from '@ionic/react';
 import './MinutaOff.css';
 import { useHistory } from 'react-router-dom';
 import { restaurant, cafe, moon, colorFill } from 'ionicons/icons';
@@ -11,16 +11,26 @@ const MinutaOff: React.FC = () => {
   // Estado para controlar el modal
   const [showModal, setShowModal] = useState(false);
 
+  const [toastMessage, setToastMessage] = useState<string>('');
+  const [showToast, setShowToast] = useState<boolean>(false);
+
   // Consolidar todos los campos en un solo estado
   const [formData, setFormData] = useState({
     user_id: '',
     dispensa_id: '',
-    name_minuta: '',
+    /* name_minuta: '', */
     start_date: '',
     people_number: '',
     dietary_preference: '',
     type_food: ''
   });
+
+  // Estado para mostrar alertas
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+
+  // Estado para mostrar alertas
+  const [alertMessage, setAlertMessage] = useState<string>('');
+
   const history = useHistory();
 
   // Cargar user_id y dispensa_id desde el localStorage cuando el componente se monta
@@ -91,7 +101,14 @@ const MinutaOff: React.FC = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(`Error al crear la minuta: ${errorData.detail || response.statusText}`);
+        console.error('Error al crear la minuta:', errorData);
+        
+       // Establecer el mensaje de toast con el campo correcto
+      setToastMessage(errorData.error || errorData.detail || 'Ocurrió un error al crear la minuta.');
+      setShowToast(true);
+
+      // Opcional: Retornar para detener la ejecución
+      return;
       }
 
       const data = await response.json();
@@ -100,7 +117,7 @@ const MinutaOff: React.FC = () => {
       setFormData({
         user_id: '',
         dispensa_id: '',
-        name_minuta: '',
+       /*  name_minuta: '', */
         start_date: '',
         people_number: '',
         dietary_preference: '',
@@ -175,11 +192,11 @@ const handleCheckboxChange = (event: any) => {
                   <br />
                 </IonCardHeader>
 
-                {/* Input para el nombre de la minuta */}
+                {/* Input para el nombre de la minuta 
                 <IonItem>
                   <IonLabel position="floating">Nombre de la minuta</IonLabel>
                   <IonInput type="text" name="name_minuta" value={formData.name_minuta} onIonChange={handleInputChange} required></IonInput>
-                </IonItem>
+                </IonItem>*/}
 
                 {/* Input para la fecha de inicio */}
                 <IonItem>
@@ -264,10 +281,20 @@ const handleCheckboxChange = (event: any) => {
                 </IonButton>
               </form>
             </IonCard>
+            {/* Componente de Alerta usando IonToast */}
+      <IonToast
+        isOpen={showToast}
+        onDidDismiss={() => setShowToast(false)}
+        message={toastMessage}
+        duration={3000}
+        color="danger"
+        position="top"
+      />
           </IonContent>
         </IonModal>
       </IonContent>
     </IonPage>
+    
   );
 };
 
