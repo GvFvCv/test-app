@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IonAlert,IonPage, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonSelect, IonSelectOption, IonList, IonButton, IonInput, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCardSubtitle, IonIcon, IonToast } from '@ionic/react';
+import { IonAlert, IonPage, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonSelect, IonSelectOption, IonList, IonButton, IonInput, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCardSubtitle, IonIcon, IonToast, IonCheckbox } from '@ionic/react';
 import './MinutaOff.css';
 import { useHistory } from 'react-router-dom';
 import { restaurant, cafe, moon, colorFill } from 'ionicons/icons';
