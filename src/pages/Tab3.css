@@ -21,6 +21,13 @@ ion-header[collapse="condense"] ion-title {
     font-size: 1.2rem; /* Tamaño ajustado para el título colapsado */
     color: #f4f4f5; /* Color gris claro */
 }
+.ion-padding {
+    background-color: #ffffff !important;
+}
+
+.modal-intruc{
+    background-color: #5a2e91 !important;
+}
 
 .bba {
     font-size: 1rem;

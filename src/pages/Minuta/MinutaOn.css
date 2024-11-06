@@ -1,6 +1,6 @@
 /* Fondo negro para toda la página */
 .tab-1 {
-    --background: #ffffff;
+    background-color: #5a2e91;
     /* Fondo negro */
     display: flex;
     justify-content: center;
@@ -60,7 +60,7 @@ ion-header[collapse="condense"] ion-title {
     font-size: 1rem;
     color: #ffffff;
     margin-bottom: 0rem;
-    background-color: #7045ff;
+    background-color: #5a2e91;
     padding: 1%;
     align-items: center;
     justify-content: center;
@@ -70,7 +70,7 @@ ion-header[collapse="condense"] ion-title {
     font-weight: bold;
     font-size: 2.5rem;
     color: #ffffff;
-    background-color: #7045ff;
+    background-color: #5a2e91;
     padding: 4% 1%;
     align-items: center;
     justify-content: center;

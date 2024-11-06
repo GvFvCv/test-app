@@ -44,7 +44,7 @@ const Dispensa: React.FC = () => {
         }
 
         // Construir la URL con user_id y dispensa_id como parámetros
-        const url = `http://127.0.0.1:8000/app/dispensa_detail/?user_id=${userId}&dispensa_id=${dispensa}`;
+        const url = `/app/dispensa_detail/?user_id=${userId}&dispensa_id=${dispensa}`;
 
         const response = await fetch(url, {
           method: 'GET',
@@ -88,7 +88,7 @@ const Dispensa: React.FC = () => {
   }
 
   return (
-    <IonPage color='light'>
+    <IonPage className='tab-2'>
       <div className='ccc'>
         <h1 className='cca'>DISPENSA</h1>
       </div>

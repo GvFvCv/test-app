@@ -3,6 +3,7 @@ import { IonContent, IonPage, IonButton, IonFooter } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import './Login.css';
 import notificationService from '../services/notificationService'; // Importa el servicio de notificaciones
+import { showBackgroundNotification } from '../components/Notification'; // Importa la función para mostrar notificaciones en segundo plano
 
 const Login: React.FC = () => {
   const history = useHistory();
@@ -15,11 +16,12 @@ const Login: React.FC = () => {
       setIsRegistered(true);
       const userData = JSON.parse(user);
       setUserName(userData.name_user);
+      showBackgroundNotification('¡Bienvenido a MINUT-IA!', 'success'); // Muestra una notificación de bienvenida
     }
   }, []);
 
   const handleLogin = () => {
-    notificationService.addNotification('Ingreso exitoso', 'success' ); // Agrega una notificación de éxito
+    notificationService.addNotification('Ingreso exitoso', 'success'); // Agrega una notificación de éxito
     history.replace('/tab1'); // Redirigimos a la primera pestaña después de iniciar sesión
   };
 
@@ -28,30 +30,30 @@ const Login: React.FC = () => {
   };
 
   return (
-    <IonPage className="page-login">
-      <IonContent className="centered-content">
-        <div className="login-header">MINUT-IA</div>
-        <div className='saludo'>Bienvenido {isRegistered ? userName : 'Visitante'}</div>
-        
-        {isRegistered ? (
-          <IonButton
-            className="login-button styled-button"
-            shape="round"
-            onClick={handleLogin}
-          >
-            Ingresar
-          </IonButton>
-        ) : (
-          <IonButton
-            className="register-button styled-button"
-            shape="round"
-            onClick={handleRegisterRedirect}
-          >
-            Registrarse
-          </IonButton>
-        )}
+    <IonPage  className="ion-page login-page"  >
+      {/* <img src="\public\assets\apple.png" alt="apple" /> */}
+      <IonContent>
+        <div className="login-container">
+          <div className="login-header">MINUT-IA</div>
+          <div className='saludo'>BIENVENIDO {isRegistered ? userName.toUpperCase() : 'VISITANTE'}</div>
+          
+          {isRegistered ? (
+            <IonButton
+              className="login-button"
+              onClick={handleLogin}
+            >
+              Ingresar
+            </IonButton>
+          ) : (
+            <IonButton
+              className="register-button styled-button"
+              onClick={handleRegisterRedirect}
+            >
+              Registrarse
+            </IonButton>
+          )}
+        </div>
       </IonContent>
-      <IonFooter className='footer-bar'/>
     </IonPage>
   );
 };
