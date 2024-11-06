@@ -1,0 +1,169 @@
+.page-on {
+    background-color: #5a2e91;
+    /* Fondo blanco */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: rgb(61, 6, 129);
+    /* Texto en blanco para contraste */
+    text-align: center;
+    /* Alineación central del texto */
+}
+
+.ion-padding {
+  background-color: #5a2e91 !important;
+  
+}
+
+.ion-padding .bbb {
+    background-color: #5a2e91 !important;
+    font-size: 2.2rem;
+}
+
+.ion-padding .bba {
+    background-color: #5a2e91 !important;
+}
+
+.explore-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #5a2e91;
+}
+
+.form-content {
+    background-color: #5a2e91;
+    padding: 2rem;
+}
+
+/* .form-content {
+    background-color: #5a2e91;
+    padding: 2rem;
+
+    #2e134f;
+
+} */
+
+.title-pref{
+    color: #38195f !important;
+    font-size: 2rem;
+    margin-top: -7%;
+}
+
+.sub-pref{
+    color: #270c48 !important;
+    font-size: 120%;
+}
+
+
+/* Ajustes para el título grande centrado */
+h1 {
+    font-size: 3rem;
+    /* Tamaño del texto del título */
+    color: white;
+    /* Fondo del título */
+    text-align: center;
+    /* Centrar el texto */
+    margin: 0 auto;
+    /* Márgenes automáticos para centrar en la página */
+    padding: 1rem 0;
+    /* Espaciado interno */
+    width: 90%;
+    /* Ancho para dejar margen a los lados */
+}
+
+ion-header[collapse="condense"] ion-title {
+    font-size: 1.2rem;
+    /* Tamaño ajustado para el título colapsado */
+    color: #f4f4f5;
+    /* Color gris claro */
+}
+
+.ddd {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 0rem;
+    background-color: #5a2e91;
+    padding: 1%;
+    align-items: center;
+    justify-content: center;
+}
+
+.dda {
+    font-weight: bold;
+    font-size: 2.5rem;
+    color: #ffffff;
+    background-color: #5a2e91;
+    padding: 4% 1%;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-minuta {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: whitesmoke;
+    padding: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    margin: 2rem auto;
+    width: 90%;
+}
+
+.no-minuta-1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.no-minuta-2 {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.lista-minutas {
+    width: 90%;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.minuta-item {
+    padding: 1rem;
+    border-bottom: 1px solid #ccc;
+}
+
+.minuta-item:last-child {
+    border-bottom: none;
+}
+
+.crear {
+    padding: 1rem;
+    color: white;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+ion-checkbox {
+    --size: 20px;
+    --checkbox-background-checked: #2DD55B;
+}
+
+ion-checkbox::part(container) {
+    border-radius: 6px;
+    border: 2px solid #2DD55B;
+}
+
+/* Asegúrate de que los checkboxes estén alineados a la izquierda */
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Alinea el contenido a la izquierda */
+}
+  

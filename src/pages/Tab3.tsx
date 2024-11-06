@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonImg, IonIcon, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonModal, IonCheckbox, IonLabel, IonItem, IonInput, IonList, IonSelect, IonSelectOption, IonFooter } from '@ionic/react';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { camera, checkmark, close, arrowBack, pencil, information, addCircleOutline, image } from 'ionicons/icons';
+import { camera, checkmark, close, arrowBack, pencil, information, addCircleOutline, image, umbrella } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import { enviarDatos } from '../services/ingresoboleta';
-//import { registerFood } from '../services/foodService'; // RREMPLAZAR POR SERVICIO REAAL
+import { registerFood } from '../services/ingresomanual'; // RREMPLAZAR POR SERVICIO REAAL
 import './Tab3.css'
 
 const Tab3: React.FC = () => {
@@ -22,7 +22,8 @@ const Tab3: React.FC = () => {
     user_id: '',
     name_aliment: '',
     unit_measurement: '',
-    load_alimento: ''
+    load_alimento: '',
+    uso_alimento: ''
   });
 
   const handleInputChange = (e: any) => {
@@ -44,19 +45,38 @@ const Tab3: React.FC = () => {
     });
   };
 
+  // Maneja el envío del formulario
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const dataToSubmit = { ...formData, user_id }; // Incluir user_id en el envío
-      const response = await registerFood(dataToSubmit); // Implementa esta función en tu servicio
+      const user = localStorage.getItem('registerResponse');
+      if (!user) {
+        console.error('No se encontró el objeto de usuario en el localStorage');
+        return;
+      }
+
+      const userObj = JSON.parse(user);
+      const userId = userObj.id_user;
+      if (!userId) {
+        console.error('No se encontró el ID de usuario en el objeto de usuario');
+        return;
+      }
+
+      const dataToSubmit = { ...formData, user_id: userId };
+      const response = await registerFood(dataToSubmit);
       console.log('Registro de alimento exitoso:', response);
+
+      // Resetear el formulario
       setFormData({
         user_id: '',
         name_aliment: '',
         unit_measurement: '',
-        load_alimento: ''
+        load_alimento: '',
+        uso_alimento: ''
       });
-      history.push('/tab3'); // Redirige a otra página después del registro
+
+      // Redirigir después de enviar
+      history.push('/tab3');
     } catch (error) {
       console.error('Error en el registro del alimento:', error);
     }
@@ -290,6 +310,22 @@ const Tab3: React.FC = () => {
                   onIonChange={handleInputChange}
                   required
                 />
+              </IonItem>
+
+              {/* Unidad de medida */}
+              <IonItem className='form-item'>
+                <IonSelect
+                  name="uso_alimento"
+                  label='Uso del Alimento'
+                  labelPlacement='floating'
+                  value={formData.uso_alimento}
+                  placeholder="Seleccione una opción"
+                  onIonChange={handleSelectChange}
+                >
+                  <IonSelectOption value="desayuno">Desayuno</IonSelectOption>
+                  <IonSelectOption value="almuerzo">Almuerzo</IonSelectOption>
+                  <IonSelectOption value="cena">Cena</IonSelectOption>
+                </IonSelect>
               </IonItem>
 
               {/* Botón de envío */}
