@@ -9,8 +9,31 @@ interface NotificationProps {
     duration?: number; // Duración en milisegundos (opcional)
 }
 
+// Solicita permiso para mostrar notificaciones en segundo plano
+const requestNotificationPermission = () => {
+    console.log('Solicitando permiso para notificaciones...');
+    if (Notification.permission !== 'granted') {
+        Notification.requestPermission().then(permission => {
+            console.log('Permiso de notificación:', permission);
+        });
+    }
+};
+
+// Muestra una notificación en segundo plano
+export const showBackgroundNotification = (message: string, type: 'success' | 'error' | 'info') => {
+    console.log('Mostrando notificación en segundo plano...');
+    if (Notification.permission === 'granted') {
+        new Notification(message, {
+            icon: `/path/to/${type}-icon.png`, // Puedes cambiar el icono según el tipo
+            body: message,
+        });
+    } else {
+        console.log('Permiso de notificación no concedido.');
+    }
+};
+
 // Componente funcional de React para mostrar notificaciones
-const Notification: React.FC<NotificationProps> = ({ message, type, duration = 3000 }) => {
+const NotificationComponent: React.FC<NotificationProps> = ({ message, type, duration = 3000 }) => {
     const [visible, setVisible] = useState(true); // Estado para manejar la visibilidad de la notificación
 
     // useEffect para ocultar la notificación después de un tiempo
@@ -22,6 +45,12 @@ const Notification: React.FC<NotificationProps> = ({ message, type, duration = 3
         return () => clearTimeout(timer); // Limpia el temporizador cuando el componente se desmonta
     }, [duration]);
 
+    // useEffect para solicitar permiso y mostrar notificación en segundo plano
+    useEffect(() => {
+        requestNotificationPermission();
+        showBackgroundNotification(message, type);
+    }, [message, type]);
+
     if (!visible) return null; // Si no es visible, no renderiza nada
 
     return (
@@ -31,4 +60,4 @@ const Notification: React.FC<NotificationProps> = ({ message, type, duration = 3
     );
 };
 
-export default Notification; // Exporta el componente para su uso en otros archivos
+export default NotificationComponent; // Exporta el componente para su uso en otros archivos

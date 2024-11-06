@@ -172,8 +172,8 @@ const Tab3: React.FC = () => {
       /* setShowAlert(true); */
     } catch (error) {
       console.error('Error al enviar la foto:', error);
-      /* setAlertMessage(`Error al enviar la foto: ${error.message}`);
-      setShowAlert(true); */
+      setAlertMessage(`Error al enviar la foto: ${(error as Error).message}`);
+      setShowAlert(true); 
     }
   };
 
@@ -206,10 +206,6 @@ const Tab3: React.FC = () => {
               Aceptar
               <IonIcon icon={checkmark} slot="start" />
             </IonButton>
-
-            {/*<IonButton color="primary" expand="block" shape="round" onClick={generatePDF}>
-              Guardar como PDF
-            </IonButton>*/}
           </>
         ) : (
           <>
@@ -219,7 +215,7 @@ const Tab3: React.FC = () => {
             </IonButton>
 
             {dontShowAgain && (
-              <IonButton color="light" expand="block" shape="round" onClick={showInstructionsAgain}>
+              <IonButton color="danger" expand="block" shape="round" onClick={showInstructionsAgain}>
                 Instrucciones
                 <IonIcon icon={information} slot="start" />
               </IonButton>

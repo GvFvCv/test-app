@@ -149,14 +149,13 @@ const handleCheckboxChange = (event: any) => {
 };
 
   return (
-    <IonPage>
-      <IonContent className='tab-1'>
+    <IonPage className='page-on'>
+      <IonContent>
         <div className='ddd'>
           <h1 className='dda'>MINUTA</h1>
         </div>
-
         {minutas.length === 0 ? (
-          <IonCard className='no-minuta'>
+          <IonCard className='card-minuta'>
             <IonCardHeader className='no-minuta-1'>
               NO EXISTE MINUTA
             </IonCardHeader>
@@ -173,23 +172,21 @@ const handleCheckboxChange = (event: any) => {
             ))}
           </div>
         )}
-        <IonButton className="crear" shape='round' onClick={() => setShowModal(true)}>
-          Crear
+        <IonButton className="crear" onClick={() => setShowModal(true)}>
+          CREAR
         </IonButton>
 
         {/* Modal para mostrar las preferencias */}
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
-          <IonContent className="ion-padding" color="light">
-            <div className='bba'>
-              <h1 className='bbb'>CREAR MINUTA</h1>
-            </div>
-            <br /><br />
-            <IonCard color="light">
+          <IonContent className="ion-padding">
+            {/* <div className='bba'>
+              <h1 className='bbb'>CREA TU MINUTA</h1>
+            </div> */}
+            <IonCard color="default" className='card-pref'>
               <form onSubmit={handleSubmit} className='form-content'>
                 <IonCardHeader>
-                  <IonCardTitle> Preferencias </IonCardTitle>
-                  <IonCardSubtitle> Seleccione las preferencias para la creación de su minuta. </IonCardSubtitle>
-                  <br />
+                  <IonCardTitle className='title-pref'> Preferencias </IonCardTitle>
+                  <IonCardSubtitle className='sub-pref'> Seleccione las preferencias para la creación de su minuta. </IonCardSubtitle>
                 </IonCardHeader>
 
                 {/* Input para el nombre de la minuta 
@@ -270,26 +267,24 @@ const handleCheckboxChange = (event: any) => {
                     />
                   </IonItem>
                 </IonList>
-                <br /><br />
                 {/* Botón para guardar las preferencias */}
                 <IonButton expand="block" shape="round" color="success" type="submit">
                   Crear minuta
                 </IonButton>
-                <br />
                 <IonButton expand="block" shape="round" color="danger" onClick={() => setShowModal(false)}>
                   Cancelar
                 </IonButton>
               </form>
             </IonCard>
             {/* Componente de Alerta usando IonToast */}
-      <IonToast
-        isOpen={showToast}
-        onDidDismiss={() => setShowToast(false)}
-        message={toastMessage}
-        duration={3000}
-        color="danger"
-        position="top"
-      />
+              <IonToast
+                isOpen={showToast}
+                onDidDismiss={() => setShowToast(false)}
+                message={toastMessage}
+                duration={3000}
+                color="danger"
+                position="middle"
+              />
           </IonContent>
         </IonModal>
       </IonContent>

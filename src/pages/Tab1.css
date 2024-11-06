@@ -1,10 +1,10 @@
-.tab-3 {
+.tab-1 {
   --background: #ffffff; /* Fondo blanco */
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  color: rgb(255, 255, 255); /* Texto en blanco para contraste */
+  color: rgb(42, 0, 253); /* Texto en blanco para contraste */
   text-align: center; /* Alineación central del texto */
 }
 
@@ -13,7 +13,6 @@
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-color: rgb(96,48,255);
 }
 
 
@@ -27,7 +26,6 @@ ion-header[collapse="condense"] ion-title {
   font-size: 2.5rem;
   color: #ffffff;
   margin-bottom: 0rem;
-  background-color: #7045ff;
   padding: 1%;
   align-items: center;
   justify-content: center;
@@ -37,7 +35,6 @@ ion-header[collapse="condense"] ion-title {
   font-weight: bold;
   font-size: 2.5rem;
   color: #ffffff;
-  background-color: #7045ff;
   padding: 4% 1%;
   align-items: center;
   justify-content: center;

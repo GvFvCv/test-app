@@ -1,11 +1,23 @@
 .tab-4 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100%;
   color: rgb(255, 255, 255); /* Texto en blanco para contraste */
-  text-align: center; /* Alineación central del texto */
+  background-color: #5a2e91 !important;
 }
+
+.ion-page {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.tab-4 {
+  background-image: url('/public/assets/apple.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
 /* 
 .explore-container {
   display: flex;
@@ -18,47 +30,43 @@
 /* Ajustes para el título grande centrado */
 
 
+.ion-padding {
+  background-color: #5a2e91 !important;
+}
+
 ion-header[collapse="condense"] ion-title {
   font-size: 1.2rem; /* Tamaño ajustado para el título colapsado */
   color: #f4f4f5; /* Color gris claro */
 }
 
 .eee-1 {
-  font-size: 1rem;
   color: #ffffff;
-  margin-bottom: 0rem;
-  background-color: #7045ff;
-  padding: 1%;
-  align-items: center;
-  justify-content: center;
+  background-color: #5a2e91 !important;
+  font-weight: bold;
 }
 
 /* Título de la página "AJUSTES" */
 .eef-2{
+  font-size: 2.6rem;
+  background-color: #5a2e91 !important;
   font-weight: bold;
-  font-size: 2.5rem;
-  color: #ffffff;
-  background-color: #7045ff;
-  padding: 4% 1%;
-  align-items: center;
-  justify-content: center;
 }
 
-/* .op-1, .op-2, .op-3 {
+/* Título de la página "AJUSTES" */
+.op-1, .op-2, .op-3 {
   font-weight: bold;
-  font-size: 1.5rem; /* Tamaño más grande para mayor legibilidad 
+  font-size: 1.5rem;
   color: #000000;
-  margin: 1rem 0; /* Más espacio entre las opciones */
-/*}
-
+  margin: 1rem 0;
+}
 
 
 /* Estilo para los textos de las opciones */
-/*.op-11, .op-22, .op-33 {
-  font-size: 1.5rem; /* Aumenta el tamaño del texto 
-  padding: 0.5rem 0; /* Espaciado adicional para una lectura más cómoda 
+.op-11, .op-22, .op-33 {
+  font-size: 1.5rem;  
+  padding: 0.5rem 0; 
   text-align: left;
-/*} */
+} 
 
 /* Estilo general para los ítems de las listas */
 .list-1 {
@@ -67,11 +75,31 @@ ion-header[collapse="condense"] ion-title {
   margin: 0.5rem 0; /* Espaciado entre ítems */
   padding: 1rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Sombra sutil para resaltar cada opción */
+  display: flex; /* Alinea los elementos horizontalmente */
+  justify-items: center; /* Centra los elementos horizontalmente */
+  align-items: center; /* Centra los elementos verticalmente */
 }
 
 /* Personalización de los toggles */
-.togle-1 .togle-2 {
-  --handle-background: #483f97; /* Color del toggle (punto) */
-  --background-checked: #000000; /* Color cuando está activado */
-  --background: #cc0909; /* Color cuando está desactivado */
+.togles {
+  --background: #ffffff; /* Fondo claro para los toggles */
+  border-radius: 10px; /* Bordes redondeados para dar un toque moderno */
+  margin: 0.5rem 0; /* Espaciado entre toggles */
+  padding: 1rem;
+  display: flex; /* Alinea los elementos horizontalmente */
+  justify-items: center; /* Centra los elementos horizontalmente */
+  align-items: center; /* Centra los elementos verticalmente */
+}
+
+.list-not{
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #000000;
+  border-radius: 4%;
+}
+
+.modern-button {
+  border: 3px solid #6200ff;
+  border-radius: 6px; 
+  background-color: #6200ff;
 }

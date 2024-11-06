@@ -164,7 +164,7 @@ const MinutaOn: React.FC = () => {
   };
 
   return (
-    <IonPage>
+    <IonPage className='tab-1'>
       <IonContent>
         <div className="minuta-page">
           <div className='bba'>
