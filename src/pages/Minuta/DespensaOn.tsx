@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonIcon, IonList, IonItem, IonLabel, IonSpinner, IonItemSliding, IonItemOptions, IonItemOption, IonModal, IonButton, IonInput, IonSelect, IonSelectOption, IonItemDivider } from '@ionic/react';
-import './Tab2.css';
+import './DespensaOn.css';
 import { pencil, trash } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ interface Alimento {
   uso_alimento: string;
 }
 
-const Despensa: React.FC = () => {
+const DespensaOn: React.FC = () => {
   const [alimentos, setAlimentos] = useState<Alimento[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -30,21 +30,30 @@ const Despensa: React.FC = () => {
 
   const handleDelete = async (alimentoId: number) => {
     try {
+      // Obtener el objeto de usuario desde el localStorage
       const user = localStorage.getItem('registerResponse');
       if (!user) {
-        throw new Error('No se encontró el objeto de usuario en el localStorage');
+        console.error('No se encontró el objeto de usuario en el localStorage');
+        return;
       }
 
+      // Parsear el objeto de usuario
       const userObj = JSON.parse(user);
       const userId = userObj.id_user;
-      const dispensa = userObj.dispensa; // Asegúrate de que dispensa_id esté en el objeto
+      if (!userId) {
+        console.error('No se encontró el ID de usuario en el objeto de usuario');
+        return;
+      }
 
-      if (!userId || !dispensa) {
-        throw new Error('No se encontró el ID de usuario o el ID de la dispensa en el objeto de usuario');
+      // Obtener el ID de la despensa (también desde localStorage, si es necesario)
+      const dispensaId = userObj.dispensa_id;  // Asegúrate de que esto esté en el objeto del usuario
+      if (!dispensaId) {
+        console.error('No se encontró el ID de la despensa en el objeto de usuario');
+        return;
       }
 
       // Construir la URL con los parámetros requeridos
-      const url = `http://127.0.0.1:8000/app/delete_alimento/?user_id=${userId}&dispensa_id=${dispensa}&alimento_id=${alimentoId}`;
+      const url = `http://127.0.0.1:8000/app/delete_alimento/?user_id=${userId}&dispensa_id=${dispensaId}&alimento_id=${alimentoId}`;
 
       // Hacer la solicitud DELETE
       const response = await fetch(url, {
@@ -60,7 +69,7 @@ const Despensa: React.FC = () => {
 
       console.log('Alimento eliminado');
       // Después de eliminar, redirigir a otra página si es necesario
-      history.push('/tab2');
+      history.push('/tab3');
     } catch (error) {
       console.error('Error:', error);
     }
@@ -78,58 +87,31 @@ const Despensa: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
     try {
-      // Obtener user_id y dispensa_id de localStorage
-      const user = localStorage.getItem('registerResponse');
-      if (!user) {
-        console.error('No se encontró el objeto de usuario en el localStorage');
-        return;
-      }
-  
-      const userObj = JSON.parse(user);
-      const userId = userObj.id_user;
-      const dispensaId = userObj.id_despensa; // Asegúrate de que este campo exista en tu objeto
-  
-      if (!userId || !dispensaId) {
-        console.error('Faltan datos necesarios: userId o dispensaId');
-        return;
-      }
-  
-      // Combinar formData con userId y dispensaId
-      const dataToSubmit = {
-        ...formData,
-        user_id: userId,
-        dispensa_id: dispensaId
-      };
-  
       const response = await fetch(`http://127.0.0.1:8000/app/edit_alimento/${formData.id_alimento}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json', // Especificar que se envía JSON
-        },
-        body: JSON.stringify(dataToSubmit), // Convertir los datos a JSON
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
-  
+
       if (!response.ok) {
         throw new Error('Error al actualizar el alimento');
       }
-  
+
       const updatedAlimento = await response.json();
-  
+
       // Actualizar la lista de alimentos localmente
       setAlimentos((prevAlimentos) =>
         prevAlimentos.map((alimento) =>
           alimento.id_alimento === updatedAlimento.id_alimento ? updatedAlimento : alimento
         )
       );
-  
+
       setShowEditModal(false); // Cerrar el modal después de editar
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error:', error);
     }
   };
-  
 
   useEffect(() => {
     const fetchAlimentos = async () => {
@@ -149,7 +131,7 @@ const Despensa: React.FC = () => {
         }
 
         // Construir la URL con user_id y dispensa_id como parámetros
-        const url = `http://127.0.0.1:8000/app/dispensa_detail/?user_id=${userId}&dispensa_id=${dispensa}`;
+        const url = `/app/dispensa_detail/?user_id=${userId}&dispensa_id=${dispensa}`;
 
         const response = await fetch(url, {
           method: 'GET',
@@ -310,4 +292,4 @@ const Despensa: React.FC = () => {
   );
 };
 
-export default Despensa;
+export default DespensaOn;

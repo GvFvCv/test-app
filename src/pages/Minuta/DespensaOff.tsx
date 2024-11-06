@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { IonAlert, IonPage, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonSelect, IonSelectOption, IonList, IonButton, IonInput, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCardSubtitle, IonIcon, IonToast, IonCheckbox } from '@ionic/react';
-import './MinutaOff.css';
+import './DespensaOff.css';
 import { useHistory } from 'react-router-dom';
 import { restaurant, cafe, moon, colorFill } from 'ionicons/icons';
 
-const MinutaOff: React.FC = () => {
+const DespensaOff: React.FC = () => {
   // Simulación de datos: lista de minutas
   const [minutas, setMinutas] = useState<string[]>([]);
 
@@ -131,20 +131,20 @@ const MinutaOff: React.FC = () => {
     }
   };
 
-// Función para manejar los cambios de selección
+  // Función para manejar los cambios de selección
 const handleCheckboxChange = (event: any) => {
   const { value, checked } = event.target;
-  let updatedTypeFood = formData.type_food.split(',').map(item => item.trim()).filter(item => item !== '');
+  let updatedTypeFood = formData.type_food.split(',').map(item => item.trim());
 
   if (checked) {
-    // Si está marcado, añadimos el valor al array
+    // Si está marcado, añadimos el valor al string
     updatedTypeFood.push(value);
   } else {
-    // Si está desmarcado, lo removemos del array
+    // Si está desmarcado, lo removemos del string
     updatedTypeFood = updatedTypeFood.filter(item => item !== value);
   }
 
-  // Actualizamos type_food como una cadena concatenada sin comas iniciales
+  // Actualizamos type_food como una cadena concatenada
   setFormData({ ...formData, type_food: updatedTypeFood.join(', ') });
 };
 
@@ -152,15 +152,15 @@ const handleCheckboxChange = (event: any) => {
     <IonPage className='page-on'>
       <IonContent>
         <div className='ddd'>
-          <h1 className='dda'>MINUTA</h1>
+          <h1 className='dda'>DESPENSA</h1>
         </div>
         {minutas.length === 0 ? (
           <IonCard className='card-minuta'>
             <IonCardHeader className='no-minuta-1'>
-              NO EXISTE MINUTA
+              No hay alimentos en tu despensa
             </IonCardHeader>
             <IonCardContent className='no-minuta-2'>
-              DEBES CREAR TU MINUTA
+              Debes agregar alimentos a tu despensa para poder crear una minuta.
             </IonCardContent>
           </IonCard>
         ) : (
@@ -293,4 +293,4 @@ const handleCheckboxChange = (event: any) => {
   );
 };
 
-export default MinutaOff;
+export default DespensaOff;
