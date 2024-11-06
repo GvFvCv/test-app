@@ -1,14 +1,28 @@
-.tab-3 {
-    --background: #ffffff;
+.page-on {
+    background-color: #5a2e91;
     /* Fondo blanco */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
-    color: rgb(255, 255, 255);
+    color: rgb(61, 6, 129);
     /* Texto en blanco para contraste */
     text-align: center;
     /* Alineación central del texto */
+}
+
+.ion-padding {
+  background-color: #5a2e91 !important;
+  
+}
+
+.ion-padding .bbb {
+    background-color: #5a2e91 !important;
+    font-size: 2.2rem;
+}
+
+.ion-padding .bba {
+    background-color: #5a2e91 !important;
 }
 
 .explore-container {
@@ -16,16 +30,39 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-    background-color: rgb(96, 48, 255);
+    background-color: #5a2e91;
 }
+
+.form-content {
+    background-color: #5a2e91;
+    padding: 2rem;
+}
+
+/* .form-content {
+    background-color: #5a2e91;
+    padding: 2rem;
+
+    #2e134f;
+
+} */
+
+.title-pref{
+    color: #38195f !important;
+    font-size: 2rem;
+    margin-top: -7%;
+}
+
+.sub-pref{
+    color: #270c48 !important;
+    font-size: 120%;
+}
+
 
 /* Ajustes para el título grande centrado */
 h1 {
     font-size: 3rem;
     /* Tamaño del texto del título */
     color: white;
-    /* Color del texto */
-    background-color: #7045ff;
     /* Fondo del título */
     text-align: center;
     /* Centrar el texto */
@@ -48,7 +85,7 @@ ion-header[collapse="condense"] ion-title {
     font-size: 2.5rem;
     color: #ffffff;
     margin-bottom: 0rem;
-    background-color: #7045ff;
+    background-color: #5a2e91;
     padding: 1%;
     align-items: center;
     justify-content: center;
@@ -58,13 +95,13 @@ ion-header[collapse="condense"] ion-title {
     font-weight: bold;
     font-size: 2.5rem;
     color: #ffffff;
-    background-color: #7045ff;
+    background-color: #5a2e91;
     padding: 4% 1%;
     align-items: center;
     justify-content: center;
 }
 
-.no-minuta {
+.card-minuta {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -74,7 +111,7 @@ ion-header[collapse="condense"] ion-title {
     padding: 2rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     border-radius: 20px;
-    margin: 1rem auto;
+    margin: 2rem auto;
     width: 90%;
 }
 
@@ -107,25 +144,10 @@ ion-header[collapse="condense"] ion-title {
 }
 
 .crear {
-    width: 70%;
-    /* Ancho del botón para que tenga margen a los lados */
-    max-width: 400px;
-    padding: 0.5rem;
-    /* Espaciado dentro del botón */
-    background-color: #0047FF;
+    padding: 1rem;
     color: white;
-    border-radius: 8px;
-    margin-top: 15rem;
-    /* Para empujar el botón hacia abajo */
     text-align: center;
     font-size: 1.2rem;
-    font-weight: bold;
-    display: block;
-    /* Para tratarlo como un bloque y centrarlo */
-    margin-left: auto;
-    /* Alineación automática a la izquierda */
-    margin-right: auto;
-    /* Alineación automática a la derecha */
 }
 
 ion-checkbox {
@@ -143,5 +165,5 @@ ion-checkbox::part(container) {
     display: flex;
     align-items: center;
     justify-content: flex-start; /* Alinea el contenido a la izquierda */
-  }
+}
   

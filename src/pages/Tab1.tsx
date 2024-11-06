@@ -49,7 +49,7 @@ const PantallaPrincipal: React.FC = () => {
         duration={1500} // Duración de la carga en milisegundos
         cssClass= "custom-loading-tech" // Clase CSS personalizada
       />
-      <IonContent>
+      <IonContent className='tab-1' /* style={{ '--ion-background-color': '#7045ff' }} */>
         {/* Condicional para mostrar la minuta */}
         {!loading && (
           stateMinuta === "True" ? <MinutaOn /> : <MinutaOff />

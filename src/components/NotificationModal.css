@@ -1,0 +1,85 @@
+.fff-1 {
+    color: #6200ff;
+    margin-bottom: 0rem;
+    background-color: #ffff;
+    padding: 1%;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Título de la página "AJUSTES" */
+.fff-2{
+    font-weight: bold;
+    text-align: center;
+    font-size: 2rem;
+    color: #6200ff;
+    background-color: #ffff;
+    padding: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-button {
+    position: absolute;
+    top: -6px;
+    left: -8px;
+    font-size: 2rem !important;
+}
+
+.back-button ion-icon {
+    font-size: 2.5rem !important;
+    color: #6200ff !important;
+}
+
+.notifications-card {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-height: 80%;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+}
+
+.close-button ion-icon {
+    font-size: 30px;
+    color: #ff0000;
+}
+
+.unread-indicator {
+  background: var(--ion-color-primary);
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  position: absolute;
+  inset-inline-start: 12px;
+  top: 12px;
+}
+
+.metadata-end-wrapper {
+  position: absolute;
+  top: 10px;
+  inset-inline-end: 10px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+}
+
+ion-label strong {
+  display: block;
+  max-width: calc(100% - 60px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+ion-label ion-note {
+  font-size: 0.9rem;
+}
