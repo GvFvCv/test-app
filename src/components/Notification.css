@@ -1,24 +1,39 @@
-/* src/components/Notification.css */
 .notification {
     position: fixed; /* Fija la posición de la notificación en la pantalla */
-    top: 300px; /* Distancia desde la parte superior de la pantalla */
-    right: 20px; /* Distancia desde la parte derecha de la pantalla */
-    padding: 2rem; /* Espaciado interno */
-    border-radius: 5px; /* Bordes redondeados */
-    color: white; /* Color del texto */
+    top: -100px; /* Inicialmente fuera de la pantalla */
+    right: 80px; /* Distancia desde la parte derecha de la pantalla */
+    padding: 1.5rem 1.5rem; /* Espaciado interno */
+    font-size: 1.3rem; /* Tamaño del texto */
+    border-radius: 12px; /* Bordes redondeados */
+    color: #ffffff; /* Color del texto */
     z-index: 1000; /* Asegura que la notificación esté por encima de otros elementos */
-    opacity: 0.9; /* Opacidad de la notificación */
-    transition: opacity 0.5s ease-in-out; /* Transición suave para la opacidad */
+    opacity: 2; /* Inicialmente invisible */
+    transition: opacity 0.5s ease-in-out, top 1s ease-in-out; /* Transición suave para la opacidad y el movimiento */
+    align-items: center; /* Alinea el contenido verticalmente */
+    display: flex; /* Muestra el contenido en línea */
+    box-shadow: 0 4px 8px rgba(0, 0, 0.5, 0.9); /* Sombra para darle profundidad */
 }
 
 .notification.success {
-    background-color: #4caf50; /* Color de fondo para notificaciones de éxito */
+    background-color: #008026; /* Color de fondo morado para notificaciones de éxito */
 }
 
 .notification.error {
-    background-color: #f44336; /* Color de fondo para notificaciones de error */
+    background-color: #d32f2f; /* Color de fondo rojo para notificaciones de error */
 }
 
 .notification.info {
-    background-color: #2196f3; /* Color de fondo para notificaciones informativas */
+    background-color: #1976d2; /* Color de fondo azul para notificaciones informativas */
+}
+
+/* Animación para mostrar la notificación */
+.notification.show {
+    opacity: 1;
+    top: 5rem; /* Posición final */
+}
+
+/* Animación para ocultar la notificación */
+.notification.hide {
+    opacity: 0;
+    top: -100px; /* Mueve la notificación hacia arriba */
 }

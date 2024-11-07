@@ -22,6 +22,7 @@ const Login: React.FC = () => {
 
   const handleLogin = () => {
     notificationService.addNotification('Ingreso exitoso', 'success'); // Agrega una notificación de éxito
+    localStorage.setItem('isLoggedIn', 'true'); // Guarda el estado de inicio de sesión exitoso
     history.replace('/tab1'); // Redirigimos a la primera pestaña después de iniciar sesión
   };
 
@@ -49,7 +50,7 @@ const Login: React.FC = () => {
               className="register-button styled-button"
               onClick={handleRegisterRedirect}
             >
-              Registrarse
+              Registrate
             </IonButton>
           )}
         </div>

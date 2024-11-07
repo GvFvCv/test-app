@@ -3,7 +3,7 @@ import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSelect, IonSel
 import { useHistory } from 'react-router-dom';
 import './Register.css';
 import { registerapp } from '../services/register';
-/* import notificationService from '../services/notificationService'; */
+import notificationService from '../services/notificationService';
 
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -48,6 +48,8 @@ const Register: React.FC = () => {
         user_type: '',
         user_sex: ''
       });
+      notificationService.addNotification('Ingreso exitoso', 'success'); // Agrega una notificación de éxito
+      localStorage.setItem('isLoggedIn', 'true'); // Guarda el estado de inicio de sesión exitoso
       history.push('/tab1');
     } catch (error) {
       console.error('Error en el registro:', error);

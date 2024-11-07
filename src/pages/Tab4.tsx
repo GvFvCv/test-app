@@ -1,7 +1,7 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonToggle, IonSelect, IonSelectOption, IonButton, IonModal, IonAlert } from '@ionic/react';
 import React, { useState } from 'react';
 import './Tab4.css';
-import NotificationModal from '../components/NotificationModal'; // Asegúrate de que la ruta sea correcta
+import NotificationModal from '../components/Notification/NotificationModal'; // Asegúrate de que la ruta sea correcta
 
 const Tab4: React.FC = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
