@@ -99,7 +99,7 @@ const Tab3: React.FC = () => {
 
   const captureImage = async () => {
     const image = await Camera.getPhoto({
-      quality: 90,
+      quality: 100,
       allowEditing: false,
       resultType: CameraResultType.Uri,
       source: CameraSource.Camera,
@@ -173,7 +173,7 @@ const Tab3: React.FC = () => {
     } catch (error) {
       console.error('Error al enviar la foto:', error);
       setAlertMessage(`Error al enviar la foto: ${(error as Error).message}`);
-      setShowAlert(true); 
+      setShowAlert(true);
     }
   };
 
@@ -291,9 +291,8 @@ const Tab3: React.FC = () => {
                   onIonChange={handleSelectChange}
                 >
                   <IonSelectOption value="kg">kg</IonSelectOption>
-                  <IonSelectOption value="g">g</IonSelectOption>
-                  <IonSelectOption value="mg">mg</IonSelectOption>
-                  <IonSelectOption value="L">L</IonSelectOption>
+                  <IonSelectOption value="gr">gr</IonSelectOption>
+                  <IonSelectOption value="lt">lt</IonSelectOption>
                   <IonSelectOption value="ml">ml</IonSelectOption>
                 </IonSelect>
               </IonItem>
