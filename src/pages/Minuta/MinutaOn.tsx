@@ -109,7 +109,7 @@ const MinutaOn: React.FC = () => {
       const dia = fechaActual.getDate();
       setHoraActual(hora);
       setDiaActual(dia);
-      if (dia === diaActual && hora === 0 && fechaActual.getMinutes() >= 40) {
+      if (dia === diaActual && hora === 1 && fechaActual.getMinutes() >= 20) {
         setMostrarAlerta(true);
       } else {
         setMostrarAlerta(false);

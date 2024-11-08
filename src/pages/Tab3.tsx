@@ -102,7 +102,6 @@ const Tab3: React.FC = () => {
 
   const captureImage = async () => {
     const image = await Camera.getPhoto({
-      quality: 100,
       quality: 100, // Calidad de la imagen
       allowEditing: false,
       resultType: CameraResultType.Uri,
@@ -177,48 +176,6 @@ const Tab3: React.FC = () => {
     } 
     catch (error) {
       console.error('Error al enviar la foto:', error);
-      ShowAlert(`Error al enviar la foto: ${(error as Error).message}`);
-    }
-  };
-
-  const ShowAlert = (message: string) => {
-    setAlertMessage(message);
-    setShowAlert(true);
-    setTimeout(() => {
-      setShowAlert(false);
-    }, 3000);
-  };
-
-  const EnviarBoletaEP = async () => {
-    try {
-      // Recuperar el objeto de usuario del localStorage
-      const user = localStorage.getItem('registerResponse');
-      if (!user) {
-        console.error('No se encontró el objeto de usuario en el localStorage');
-        return;
-      }
-
-      const userObj = JSON.parse(user);
-      const userId = userObj.id_user;
-      if (!userId) {
-        console.error('No se encontró el ID de usuario en el objeto de usuario');
-        return;
-      }
-      const response = await enviarDatos(userId, photo); // Enviar la foto al servidor
-      console.log('Respuesta del servidor:', response); // Mostrar la respuesta en la consola
-      localStorage.setItem('serverResponse', JSON.stringify(response)); // Almacenar la respuesta en el localStorage
-
-      // Extraer el mensaje del servidor utilizando map
-      const messageArray = [response].map(res => res.message);
-      const message = messageArray[0] || "Ingreso de alimentos exitoso"; // Mensaje por defecto si no se encuentra el mensaje
-
-      ShowAlert(`${message}`); // Mostrar la respuesta en la alerta
-      history.push('/tab2'); // Redirigir después de enviar
-    } 
-    catch (error) {
-      console.error('Error al enviar la foto:', error);
-      setAlertMessage(`Error al enviar la foto: ${(error as Error).message}`);
-      setShowAlert(true);
       ShowAlert(`Error al enviar la foto: ${(error as Error).message}`);
     }
   };
