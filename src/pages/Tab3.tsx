@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonImg, IonIcon, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonModal, IonCheckbox, IonLabel, IonItem, IonInput, IonList, IonSelect, IonSelectOption, IonFooter } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonImg, IonIcon, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonModal, IonCheckbox, IonLabel, IonItem, IonInput, IonList, IonSelect, IonSelectOption, IonFooter, IonAlert } from '@ionic/react';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { camera, checkmark, close, arrowBack, pencil, information, addCircleOutline, image, umbrella } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
@@ -17,6 +17,9 @@ const Tab3: React.FC = () => {
   const [food, setFood] = useState<string>(""); // Estado para manejar el input de alimentos
   const history = useHistory();
   let imageboleta = "";
+
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [alertMessage, setAlertMessage] = useState<string>("");
 
   const [formData, setFormData] = useState({
     user_id: '',
@@ -99,7 +102,7 @@ const Tab3: React.FC = () => {
 
   const captureImage = async () => {
     const image = await Camera.getPhoto({
-      quality: 90,
+      quality: 100, // Calidad de la imagen
       allowEditing: false,
       resultType: CameraResultType.Uri,
       source: CameraSource.Camera,
@@ -137,44 +140,52 @@ const Tab3: React.FC = () => {
     }
   };
 
+  const ShowAlert = (message: string) => {
+    setAlertMessage(message);
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 3000);
+  };
+
+  const EnviarBoletaEP = async () => {
+    try {
+      // Recuperar el objeto de usuario del localStorage
+      const user = localStorage.getItem('registerResponse');
+      if (!user) {
+        console.error('No se encontró el objeto de usuario en el localStorage');
+        return;
+      }
+
+      const userObj = JSON.parse(user);
+      const userId = userObj.id_user;
+      if (!userId) {
+        console.error('No se encontró el ID de usuario en el objeto de usuario');
+        return;
+      }
+      const response = await enviarDatos(userId, photo); // Enviar la foto al servidor
+      console.log('Respuesta del servidor:', response); // Mostrar la respuesta en la consola
+      localStorage.setItem('serverResponse', JSON.stringify(response)); // Almacenar la respuesta en el localStorage
+
+      // Extraer el mensaje del servidor utilizando map
+      const messageArray = [response].map(res => res.message);
+      const message = messageArray[0] || "Ingreso de alimentos exitoso"; // Mensaje por defecto si no se encuentra el mensaje
+
+      ShowAlert(`${message}`); // Mostrar la respuesta en la alerta
+      history.push('/tab2'); // Redirigir después de enviar
+    } 
+    catch (error) {
+      console.error('Error al enviar la foto:', error);
+      ShowAlert(`Error al enviar la foto: ${(error as Error).message}`);
+    }
+  };
+
   const getStoredResponse = () => {
     const storedResponse = localStorage.getItem('serverResponse');
     if (storedResponse) {
       return JSON.parse(storedResponse);
     }
     return null;
-  };
-
-  const EnviarBoletaEP = async () => {
-    // Recuperar el objeto de usuario del localStorage
-    const user = localStorage.getItem('registerResponse');
-    if (!user) {
-      console.error('No se encontró el objeto de usuario en el localStorage');
-      return;
-    }
-
-    const userObj = JSON.parse(user);
-    const userId = userObj.id_user;
-    if (!userId) {
-      console.error('No se encontró el ID de usuario en el objeto de usuario');
-      return;
-    }
-
-    // Enviar la boleta al endpoint
-    try {
-      const response = await enviarDatos(userId, photo);
-      console.log('Respuesta del servidor:', response);
-
-      // Guardar la respuesta en el localStorage
-      localStorage.setItem('serverResponse', JSON.stringify(response));
-
-      /* setAlertMessage(`Respuesta del servidor: ${JSON.stringify(response)}`); */
-      /* setShowAlert(true); */
-    } catch (error) {
-      console.error('Error al enviar la foto:', error);
-      setAlertMessage(`Error al enviar la foto: ${(error as Error).message}`);
-      setShowAlert(true); 
-    }
   };
 
   const storedResponse = getStoredResponse();
@@ -202,7 +213,7 @@ const Tab3: React.FC = () => {
               <IonIcon icon={close} slot="start" />
             </IonButton>
 
-            <IonButton color="success" expand="block" shape="round" onClick={EnviarBoletaEP}>{/* se debe integrar onclick */}
+            <IonButton color="success" expand="block" shape="round" onClick={EnviarBoletaEP}>
               Aceptar
               <IonIcon icon={checkmark} slot="start" />
             </IonButton>
@@ -341,6 +352,15 @@ const Tab3: React.FC = () => {
             </form>
           </IonContent>
         </IonModal>
+
+        <IonAlert
+          isOpen={showAlert}
+          onDidDismiss={() => setShowAlert(false)}
+          header={'Alerta'}
+          message={alertMessage}
+          buttons={['ACEPTAR']}
+          cssClass='custom-alert'
+        />
       </IonContent>
     </IonPage>
   );

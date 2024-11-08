@@ -25,7 +25,7 @@ const NotificationModal: React.FC<{ showNotificationsCard: boolean, onClose: () 
 
   const fetchNotifications = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/app/notificaciones2/user_id');
+      const response = await fetch('http://127.0.0.1:8000/app/notificaciones1/user_id');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
