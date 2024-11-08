@@ -78,31 +78,37 @@ const Despensa: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     try {
       // Obtener user_id y dispensa_id de localStorage
       const user = localStorage.getItem('registerResponse');
+      console.log("Contenido de localStorage:", user);
       if (!user) {
         console.error('No se encontró el objeto de usuario en el localStorage');
         return;
       }
-  
+
       const userObj = JSON.parse(user);
       const userId = userObj.id_user;
-      const dispensaId = userObj.id_despensa; // Asegúrate de que este campo exista en tu objeto
-  
+      const dispensaId = userObj.dispensa; // Asegúrate de que este campo exista en tu objeto
+
+      console.log("ID de usuario:", userObj);
+
       if (!userId || !dispensaId) {
         console.error('Faltan datos necesarios: userId o dispensaId');
         return;
       }
-  
+
       // Combinar formData con userId y dispensaId
       const dataToSubmit = {
         ...formData,
-        user_id: userId,
-        dispensa_id: dispensaId
+        id_user: userId,
+        dispensa: dispensaId
       };
-  
+
+      console.log('Datos a enviar:', dataToSubmit);
+      console.log(JSON.stringify(dataToSubmit, null, 2)); // Muestra el JSON formateado para facilitar la lectura
+
       const response = await fetch(`http://127.0.0.1:8000/app/edit_alimento/${formData.id_alimento}`, {
         method: 'PUT',
         headers: {
@@ -261,9 +267,8 @@ const Despensa: React.FC = () => {
                 onIonChange={handleSelectChange}
               >
                 <IonSelectOption value="kg">kg</IonSelectOption>
-                <IonSelectOption value="g">g</IonSelectOption>
-                <IonSelectOption value="mg">mg</IonSelectOption>
-                <IonSelectOption value="L">L</IonSelectOption>
+                <IonSelectOption value="gr">gr</IonSelectOption>
+                <IonSelectOption value="lt">lt</IonSelectOption>
                 <IonSelectOption value="ml">ml</IonSelectOption>
               </IonSelect>
             </IonItem>

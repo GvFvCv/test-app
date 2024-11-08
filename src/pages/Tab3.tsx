@@ -302,9 +302,8 @@ const Tab3: React.FC = () => {
                   onIonChange={handleSelectChange}
                 >
                   <IonSelectOption value="kg">kg</IonSelectOption>
-                  <IonSelectOption value="g">g</IonSelectOption>
-                  <IonSelectOption value="mg">mg</IonSelectOption>
-                  <IonSelectOption value="L">L</IonSelectOption>
+                  <IonSelectOption value="gr">gr</IonSelectOption>
+                  <IonSelectOption value="lt">lt</IonSelectOption>
                   <IonSelectOption value="ml">ml</IonSelectOption>
                 </IonSelect>
               </IonItem>

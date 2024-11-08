@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { IonButton, IonModal, IonContent, IonHeader, IonTitle, IonToolbar, IonPage } from '@ionic/react';
+import { IonButton, IonModal, IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonCard, IonCardContent, IonCardHeader, IonCardTitle } from '@ionic/react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './MinutaOn.css';
+import { Clock } from 'lucide-react';
 
 interface Minuta {
   id_minuta: number;
@@ -45,11 +46,18 @@ const MinutaOn: React.FC = () => {
   const [selectedRecipe, setSelectedRecipe] = useState<Minuta | null>(null);
   const [idListaMinuta, setIdListaMinuta] = useState<number | null>(null);
   const [receta, setReceta] = useState<Receta | null>(null);
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const [horaActual, setHoraActual] = useState(new Date().getHours());
+  const [diaActual, setDiaActual] = useState(new Date().getDate());
+  const [visible, setVisible] = useState(true);
+
+  const handleResponse = () => {
+    setVisible(false);
+  };
 
   useEffect(() => {
     const fetchMinutas = async () => {
       try {
-        // Recuperar user_id 
         const user = localStorage.getItem('registerResponse');
         if (!user) {
           throw new Error('No se encontró el objeto de usuario en el localStorage');
@@ -62,7 +70,6 @@ const MinutaOn: React.FC = () => {
           throw new Error('No se encontró el ID de usuario');
         }
 
-        // Construir la URL con user_id como parámetro
         const url = `http://127.0.0.1:8000/app/minuta_detail/?user_id=${userId}`;
 
         const response = await fetch(url, {
@@ -81,7 +88,7 @@ const MinutaOn: React.FC = () => {
         const apiResponse: ApiResponse = data;
 
         setMinutas(apiResponse.minutas);
-        setIdListaMinuta(apiResponse.lista_minuta.id_lista_minuta); // Guardar id_lista_minuta
+        setIdListaMinuta(apiResponse.lista_minuta.id_lista_minuta);
         const today = new Date().toISOString().split('T')[0];
         setSelectedDay(today);
         const todayRecipes = apiResponse.minutas.filter(item => item.fecha === today);
@@ -95,6 +102,22 @@ const MinutaOn: React.FC = () => {
     fetchMinutas();
   }, []);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const fechaActual = new Date();
+      const hora = fechaActual.getHours();
+      const dia = fechaActual.getDate();
+      setHoraActual(hora);
+      setDiaActual(dia);
+      if (dia === diaActual && hora === 1 && fechaActual.getMinutes() >= 20) {
+        setMostrarAlerta(true);
+      } else {
+        setMostrarAlerta(false);
+      }
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, [diaActual]);
+
   const onDayClick = (value: Date) => {
     const selectedDate = value.toISOString().split('T')[0];
     setSelectedDay(selectedDate);
@@ -106,7 +129,6 @@ const MinutaOn: React.FC = () => {
     setSelectedRecipe(recipe);
     setShowModal(true);
 
-    // Recuperar user_id del localStorage
     const user = localStorage.getItem('registerResponse');
     if (!user) {
       console.error('No se encontró el objeto de usuario en el localStorage');
@@ -121,10 +143,8 @@ const MinutaOn: React.FC = () => {
       return;
     }
 
-    // Construir la URL para la solicitud POST
     const url = `http://127.0.0.1:8000/app/get_receta/`;
 
-    // Enviar la solicitud POST
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -145,7 +165,6 @@ const MinutaOn: React.FC = () => {
       const data = await response.json();
       console.log('Respuesta del servidor:', data);
 
-      // Actualizar el estado con la receta recibida
       setReceta(data.receta);
     } catch (error: any) {
       console.error('Error al enviar la solicitud POST:', error);
@@ -162,6 +181,48 @@ const MinutaOn: React.FC = () => {
     }
     return null;
   };
+
+  const handleAlertaResponse = async (realizado: boolean) => {
+    try {
+      const user = localStorage.getItem('registerResponse');
+      if (!user) {
+        throw new Error('No se encontró el objeto de usuario en el localStorage');
+      }
+  
+      const userObj = JSON.parse(user);
+      const userId = userObj.id_user;
+  
+      const url = 'http://127.0.0.1:8000/app/contol_minuta/';
+  
+      const requestData = {
+        user_id: userId,
+        date: new Date().toISOString().split('T')[0],
+        realizado: realizado ? 'true' : 'false',
+      };
+  
+      console.log('Enviando respuesta de control de minuta:', requestData);
+  
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Error al enviar la respuesta de control de minuta');
+      }
+  
+      console.log('Control de minuta enviado correctamente');
+      
+      // Aquí, oculta la tarjeta después de hacer clic
+      setMostrarAlerta(false); 
+    } catch (error) {
+      console.error('Error al enviar la respuesta de control de minuta:', error);
+    }
+  };
+  
 
   return (
     <IonPage className='tab-1'>
@@ -194,32 +255,67 @@ const MinutaOn: React.FC = () => {
             ) : (
               <p>No hay recetas para este día.</p>
             )}
+            <div>
+              {mostrarAlerta && (
+                visible ?
+                <IonCard className="mt-4">
+                <IonCardHeader>
+                  <IonCardTitle>Alerta</IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent>
+                  <div className="flex items-center">
+                    <Clock className="text-gray-600 mr-2" />
+                    <p>El día está llegando a su fin, <br />¿Has completado la minuta el día de hoy?</p>
+                  </div>
+                  <IonButton
+                    className="mt-2"
+                    color="success"
+                    expand="block"
+                    shape='round'
+                    onClick={() => { handleAlertaResponse(true); handleResponse()}}
+                  >
+                    Sí
+                  </IonButton>
+                  <IonButton
+                    className="mt-2"
+                    color="danger"
+                    expand="block"
+                    shape='round'
+                    onClick={() => { handleAlertaResponse(false); handleResponse()}}
+                  >
+                    No
+                  </IonButton>
+                </IonCardContent>
+              </IonCard>
+              : null
+              )}
+            </div>
           </div>
 
           <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
             <IonHeader>
               <IonToolbar>
-                <IonTitle>{selectedRecipe?.name_food}</IonTitle>
+                <IonTitle>Instrucciones para {selectedRecipe?.name_food}</IonTitle>
               </IonToolbar>
             </IonHeader>
             <IonContent>
-              {selectedRecipe && receta && (
-                <div className="instructions-modal">
-                  <h2>Instrucciones</h2>
+              {receta ? (
+                <>
                   <h3>Ingredientes:</h3>
                   <ul>
                     {receta.ingredientes.map((ingrediente, index) => (
                       <li key={index}>{ingrediente.nombre}: {ingrediente.cantidad}</li>
                     ))}
                   </ul>
-                  <h3>Paso a Paso:</h3>
+                  <h3>Paso a paso:</h3>
                   <ol>
                     {receta.paso_a_paso.map((paso, index) => (
                       <li key={index}>{paso}</li>
                     ))}
                   </ol>
-                  <IonButton onClick={() => setShowModal(false)}>Cerrar</IonButton>
-                </div>
+                </>
+              ) : (
+                <p>Cargando receta...</p>
               )}
             </IonContent>
           </IonModal>
