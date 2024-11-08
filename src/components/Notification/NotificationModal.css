@@ -83,3 +83,20 @@ ion-label strong {
 ion-label ion-note {
   font-size: 0.9rem;
 }
+
+.time-now {
+  position: fixed; /* Fija la posición del elemento en la pantalla */
+  top: 97%; /* Centra verticalmente el elemento */
+  left: 50%; /* Centra horizontalmente el elemento */
+  transform: translate(-50%, -50%); /* Ajusta la posición para centrar el elemento */
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 17px;
+  color: #00ffcc; /* Color azul verdoso brillante */
+  background-color: #6200ff; /* Fondo oscuro, como una pantalla */
+  padding: 5px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 255, 204, 0.6), 0 0 15px rgba(0, 255, 204, 0.4);
+  text-align: center;
+  width: 40%;
+}
+

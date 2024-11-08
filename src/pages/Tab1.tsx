@@ -3,11 +3,13 @@ import { IonPage, IonContent, IonLoading } from '@ionic/react';
 import MinutaOn from './Minuta/MinutaOn';
 import MinutaOff from './Minuta/MinutaOff';
 import './Tab1.css';
+import Notification from '../components/Notification';
 
 const PantallaPrincipal: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [stateMinuta, setStateMinuta] = useState<string | null>(null);
   const [duration] = useState<number>(1000); // Duración en ms (ajustable)
+  const [showNotification, setShowNotification] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchMinuta = async () => {
@@ -32,11 +34,20 @@ const PantallaPrincipal: React.FC = () => {
         console.error('Error al obtener la minuta:', error);
         setStateMinuta(null);
       } finally {
-        setTimeout(() => setLoading(false), 3000); // Espera el tiempo de animación antes de ocultar
+        setTimeout(() => setLoading(false), 4000); // Espera el tiempo de animación antes de ocultar
       }
     };
 
     fetchMinuta();
+     // Verificar si el ingreso fue exitoso y mostrar la notificación con un delay
+     const loginSuccess = localStorage.getItem('loginSuccess');
+     if (loginSuccess === 'true') {
+       setTimeout(() => {
+         setShowNotification(true);
+         localStorage.removeItem('loginSuccess'); // Limpiar el estado de ingreso exitoso
+       }, 4000); // Delay de 2 segundos
+     }
+
   }, [duration]);
 
   return (
@@ -53,6 +64,9 @@ const PantallaPrincipal: React.FC = () => {
         {/* Condicional para mostrar la minuta */}
         {!loading && (
           stateMinuta === "True" ? <MinutaOn /> : <MinutaOff />
+        )}
+        {showNotification && (
+          <Notification message="¡Ingreso exitoso!" type="success" />
         )}
       </IonContent>
     </IonPage>

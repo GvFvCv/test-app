@@ -1,23 +1,12 @@
-// src/components/Notification.tsx
-import React, { useState, useEffect } from 'react';
-import './Notification.css'; // Archivo CSS para estilos
+import React, { useEffect, useState } from 'react';
+import './Notification.css';
 
-// Definimos las propiedades que el componente Notification recibirá
 interface NotificationProps {
-    message: string; // Mensaje de la notificación
-    type: 'success' | 'error' | 'info'; // Tipo de notificación
-    duration?: number; // Duración en milisegundos (opcional)
+    message: string;
+    type: 'success' | 'error' | 'info';
+    duration?: number;
+    delay?: number; // Nuevo prop para el delay
 }
-
-// Solicita permiso para mostrar notificaciones en segundo plano
-const requestNotificationPermission = () => {
-    console.log('Solicitando permiso para notificaciones...');
-    if (Notification.permission !== 'granted') {
-        Notification.requestPermission().then(permission => {
-            console.log('Permiso de notificación:', permission);
-        });
-    }
-};
 
 // Muestra una notificación en segundo plano
 export const showBackgroundNotification = (message: string, type: 'success' | 'error' | 'info') => {
@@ -33,31 +22,35 @@ export const showBackgroundNotification = (message: string, type: 'success' | 'e
 };
 
 // Componente funcional de React para mostrar notificaciones
-const NotificationComponent: React.FC<NotificationProps> = ({ message, type, duration = 3000 }) => {
-    const [visible, setVisible] = useState(true); // Estado para manejar la visibilidad de la notificación
+const NotificationComponent: React.FC<NotificationProps> = ({ message, type, duration = 4000, delay = 1000 }) => {
+    const [visible, setVisible] = useState(false); // Estado para manejar la visibilidad de la notificación
 
-    // useEffect para ocultar la notificación después de un tiempo
+    // useEffect para manejar el delay y la visibilidad de la notificación
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setVisible(false); // Oculta la notificación después de 'duration' milisegundos
-        }, duration);
+        const showTimer = setTimeout(() => {
+            setVisible(true); // Muestra la notificación después del delay
+            const hideTimer = setTimeout(() => {
+                setVisible(false); // Oculta la notificación después de 'duration' milisegundos
+            }, duration);
 
-        return () => clearTimeout(timer); // Limpia el temporizador cuando el componente se desmonta
-    }, [duration]);
+            return () => clearTimeout(hideTimer); // Limpia el temporizador cuando el componente se desmonta
+        }, delay);
+
+        return () => clearTimeout(showTimer); // Limpia el temporizador cuando el componente se desmonta
+    }, [duration, delay]);
 
     // useEffect para solicitar permiso y mostrar notificación en segundo plano
     useEffect(() => {
-        requestNotificationPermission();
-        showBackgroundNotification(message, type);
-    }, [message, type]);
-
-    if (!visible) return null; // Si no es visible, no renderiza nada
+        if (Notification.permission !== 'granted') {
+            Notification.requestPermission();
+        }
+    }, []);
 
     return (
-        <div className={`notification ${type}`}> {/* Aplica clases CSS basadas en el tipo de notificación */}
-            {message} {/* Muestra el mensaje de la notificación */}
+        <div className={`notification ${type} ${visible ? 'show' : 'hide'}`}>
+            {message}
         </div>
     );
 };
 
-export default NotificationComponent; // Exporta el componente para su uso en otros archivos
+export default NotificationComponent;

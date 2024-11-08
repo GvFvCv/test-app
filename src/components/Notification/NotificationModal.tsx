@@ -21,25 +21,39 @@ const NotificationModal: React.FC<{ showNotificationsCard: boolean, onClose: () 
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [recommendations, setRecommendations] = useState<string[]>([]);
   const [activeList, setActiveList] = useState<string | null>(null);
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   const fetchNotifications = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/app/notificaciones1/user_id'); // Reemplaza con el ID de usuario correcto
+      const response = await fetch('http://127.0.0.1:8000/app/notificaciones1/user_id');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text(); // Leer la respuesta como texto
+        throw new Error(`Received non-JSON response: ${text}`);
+      }
       const data = await response.json();
+      if (!data.notifications || !Array.isArray(data.notifications)) {
+        throw new Error('Invalid notifications format');
+      }
       setNotifications(data.notifications.map((item: { notification: string }) => item.notification));
     } catch (error) {
       console.error('Error fetching notifications:', error);
     }
   };
+  
 
   const fetchSuggestions = async () => {
     try {
       const response = await fetch('http://127.0.0.1:8000/app/notificaciones3/user_id');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Received non-JSON response');
       }
       const data = await response.json();
       setSuggestions(data);
@@ -50,7 +64,7 @@ const NotificationModal: React.FC<{ showNotificationsCard: boolean, onClose: () 
 
   const fetchRecommendations = async () => {
     try {
-      const response = await fetch('/api/recommendations');
+      const response = await fetch('http://127.0.0.1:8000/app/notificaciones4/user_id');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -62,9 +76,27 @@ const NotificationModal: React.FC<{ showNotificationsCard: boolean, onClose: () 
   };
 
   useEffect(() => {
+    const updateDate = () => {
+      setCurrentDate(new Date());
+    };
+
+    const fetchNotificationsInterval = setInterval(fetchNotifications, 10000); // Cada 10 segundos
+    const fetchSuggestionsInterval = setInterval(fetchSuggestions, 15000); // Cada 15 segundos
+    const fetchRecommendationsInterval = setInterval(fetchRecommendations, 20000); // Cada 20 segundos
+    const updateDateInterval = setInterval(updateDate, 1000); // Cada segundo
+
+    // Ejecutar inmediatamente al montar el componente
     fetchNotifications();
     fetchSuggestions();
     fetchRecommendations();
+    updateDate();
+
+    return () => {
+      clearInterval(fetchNotificationsInterval);
+      clearInterval(fetchSuggestionsInterval);
+      clearInterval(fetchRecommendationsInterval);
+      clearInterval(updateDateInterval);
+    };
   }, []);
 
   const renderList = () => {
@@ -89,32 +121,13 @@ const NotificationModal: React.FC<{ showNotificationsCard: boolean, onClose: () 
           </IonItem>
         ));
       case 'suggestions':
-        return notifications.map((notification, index) => (
-          <IonItem key={index} button={true} detail={false}>
-            <div className="unread-indicator-wrapper" slot="start">
-              <div className="unread-indicator"></div>
-            </div>
-            <IonLabel>
-              <IonText>{notification}</IonText>
-              <br />
-              <IonNote color="medium" className="ion-text-wrap">
-                {notification}
-              </IonNote>
-            </IonLabel>
-            <div className="metadata-end-wrapper" slot="end">
-              <IonNote color="medium">06:11</IonNote>
-              <IonIcon color="medium" icon={chevronForward}></IonIcon>
-            </div>
-          </IonItem>
-        ));
-
-        /* return suggestions.map((suggestion, index) => (
+        return suggestions.map((suggestion, index) => (
           <IonItem key={index} button={true} detail={false}>
             <IonLabel>
               <IonText>{suggestion}</IonText>
             </IonLabel>
           </IonItem>
-        )); */
+        ));
       case 'recommendations':
         return recommendations.map((recommendation, index) => (
           <IonItem key={index} button={true} detail={false}>
@@ -161,6 +174,7 @@ const NotificationModal: React.FC<{ showNotificationsCard: boolean, onClose: () 
         <IonList inset={true}>
           {renderList()}
         </IonList>
+        <div className='time-now'>{currentDate.toLocaleTimeString()}</div>
       </IonContent>
     </IonModal>
   );
