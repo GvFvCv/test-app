@@ -18,7 +18,9 @@ import './NotificationModal.css';
 
 const NotificationModal: React.FC<{ showNotificationsCard: boolean, onClose: () => void }> = ({ showNotificationsCard, onClose }) => {
   const [notifications, setNotifications] = useState<string[]>([]);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<{
+    titulo_recomendacion?: string, sugerencia?: string 
+}[]>([]);
   const [recommendations, setRecommendations] = useState<string[]>([]);
   const [activeList, setActiveList] = useState<string | null>(null);
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -47,16 +49,57 @@ const NotificationModal: React.FC<{ showNotificationsCard: boolean, onClose: () 
 
   const fetchSuggestions = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/app/notificaciones3/user_id');
+      const formData = new FormData();
+      const registerResponse = localStorage.getItem('registerResponse'); // Obtener el objeto guardado en localStorage
+      if (registerResponse) {
+        const parsedResponse = JSON.parse(registerResponse); // Parsear el objeto JSON
+        const userId = parsedResponse.id_user; // Obtener el ID del usuario
+        if (userId) {
+          formData.append('user_id', userId); // Agrega los valores necesarios
+        } else {
+          throw new Error('User ID not found in registerResponse');
+        }
+      } else {
+        throw new Error('registerResponse not found in localStorage');
+      }
+      
+      formData.append('type_recommendation', '1');
+      /* for (let i = 0; i < 3; i++) {
+        const randomType = Math.floor(Math.random() * 3) + 1;
+        formData.append('type_recommendation', randomType.toString());
+      } */
+  
+      const response = await fetch('http://127.0.0.1:8000/app/recomendacion_compra/', {
+        method: 'POST',
+        body: formData
+      });
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+  
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
-        throw new Error('Received non-JSON response');
+        const text = await response.text(); // Leer la respuesta como texto
+        throw new Error(`Received non-JSON response: ${text}`);
       }
+
       const data = await response.json();
-      setSuggestions(data);
+      if (!data.recommendation || !Array.isArray(data.recommendation) || data.recommendation.length === 0) {
+        throw new Error('Invalid suggestions format');
+      }
+
+      const suggestions = data.recommendation.map((item: any, index: number) => {
+        if (index === 0 && item.titulo_recomendacion) {
+          return { titulo_recomendacion: item.titulo_recomendacion };
+        } else if (item.recomendacion) {
+          return { sugerencia: item.recomendacion };
+        }
+        return null;
+      }).filter(Boolean); // Filtrar elementos nulos
+
+      setSuggestions(suggestions);
+      console.log(suggestions);
     } catch (error) {
       console.error('Error fetching suggestions:', error);
     }
@@ -68,8 +111,16 @@ const NotificationModal: React.FC<{ showNotificationsCard: boolean, onClose: () 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text(); // Leer la respuesta como texto
+        throw new Error(`Received non-JSON response: ${text}`);
+      }
       const data = await response.json();
-      setRecommendations(data);
+      if (!data.recommendations || !Array.isArray(data.recommendations)) {
+        throw new Error('Invalid recommendations format');
+      }
+      setRecommendations(data.recommendations.map((item: { recommendation: string }) => item.recommendation));
     } catch (error) {
       console.error('Error fetching recommendations:', error);
     }
@@ -80,10 +131,10 @@ const NotificationModal: React.FC<{ showNotificationsCard: boolean, onClose: () 
       setCurrentDate(new Date());
     };
 
-    const fetchNotificationsInterval = setInterval(fetchNotifications, 10000); // Cada 10 segundos
-    const fetchSuggestionsInterval = setInterval(fetchSuggestions, 15000); // Cada 15 segundos
-    const fetchRecommendationsInterval = setInterval(fetchRecommendations, 20000); // Cada 20 segundos
-    const updateDateInterval = setInterval(updateDate, 1000); // Cada segundo
+    const fetchNotificationsInterval = setInterval(fetchNotifications, 60000); // 
+    const fetchSuggestionsInterval = setInterval(fetchSuggestions, 65000); //
+    const fetchRecommendationsInterval = setInterval(fetchRecommendations, 60000); 
+    const updateDateInterval = setInterval(updateDate, 100); 
 
     // Ejecutar inmediatamente al montar el componente
     fetchNotifications();
@@ -120,14 +171,32 @@ const NotificationModal: React.FC<{ showNotificationsCard: boolean, onClose: () 
             </div>
           </IonItem>
         ));
-      case 'suggestions':
-        return suggestions.map((suggestion, index) => (
-          <IonItem key={index} button={true} detail={false}>
-            <IonLabel>
-              <IonText>{suggestion}</IonText>
-            </IonLabel>
-          </IonItem>
+        case 'suggestions':
+          return suggestions.map((suggestion, index) => (
+            <IonItem key={index} button={true} detail={false}>
+              <div className="unread-indicator-wrapper" slot="start">
+                <div className="unread-indicator"></div>
+              </div>
+              <IonLabel>
+                {/* Muestra el título de recomendación si existe */}
+                {suggestion.titulo_recomendacion && (
+                  <IonText>{suggestion.titulo_recomendacion}</IonText>
+                )}
+                <br />
+                {/* Muestra la recomendación si existe */}
+                {suggestion.sugerencia && (
+                  <IonNote color="medium" className="ion-text-wrap">
+                    {suggestion.sugerencia}
+                  </IonNote>
+                )}
+              </IonLabel>
+              <div className="metadata-end-wrapper" slot="end">
+                <IonNote color="medium">06:11</IonNote>
+                <IonIcon color="medium" icon={chevronForward}></IonIcon>
+              </div>
+            </IonItem>
         ));
+          
       case 'recommendations':
         return recommendations.map((recommendation, index) => (
           <IonItem key={index} button={true} detail={false}>
