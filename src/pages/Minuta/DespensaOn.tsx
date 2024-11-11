@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonIcon, IonList, IonItem, IonLabel, IonSpinner, IonItemSliding, IonItemOptions, IonItemOption, IonModal, IonButton, IonInput, IonSelect, IonSelectOption, IonItemDivider } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonIcon, IonList, IonGrid, IonRow, IonCol, IonItem, IonLabel, IonSpinner, IonItemSliding, IonItemOptions, IonItemOption, IonModal, IonButton, IonInput, IonSelect, IonSelectOption, IonItemDivider } from '@ionic/react';
 import './DespensaOn.css';
 import { pencil, trash } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
@@ -13,7 +13,7 @@ interface Alimento {
   uso_alimento: string;
 }
 
-const DespensaOn: React.FC = () => {
+const Despensa: React.FC = () => {
   const [alimentos, setAlimentos] = useState<Alimento[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -30,30 +30,21 @@ const DespensaOn: React.FC = () => {
 
   const handleDelete = async (alimentoId: number) => {
     try {
-      // Obtener el objeto de usuario desde el localStorage
       const user = localStorage.getItem('registerResponse');
       if (!user) {
-        console.error('No se encontró el objeto de usuario en el localStorage');
-        return;
+        throw new Error('No se encontró el objeto de usuario en el localStorage');
       }
 
-      // Parsear el objeto de usuario
       const userObj = JSON.parse(user);
       const userId = userObj.id_user;
-      if (!userId) {
-        console.error('No se encontró el ID de usuario en el objeto de usuario');
-        return;
-      }
+      const dispensa = userObj.dispensa; // Asegúrate de que dispensa_id esté en el objeto
 
-      // Obtener el ID de la despensa (también desde localStorage, si es necesario)
-      const dispensaId = userObj.dispensa_id;  // Asegúrate de que esto esté en el objeto del usuario
-      if (!dispensaId) {
-        console.error('No se encontró el ID de la despensa en el objeto de usuario');
-        return;
+      if (!userId || !dispensa) {
+        throw new Error('No se encontró el ID de usuario o el ID de la dispensa en el objeto de usuario');
       }
 
       // Construir la URL con los parámetros requeridos
-      const url = `http://127.0.0.1:8000/app/delete_alimento/?user_id=${userId}&dispensa_id=${dispensaId}&alimento_id=${alimentoId}`;
+      const url = `http://127.0.0.1:8000/app/delete_alimento/?user_id=${userId}&dispensa_id=${dispensa}&alimento_id=${alimentoId}`;
 
       // Hacer la solicitud DELETE
       const response = await fetch(url, {
@@ -69,11 +60,51 @@ const DespensaOn: React.FC = () => {
 
       console.log('Alimento eliminado');
       // Después de eliminar, redirigir a otra página si es necesario
-      history.push('/tab3');
+      history.push('/tab2');
     } catch (error) {
       console.error('Error:', error);
     }
   };
+
+  const handleDeleteAllAlimentos = async () => {
+    try {
+      // Recuperar user_id y dispensa_id del localStorage
+      const user = localStorage.getItem('registerResponse');
+      if (!user) {
+        throw new Error('No se encontró el objeto de usuario en el localStorage');
+      }
+
+      const userObj = JSON.parse(user);
+      const userId = userObj.id_user;
+      const dispensa = userObj.dispensa; // Asegúrate de que dispensa_id esté en el objeto
+
+      if (!userId || !dispensa) {
+        throw new Error('No se encontró el ID de usuario o el ID de la dispensa en el objeto de usuario');
+      }
+
+      // Construir la URL con user_id y dispensa_id como parámetros
+      const url = `http://127.0.0.1:8000/app/delete_all_alimentos/?user_id=${userId}&dispensa_id=${dispensa}`;
+
+      // Hacer la solicitud DELETE
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al eliminar el alimento');
+      }
+
+      console.log('Alimento eliminado');
+      // Después de eliminar, redirigir a otra página si es necesario
+      history.push('/tab2');
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
@@ -87,11 +118,43 @@ const DespensaOn: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
+      // Obtener user_id y dispensa_id de localStorage
+      const user = localStorage.getItem('registerResponse');
+      console.log("Contenido de localStorage:", user);
+      if (!user) {
+        console.error('No se encontró el objeto de usuario en el localStorage');
+        return;
+      }
+
+      const userObj = JSON.parse(user);
+      const userId = userObj.id_user;
+      const dispensaId = userObj.dispensa; // Asegúrate de que este campo exista en tu objeto
+
+      console.log("ID de usuario:", userObj);
+
+      if (!userId || !dispensaId) {
+        console.error('Faltan datos necesarios: userId o dispensaId');
+        return;
+      }
+
+      // Combinar formData con userId y dispensaId
+      const dataToSubmit = {
+        ...formData,
+        id_user: userId,
+        dispensa: dispensaId
+      };
+
+      console.log('Datos a enviar:', dataToSubmit);
+      console.log(JSON.stringify(dataToSubmit, null, 2)); // Muestra el JSON formateado para facilitar la lectura
+
       const response = await fetch(`http://127.0.0.1:8000/app/edit_alimento/${formData.id_alimento}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json', // Especificar que se envía JSON
+        },
+        body: JSON.stringify(dataToSubmit), // Convertir los datos a JSON
       });
 
       if (!response.ok) {
@@ -108,10 +171,11 @@ const DespensaOn: React.FC = () => {
       );
 
       setShowEditModal(false); // Cerrar el modal después de editar
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error:', error);
     }
   };
+
 
   useEffect(() => {
     const fetchAlimentos = async () => {
@@ -131,7 +195,7 @@ const DespensaOn: React.FC = () => {
         }
 
         // Construir la URL con user_id y dispensa_id como parámetros
-        const url = `/app/dispensa_detail/?user_id=${userId}&dispensa_id=${dispensa}`;
+        const url = `http://127.0.0.1:8000/app/dispensa_detail/?user_id=${userId}&dispensa_id=${dispensa}`;
 
         const response = await fetch(url, {
           method: 'GET',
@@ -179,6 +243,26 @@ const DespensaOn: React.FC = () => {
       <div className='ccc'>
         <h1 className='cca'>DESPENSA</h1>
       </div>
+
+      <div>
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <IonButton color="success" expand="block" shape="round" routerLink="/Tab3">
+                Ingresar alimentos
+                <IonIcon icon={pencil} slot="start" />
+              </IonButton>
+            </IonCol>
+            <IonCol>
+              <IonButton color="danger" expand="block" shape="round" onClick={() => handleDeleteAllAlimentos()}>
+                Vaciar despensa
+                <IonIcon icon={trash} slot="start" />
+              </IonButton>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </div>
+
       <IonContent>
         <IonList>
           {alimentos.map((alimento) => (
@@ -243,9 +327,8 @@ const DespensaOn: React.FC = () => {
                 onIonChange={handleSelectChange}
               >
                 <IonSelectOption value="kg">kg</IonSelectOption>
-                <IonSelectOption value="g">g</IonSelectOption>
-                <IonSelectOption value="mg">mg</IonSelectOption>
-                <IonSelectOption value="L">L</IonSelectOption>
+                <IonSelectOption value="gr">gr</IonSelectOption>
+                <IonSelectOption value="lt">lt</IonSelectOption>
                 <IonSelectOption value="ml">ml</IonSelectOption>
               </IonSelect>
             </IonItem>
@@ -292,4 +375,4 @@ const DespensaOn: React.FC = () => {
   );
 };
 
-export default DespensaOn;
+export default Despensa;
