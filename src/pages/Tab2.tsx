@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonIcon, IonList, IonGrid, IonRow, IonCol, IonItem, IonLabel, IonSpinner, IonItemSliding, IonItemOptions, IonItemOption, IonModal, IonButton, IonInput, IonSelect, IonSelectOption, IonItemDivider } from '@ionic/react';
-import './tab2.css';
+import './Tab2.css';
 import { pencil, trash } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 
