@@ -1,88 +1,92 @@
 /* Fondo negro para toda la página */
 .tab-1 {
-    background-color: #5a2e91;
-    /* Fondo negro */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    color: rgb(255, 255, 255);
-    /* Texto en blanco para contraste */
-    text-align: center;
-    /* Alineación central del texto */
+  background-color: #5a2e91;
+  /* Fondo negro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: rgb(255, 255, 255);
+  /* Texto en blanco para contraste */
+  text-align: center;
+  /* Alineación central del texto */
 }
 
 /* Estilos para el título en el header */
 ion-title {
-    font-size: 1.2rem;
-    /* Tamaño de fuente */
-    font-weight: bold;
-    text-transform: uppercase;
-    /* Texto en mayúsculas */
-    color: rgb(221, 70, 221);
+  font-size: 1.2rem;
+  /* Tamaño de fuente */
+  font-weight: bold;
+  text-transform: uppercase;
+  /* Texto en mayúsculas */
+  color: rgb(221, 70, 221);
 }
 
 /* Personalización del toolbar */
 ion-toolbar {
-    --background: #000000;
-    /* Fondo oscuro del toolbar */
-    --ion-color-primary: #ffffff;
-    /* Texto del toolbar en blanco */
-    --ion-color-secondary: #f4f4f5;
-    /* Color secundario claro */
+  --background: #000000;
+  /* Fondo oscuro del toolbar */
+  --ion-color-primary: #ffffff;
+  /* Texto del toolbar en blanco */
+  --ion-color-secondary: #f4f4f5;
+  /* Color secundario claro */
 }
 
 /* Asegurar que ExploreContainer esté también centrado */
 .explore-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 /* Ajustes para un título grande colapsado */
 ion-header[collapse="condense"] ion-title {
-    font-size: 1.2rem;
-    /* Tamaño ajustado para el título colapsado */
-    color: #f4f4f5;
-    /* Color gris claro */
+  font-size: 1.2rem;
+  /* Tamaño ajustado para el título colapsado */
+  color: #f4f4f5;
+  /* Color gris claro */
 }
 
 .recipe-dot {
-    height: 0.5rem;
-    width: 0.5rem;
-    background-color: #2dd36f;
-    border-radius: 50%;
-    margin: 0 auto;
+  height: 0.5rem;
+  width: 0.5rem;
+  background-color: #2dd36f;
+  border-radius: 50%;
+  margin: 0 auto;
 }
 
 .bba {
-    font-size: 1rem;
-    color: #ffffff;
-    margin-bottom: 0rem;
-    background-color: #5a2e91;
-    padding: 1%;
-    align-items: center;
-    justify-content: center;
+  font-size: 1rem;
+  color: #ffffff;
+  margin-bottom: 0rem;
+  background-color: #5a2e91;
+  padding: 1%;
+  align-items: center;
+  justify-content: center;
 }
 
 .bbb {
-    font-weight: bold;
-    font-size: 2.5rem;
-    color: #ffffff;
-    background-color: #5a2e91;
-    padding: 4% 1%;
-    align-items: center;
-    justify-content: center;
+  font-weight: bold;
+  font-size: 2.5rem;
+  color: #ffffff;
+  background-color: #5a2e91;
+  padding: 4% 1%;
+  align-items: center;
+  justify-content: center;
 }
 
 .react-calendar {
-    width: 90%; /* Se ajusta al 100% del ancho del contenedor */
-    max-width: 600px; /* Limita el tamaño máximo */
-    height: auto; /* Ajusta automáticamente la altura */
-    margin: 0 auto; /* Centra el calendario horizontalmente */
-    border: none;
-    color: #7045ff;
+  width: 90%;
+  /* Se ajusta al 100% del ancho del contenedor */
+  max-width: 600px;
+  /* Limita el tamaño máximo */
+  height: auto;
+  /* Ajusta automáticamente la altura */
+  margin: 0 auto;
+  /* Centra el calendario horizontalmente */
+  border: none;
+  color: #7045ff;
 }
 
 .calendar-container {
@@ -100,7 +104,7 @@ ion-header[collapse="condense"] ion-title {
 .react-calendar__month-view__weekdays {
   background-color: #f5f5f5;
   text-transform: uppercase;
-  font-weight:bold;
+  font-weight: bold;
 }
 
 /* Personaliza los días (celdas del calendario) */
@@ -113,7 +117,8 @@ ion-header[collapse="condense"] ion-title {
 
 /* Color de los días seleccionados */
 .react-calendar__tile--active {
-  background-color: #4CAF50; /* Verde */
+  background-color: #4CAF50;
+  /* Verde */
   color: white;
 }
 
@@ -124,7 +129,8 @@ ion-header[collapse="condense"] ion-title {
 
 /* Estilo del borde del calendario */
 .react-calendar__tile--now {
-  background-color: #FFEB3B; /* Color para el día actual */
+  background-color: #FFEB3B;
+  /* Color para el día actual */
 }
 
 /* Personaliza los botones de navegación (anterior/siguiente) */
@@ -145,47 +151,47 @@ ion-header[collapse="condense"] ion-title {
   border-radius: 20px;
   margin: 1rem auto;
   width: 90%;
-  max-height: 60vh; /* Fijar la altura máxima */
-  overflow-y: auto; /* Activar el scroll vertical si el contenido excede el tamaño */
+  max-height: 60vh;
+  /* Fijar la altura máxima */
+  overflow-y: auto;
+  /* Activar el scroll vertical si el contenido excede el tamaño */
   overflow-x: hidden;
 }
 
 h2 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #7045ff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #7045ff;
 }
 
-.instructions-modal {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background-color: #fff;
+.h3_card_intrucciones_tab1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #7045ff;
+}
+
+.li_card_instrucciones_tab1 {
+  font-size: medium;
+  color: #2c2c2c;
+  padding: 0.4rem;
+}
+
+.card_intrucciones_tab1 {
+  margin: 2rem;
+  padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  width: 90%;
-  max-width: 600px;
-  margin: 0 auto;
-  text-align: center;
 }
 
-.instructions-modal{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background-color: whitesmoke;
-  padding: 2rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  border-radius: 20px;
-  margin: 2rem auto;
-  width: 90%;
+.boton_retroceso_tab1{
+  display: block;        /* Asegúrate de que el botón sea tratado como bloque */
+  margin-left: 2rem;        /* Elimina el margen a la izquierda (si hay) */
+  margin-right: auto;    /* Empuja el margen derecho al máximo */
+  text-align: left; 
 }
 
-.instructions-modal p{
+.instructions-modal p {
   font-weight: bold;
-  padding: 2%;align-items: normal;
+  padding: 2%;
+  align-items: normal;
 }
