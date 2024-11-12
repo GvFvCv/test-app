@@ -1,14 +1,11 @@
 .tab-3 {
-    --background: #ffffff;
-    /* Fondo blanco */
+    --background: #ffffff; /* Fondo blanco */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
-    color: rgb(255, 255, 255);
-    /* Texto en blanco para contraste */
-    text-align: center;
-    /* Alineación central del texto */
+    color: rgb(255, 255, 255); /* Texto en blanco para contraste */
+text-align: center; /* Alineación central del texto */
 }
 
 .explore-container {
@@ -16,22 +13,19 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-    background-color: rgb(96, 48, 255);
+    background-color: rgb(96,48,255);
 }
 
 
 ion-header[collapse="condense"] ion-title {
-    font-size: 1.2rem;
-    /* Tamaño ajustado para el título colapsado */
-    color: #f4f4f5;
-    /* Color gris claro */
+    font-size: 1.2rem; /* Tamaño ajustado para el título colapsado */
+    color: #f4f4f5; /* Color gris claro */
 }
-
 .ion-padding {
     background-color: #ffffff !important;
 }
 
-.modal-intruc {
+.modal-intruc{
     background-color: #5a2e91 !important;
 }
 
@@ -74,17 +68,15 @@ ion-card {
 ion-card-title {
     padding-bottom: 1rem;
     text-align: left;
-    color: #2dd36f;
-    /* Color verde */
-    font-weight: bold;
-    /* Para hacer el texto en negrita */
+    color: #2dd36f; /* Color verde */
+    font-weight: bold; /* Para hacer el texto en negrita */
 }
 
 ion-button {
     margin-top: 1rem;
 }
-
-.card-alimento-manual {
+  
+.card-alimento-manual{
     margin-top: 4rem;
 }
 
@@ -92,7 +84,6 @@ ion-checkbox {
     --size: 20px;
     --checkbox-background-checked: #2DD55B;
 }
-
 h1 {
     display: flex;
     font-size: 1.8rem;
@@ -103,7 +94,7 @@ h1 {
     padding: 5%;
     align-items: center;
     justify-content: center;
-
+    
 }
 
 .custom-alert {
@@ -121,7 +112,7 @@ h1 {
     max-width: 400px;
     text-align: center;
 }
-
+  
 .custom-alert .alert-button {
     background: #8b09ab;
     color: #5ee8a1;

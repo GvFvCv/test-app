@@ -167,6 +167,3 @@ ion-checkbox::part(container) {
     justify-content: flex-start; /* Alinea el contenido a la izquierda */
 }
   
-.boton_despensaoff{
-    margin: 1.5rem;
-}

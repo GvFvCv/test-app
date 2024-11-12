@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonIcon, IonList, IonGrid, IonRow, IonCol, IonItem, IonLabel, IonSpinner, IonItemSliding, IonItemOptions, IonItemOption, IonModal, IonButton, IonInput, IonSelect, IonSelectOption, IonItemDivider } from '@ionic/react';
-import './tab2.css';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonIcon, IonList, IonItem, IonLabel, IonSpinner, IonItemSliding, IonItemOptions, IonItemOption, IonModal, IonButton, IonInput, IonSelect, IonSelectOption, IonItemDivider } from '@ionic/react';
+import './Tab2.css';
 import { pencil, trash } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 
@@ -21,9 +21,6 @@ const Despensa: React.FC = () => {
   const [formData, setFormData] = useState<Alimento>({ id_alimento: 0, name_alimento: '', unit_measurement: '', load_alimento: '', uso_alimento: '' });
   const [selectedAlimento, setSelectedAlimento] = useState<Alimento | null>(null);
   const history = useHistory();
-  
-  const [showAlert, setShowAlert] = useState<boolean>(false);
-  const [alertMessage, setAlertMessage] = useState<string>("");
 
   const handleEdit = (alimento: Alimento) => {
     setSelectedAlimento(alimento);
@@ -68,47 +65,6 @@ const Despensa: React.FC = () => {
       console.error('Error:', error);
     }
   };
-
-  const handleDeleteAllAlimentos = async () => {
-    try {
-      // Recuperar user_id y dispensa_id del localStorage
-      const user = localStorage.getItem('registerResponse');
-      if (!user) {
-        throw new Error('No se encontró el objeto de usuario en el localStorage');
-      }
-
-      const userObj = JSON.parse(user);
-      const userId = userObj.id_user;
-      const dispensa = userObj.dispensa; // Asegúrate de que dispensa_id esté en el objeto
-
-      if (!userId || !dispensa) {
-        throw new Error('No se encontró el ID de usuario o el ID de la dispensa en el objeto de usuario');
-      }
-
-      // Construir la URL con user_id y dispensa_id como parámetros
-      const url = `http://127.0.0.1:8000/app/delete_all_alimentos/?user_id=${userId}&dispensa_id=${dispensa}`;
-
-      // Hacer la solicitud DELETE
-      const response = await fetch(url, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al eliminar el alimento');
-      }
-
-      console.log('Alimento eliminado');
-      // Después de eliminar, redirigir a otra página si es necesario
-      window.location.reload();
-      
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
@@ -160,26 +116,26 @@ const Despensa: React.FC = () => {
         },
         body: JSON.stringify(dataToSubmit), // Convertir los datos a JSON
       });
-
+  
       if (!response.ok) {
         throw new Error('Error al actualizar el alimento');
       }
-
+  
       const updatedAlimento = await response.json();
-
+  
       // Actualizar la lista de alimentos localmente
       setAlimentos((prevAlimentos) =>
         prevAlimentos.map((alimento) =>
           alimento.id_alimento === updatedAlimento.id_alimento ? updatedAlimento : alimento
         )
       );
-
+  
       setShowEditModal(false); // Cerrar el modal después de editar
     } catch (error) {
       console.error('Error:', error);
     }
   };
-
+  
 
   useEffect(() => {
     const fetchAlimentos = async () => {
@@ -247,26 +203,6 @@ const Despensa: React.FC = () => {
       <div className='ccc'>
         <h1 className='cca'>DESPENSA</h1>
       </div>
-
-      <div>
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-              <IonButton color="success" expand="block" shape="round" routerLink="/Tab3">
-                Ingresar alimentos
-                <IonIcon icon={pencil} slot="start" />
-              </IonButton>
-            </IonCol>
-            <IonCol>
-              <IonButton color="danger" expand="block" shape="round" onClick={() => handleDeleteAllAlimentos()}>
-                Vaciar despensa
-                <IonIcon icon={trash} slot="start" />
-              </IonButton>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-      </div>
-
       <IonContent>
         <IonList>
           {alimentos.map((alimento) => (

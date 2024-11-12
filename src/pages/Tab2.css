@@ -1,14 +1,11 @@
 .tab-2 {
-  background-color: #5a2e91;
-  /* Fondo negro */
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  color: rgb(255, 255, 255);
-  /* Texto en blanco para contraste */
-  text-align: center;
-  /* Alineación central del texto */
+  color: rgb(255, 255, 255); /* Texto en blanco para contraste */
+  text-align: center; /* Alineación central del texto */
+  background-color: #5a2e91 !important;
 }
 
 .explore-container {

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { IonButton, IonModal, IonContent, IonHeader, IonTitle, IonToolbar, IonLoading, IonIcon, IonPage, IonCard, IonCardContent, IonCardHeader, IonCardTitle } from '@ionic/react';
+import { IonButton, IonModal, IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonCard, IonCardContent, IonCardHeader, IonCardTitle } from '@ionic/react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './MinutaOn.css';
 import { Clock } from 'lucide-react';
-import { arrowBack } from 'ionicons/icons';
 
 interface Minuta {
   id_minuta: number;
@@ -51,7 +50,6 @@ const MinutaOn: React.FC = () => {
   const [horaActual, setHoraActual] = useState(new Date().getHours());
   const [diaActual, setDiaActual] = useState(new Date().getDate());
   const [visible, setVisible] = useState(true);
-  const [loading, setLoading] = useState(false);
 
   const handleResponse = () => {
     setVisible(false);
@@ -111,7 +109,7 @@ const MinutaOn: React.FC = () => {
       const dia = fechaActual.getDate();
       setHoraActual(hora);
       setDiaActual(dia);
-      if (dia === diaActual && hora >= 21 && hora < 24) {
+      if (dia === diaActual && hora === 1 && fechaActual.getMinutes() >= 20) {
         setMostrarAlerta(true);
       } else {
         setMostrarAlerta(false);
@@ -130,7 +128,6 @@ const MinutaOn: React.FC = () => {
   const handleShowInstructions = async (recipe: Minuta) => {
     setSelectedRecipe(recipe);
     setShowModal(true);
-    setLoading(true);
 
     const user = localStorage.getItem('registerResponse');
     if (!user) {
@@ -171,8 +168,6 @@ const MinutaOn: React.FC = () => {
       setReceta(data.receta);
     } catch (error: any) {
       console.error('Error al enviar la solicitud POST:', error);
-    } finally {
-      setLoading(false);  // Finaliza el loading
     }
   };
 
@@ -193,20 +188,20 @@ const MinutaOn: React.FC = () => {
       if (!user) {
         throw new Error('No se encontró el objeto de usuario en el localStorage');
       }
-
+  
       const userObj = JSON.parse(user);
       const userId = userObj.id_user;
-
+  
       const url = 'http://127.0.0.1:8000/app/contol_minuta/';
-
+  
       const requestData = {
         user_id: userId,
         date: new Date().toISOString().split('T')[0],
         realizado: realizado ? 'true' : 'false',
       };
-
+  
       console.log('Enviando respuesta de control de minuta:', requestData);
-
+  
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -214,20 +209,20 @@ const MinutaOn: React.FC = () => {
         },
         body: JSON.stringify(requestData),
       });
-
+      
       if (!response.ok) {
         throw new Error('Error al enviar la respuesta de control de minuta');
       }
-
+  
       console.log('Control de minuta enviado correctamente');
-
+      
       // Aquí, oculta la tarjeta después de hacer clic
-      setMostrarAlerta(false);
+      setMostrarAlerta(false); 
     } catch (error) {
       console.error('Error al enviar la respuesta de control de minuta:', error);
     }
   };
-
+  
 
   return (
     <IonPage className='tab-1'>
@@ -254,11 +249,6 @@ const MinutaOn: React.FC = () => {
                     <p><strong>Tipo de comida:</strong> {recipe.type_food}</p>
                     <IonButton expand="block" shape="round" color="success" onClick={() => handleShowInstructions(recipe)}>Ver instrucciones</IonButton>
                     <br />
-                    {/* Componente de carga */}
-                    <IonLoading
-                      isOpen={loading}
-                      message={'Cargando receta...'}
-                    />
                   </li>
                 ))}
               </ul>
@@ -268,72 +258,64 @@ const MinutaOn: React.FC = () => {
             <div>
               {mostrarAlerta && (
                 visible ?
-                  <IonCard className="mt-4">
-                    <IonCardHeader>
-                      <IonCardTitle>Alerta</IonCardTitle>
-                    </IonCardHeader>
-                    <IonCardContent>
-                      <div className="flex items-center">
-                        <Clock className="text-gray-600 mr-2" />
-                        <p>El día está llegando a su fin, <br />¿Has completado la minuta el día de hoy?</p>
-                      </div>
-                      <IonButton
-                        className="mt-2"
-                        color="success"
-                        expand="block"
-                        shape='round'
-                        onClick={() => { handleAlertaResponse(true); handleResponse() }}
-                      >
-                        Sí
-                      </IonButton>
-                      <IonButton
-                        className="mt-2"
-                        color="danger"
-                        expand="block"
-                        shape='round'
-                        onClick={() => { handleAlertaResponse(false); handleResponse() }}
-                      >
-                        No
-                      </IonButton>
-                    </IonCardContent>
-                  </IonCard>
-                  : null
+                <IonCard className="mt-4">
+                <IonCardHeader>
+                  <IonCardTitle>Alerta</IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent>
+                  <div className="flex items-center">
+                    <Clock className="text-gray-600 mr-2" />
+                    <p>El día está llegando a su fin, <br />¿Has completado la minuta el día de hoy?</p>
+                  </div>
+                  <IonButton
+                    className="mt-2"
+                    color="success"
+                    expand="block"
+                    shape='round'
+                    onClick={() => { handleAlertaResponse(true); handleResponse()}}
+                  >
+                    Sí
+                  </IonButton>
+                  <IonButton
+                    className="mt-2"
+                    color="danger"
+                    expand="block"
+                    shape='round'
+                    onClick={() => { handleAlertaResponse(false); handleResponse()}}
+                  >
+                    No
+                  </IonButton>
+                </IonCardContent>
+              </IonCard>
+              : null
               )}
             </div>
           </div>
 
-          <IonModal className='instructions-modal' isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
-            <div className='bba'>
-              <h1 className='bbb'>RECETA</h1>
-            </div>
-            <IonButton className='boton_retroceso_tab1' fill="clear" onClick={() => setShowModal(false)}>
-              <IonIcon icon={arrowBack} slot="start" color='success' />
-            </IonButton>
-            <IonContent className='instrucciones_modal_content'>
-
+          <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
+            <IonHeader>
+              <IonToolbar>
+                <IonTitle>Instrucciones para {selectedRecipe?.name_food}</IonTitle>
+              </IonToolbar>
+            </IonHeader>
+            <IonContent>
               {receta ? (
                 <>
-                  <IonCard className='card_intrucciones_tab1'>
-                    <h3 className='h3_card_intrucciones_tab1'>Ingredientes:</h3>
-                    <ul>
-                      {receta.ingredientes.map((ingrediente, index) => (
-                        <li className='li_card_instrucciones_tab1' key={index}>{ingrediente.nombre}: {ingrediente.cantidad}</li>
-                      ))}
-                    </ul>
-                  </IonCard>
-                  <IonCard className='card_intrucciones_tab1'>
-                    <h3 className='h3_card_intrucciones_tab1'>Paso a paso:</h3>
-                    <ol>
-                      {receta.paso_a_paso.map((paso, index) => (
-                        <li className='li_card_instrucciones_tab1' key={index}>{paso}</li>
-                      ))}
-                    </ol>
-                  </IonCard>
+                  <h3>Ingredientes:</h3>
+                  <ul>
+                    {receta.ingredientes.map((ingrediente, index) => (
+                      <li key={index}>{ingrediente.nombre}: {ingrediente.cantidad}</li>
+                    ))}
+                  </ul>
+                  <h3>Paso a paso:</h3>
+                  <ol>
+                    {receta.paso_a_paso.map((paso, index) => (
+                      <li key={index}>{paso}</li>
+                    ))}
+                  </ol>
                 </>
               ) : (
-                <IonCard>
-                  <p>Cargando receta...</p>
-                </IonCard>
+                <p>Cargando receta...</p>
               )}
             </IonContent>
           </IonModal>

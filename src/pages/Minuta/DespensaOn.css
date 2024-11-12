@@ -1,56 +1,54 @@
 .tab-2 {
-  background-color: #5a2e91;
-  /* Fondo negro */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  color: rgb(255, 255, 255);
-  /* Texto en blanco para contraste */
-  text-align: center;
-  /* Alineación central del texto */
-}
-
-.explore-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  background-color: #5a2e91;
-}
-
-/* Ajustes para el título grande centrado */
-h1 {
-  font-size: 3rem; /* Tamaño del texto del título */
-  color: white; /* Color del texto */
-  background-color: #7045ff; /* Fondo del título */
-  text-align: center; /* Centrar el texto */
-  margin: 0 auto; /* Márgenes automáticos para centrar en la página */
-  padding: 1rem 0; /* Espaciado interno */
-  width: 90%; /* Ancho para dejar margen a los lados */
-}
-
-ion-header[collapse="condense"] ion-title {
-  font-size: 1.2rem; /* Tamaño ajustado para el título colapsado */
-  color: #f4f4f5; /* Color gris claro */
-}
-
-.ccc {
-  font-size: 1rem;
-  color: #ffffff;
-  margin-bottom: 0rem;
-  background-color: #7045ff;
-  padding: 1%;
-  align-items: center;
-  justify-content: center;
-}
-
-.cca {
-  font-weight: bold;
-  font-size: 2.5rem;
-  color: #ffffff;
-  background-color: #7045ff;
-  padding: 4% 1%;
-  align-items: center;
-  justify-content: center;
-}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: rgb(255, 255, 255); /* Texto en blanco para contraste */
+    text-align: center; /* Alineación central del texto */
+    background-color: #5a2e91 !important;
+  }
+  
+  .explore-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #5a2e91;
+  }
+  
+  /* Ajustes para el título grande centrado */
+  h1 {
+    font-size: 3rem; /* Tamaño del texto del título */
+    color: white; /* Color del texto */
+    background-color: #7045ff; /* Fondo del título */
+    text-align: center; /* Centrar el texto */
+    margin: 0 auto; /* Márgenes automáticos para centrar en la página */
+    padding: 1rem 0; /* Espaciado interno */
+    width: 90%; /* Ancho para dejar margen a los lados */
+  }
+  
+  ion-header[collapse="condense"] ion-title {
+    font-size: 1.2rem; /* Tamaño ajustado para el título colapsado */
+    color: #f4f4f5; /* Color gris claro */
+  }
+  
+  .ccc {
+    font-size: 1rem;
+    color: #ffffff;
+    margin-bottom: 0rem;
+    background-color: #7045ff;
+    padding: 1%;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .cca {
+    font-weight: bold;
+    font-size: 2.5rem;
+    color: #ffffff;
+    background-color: #7045ff;
+    padding: 4% 1%;
+    align-items: center;
+    justify-content: center;
+  }
+  

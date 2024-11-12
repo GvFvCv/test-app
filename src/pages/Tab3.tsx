@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonLoading, IonImg, IonIcon, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonModal, IonCheckbox, IonLabel, IonItem, IonInput, IonList, IonSelect, IonSelectOption, IonFooter, IonAlert } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonImg, IonIcon, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonModal, IonCheckbox, IonLabel, IonItem, IonInput, IonList, IonSelect, IonSelectOption, IonFooter, IonAlert } from '@ionic/react';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { camera, checkmark, close, arrowBack, pencil, information, addCircleOutline, image, umbrella } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
@@ -15,8 +15,6 @@ const Tab3: React.FC = () => {
   const [showManualInputModal, setShowManualInputModal] = useState<boolean>(false); // Para el modal de ingreso manual
   const [foodItems, setFoodItems] = useState<string[]>([]); // Estado para almacenar alimentos ingresados
   const [food, setFood] = useState<string>(""); // Estado para manejar el input de alimentos
-  const [loading, setLoading] = useState(false);
-  const [showInstructions, setShowInstructions] = useState(true);
   const history = useHistory();
   let imageboleta = "";
 
@@ -34,14 +32,9 @@ const Tab3: React.FC = () => {
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     console.log(`Input Change - Name: ${name}, Value: ${value}`);
-
-    // Convertir el valor a mayúsculas
-    const upperCaseValue = value.toUpperCase();
-
-    // Actualizar el estado con el valor convertido a mayúsculas
     setFormData({
       ...formData,
-      [name]: upperCaseValue
+      [name]: value
     });
   };
 
@@ -85,16 +78,10 @@ const Tab3: React.FC = () => {
         uso_alimento: ''
       });
 
-      // Extraer el mensaje del servidor utilizando map
-      const messageArray = [response].map(res => res.message);
-      const message = messageArray[0] || "Ingreso de alimento exitoso"; // Mensaje por defecto si no se encuentra el mensaje
-
-      ShowAlert(`${message}`); // Mostrar la respuesta en la alerta
       // Redirigir después de enviar
-
+      history.push('/tab3');
     } catch (error) {
       console.error('Error en el registro del alimento:', error);
-      ShowAlert(`Error al intentar registrar: ${(error as Error).message}`);
     }
   };
 
@@ -127,6 +114,32 @@ const Tab3: React.FC = () => {
     setPhoto(undefined);
   };
 
+  const handleDontShowAgain = async () => {
+    if (dontShowAgain) {
+      localStorage.setItem('hideInstructions', 'true');
+    }
+
+    setShowModal(false);
+
+    if (isFirstCapture) {
+      await captureImage();
+    }
+
+    setIsFirstCapture(false);
+  };
+
+  const showInstructionsAgain = () => {
+    setIsFirstCapture(false);
+    setShowModal(true);
+  };
+
+  const addFoodItem = () => {
+    if (food.trim()) {
+      setFoodItems([...foodItems, food]); // Agregar el alimento a la lista
+      setFood(""); // Limpiar el input después de agregar
+    }
+  };
+
   const ShowAlert = (message: string) => {
     setAlertMessage(message);
     setShowAlert(true);
@@ -136,7 +149,6 @@ const Tab3: React.FC = () => {
   };
 
   const EnviarBoletaEP = async () => {
-    setLoading(true);
     try {
       // Recuperar el objeto de usuario del localStorage
       const user = localStorage.getItem('registerResponse');
@@ -159,16 +171,12 @@ const Tab3: React.FC = () => {
       const messageArray = [response].map(res => res.message);
       const message = messageArray[0] || "Ingreso de alimentos exitoso"; // Mensaje por defecto si no se encuentra el mensaje
 
-      setShowModal(false);
-
       ShowAlert(`${message}`); // Mostrar la respuesta en la alerta
       history.push('/tab2'); // Redirigir después de enviar
-    }
+    } 
     catch (error) {
       console.error('Error al enviar la foto:', error);
       ShowAlert(`Error al enviar la foto: ${(error as Error).message}`);
-    } finally {
-      setLoading(false);  // Finaliza el loading
     }
   };
 
@@ -181,22 +189,6 @@ const Tab3: React.FC = () => {
   };
 
   const storedResponse = getStoredResponse();
-
-
-  // Efecto para cargar la preferencia desde localStorage al cargar la página
-  useEffect(() => {
-    const savedPreference = localStorage.getItem('showInstructions');
-    if (savedPreference !== null) {
-      setShowInstructions(savedPreference === 'true');
-    }
-  }, []);
-
-  // Función para guardar la preferencia en localStorage
-  const toggleInstructions = (visible: boolean) => {
-    setShowInstructions(visible);
-    localStorage.setItem('showInstructions', visible.toString());
-  };
-
 
   return (
     <IonPage color={'light'}>
@@ -212,92 +204,58 @@ const Tab3: React.FC = () => {
           <IonCardContent>Procura capturar una imagen decente, si no te convence vuelve a capturar.</IonCardContent>
         </IonCard>
 
-        <IonButton color="success" expand="block" shape="round" onClick={() => setShowModal(true)} /**/>
-          Capturar Boleta
-          <IonIcon icon={camera} slot="start" />
-        </IonButton>
+        {photo ? (
+          <>
+            <IonImg src={photo} alt="Foto capturada" />
 
-        {/* Modal captura boleta */}
-        <IonModal isOpen={showModal}>
-          <IonContent className="ion-padding">
-            <div className='bba'>
-              <h1 className='bbb'>CAPTURAR</h1>
-            </div>
-
-            <IonButton fill="clear" onClick={() => setShowModal(false)}>
-              <IonIcon icon={arrowBack} slot="start" color='success' />
+            <IonButton onClick={retakePhoto} expand="block" shape="round" color="danger">
+              Retomar Foto
+              <IonIcon icon={close} slot="start" />
             </IonButton>
-            <br /><br />
 
-            {showInstructions ? (
+            <IonButton color="success" expand="block" shape="round" onClick={EnviarBoletaEP}>
+              Aceptar
+              <IonIcon icon={checkmark} slot="start" />
+            </IonButton>
+          </>
+        ) : (
+          <>
+            <IonButton color="success" expand="block" shape="round" onClick={takePhoto}>
+              Capturar Boleta
+              <IonIcon icon={camera} slot="start" />
+            </IonButton>
 
-              <IonCard>
-                <IonCardHeader>
-                  <IonTitle>Instrucciones</IonTitle>
-                </IonCardHeader>
-                <IonCardContent>
-                  <p>Sigue estas indicaciones para capturar una buena imagen de tu boleta.</p>
-                  <br />
-                  <ul>
-                    <li>Asegúrate que la parte de los productos de la boleta esté completamente visible.</li>
-                    <br />
-                    <li>Procura que la imagen esté bien iluminada.</li>
-                    <br />
-                    <li>No te preocupes por los que no son alimentos, estos no seran ingresados.</li>
-                    <br />
-                    <li>Si la imagen no te convence, puedes volver a intentarlo.</li>
-                    <br />
-                  </ul>
-
-                  <IonButton expand="block" shape="round" onClick={() => toggleInstructions(false)}>
-                    Ocultar Instrucciones
-                    <IonIcon icon={information} slot="start" />
-                  </IonButton>
-
-                </IonCardContent>
-              </IonCard>
-
-            ) : (
-
-              <IonButton expand="block" shape="round" onClick={() => toggleInstructions(true)}>
-                Mostrar Instrucciones
+            {dontShowAgain && (
+              <IonButton color="danger" expand="block" shape="round" onClick={showInstructionsAgain}>
+                Instrucciones
                 <IonIcon icon={information} slot="start" />
               </IonButton>
-
             )}
+          </>
+        )}
 
+        {/* Modal de instrucciones */}
+        <IonModal isOpen={showModal}>
+          <IonContent className="ion-padding">
+            <IonTitle>Instrucciones</IonTitle>
+            <p>Sigue estas indicaciones para capturar una buena imagen de tu boleta.</p>
             <br />
+            <ul>
+              <li>Asegúrate de que la boleta esté completamente visible.</li>
+              <br />
+              <li>Procura que la imagen esté bien iluminada.</li>
+              <br />
+              <li>Si la imagen no te convence, puedes volver a intentarlo.</li>
+              <br />
+            </ul>
 
-            {!photo ? (
+            <IonCheckbox checked={dontShowAgain} onIonChange={e => setDontShowAgain(e.detail.checked)} />
+            <IonLabel>No volver a mostrar</IonLabel>
+            <br /><br /><br />
 
-              <IonButton color="success" expand="block" shape="round" onClick={takePhoto}>Capturar Alimentos</IonButton>
-
-            ) : (
-              <>
-                <IonImg src={photo} alt="Foto capturada" />
-
-                <IonButton color="success" expand="block" shape="round" onClick={EnviarBoletaEP}>
-                  Aceptar
-                  <IonIcon icon={checkmark} slot="start" />
-                </IonButton>
-
-                <IonButton onClick={retakePhoto} expand="block" shape="round" color="danger">
-                  Retomar Foto
-                  <IonIcon icon={close} slot="start" />
-                </IonButton>
-
-                {/* Componente de carga */}
-                <IonLoading
-                  isOpen={loading}
-                  message={'Ingresando alimentos...'}
-                />
-
-              </>
-            )}
+            <IonButton color="success" expand="block" shape="round" onClick={handleDontShowAgain}>Continuar</IonButton>
           </IonContent>
         </IonModal>
-
-        {/* Ingreso de alimentos manual */}
 
         <IonCard className="card-alimento-manual" color="medium">
           <IonCardHeader>
