@@ -1,17 +1,26 @@
 .notification {
     position: fixed; /* Fija la posición de la notificación en la pantalla */
     top: -100px; /* Inicialmente fuera de la pantalla */
-    right: 80px; /* Distancia desde la parte derecha de la pantalla */
+    left: 50px;
+    right: 50px; /* Distancia desde la parte derecha de la pantalla */
     padding: 1.5rem 1.5rem; /* Espaciado interno */
-    font-size: 1.3rem; /* Tamaño del texto */
-    border-radius: 12px; /* Bordes redondeados */
-    color: #ffffff; /* Color del texto */
+    border-radius: 10px; /* Bordes redondeados */
     z-index: 1000; /* Asegura que la notificación esté por encima de otros elementos */
     opacity: 2; /* Inicialmente invisible */
     transition: opacity 0.5s ease-in-out, top 1s ease-in-out; /* Transición suave para la opacidad y el movimiento */
     align-items: center; /* Alinea el contenido verticalmente */
     display: flex; /* Muestra el contenido en línea */
+    justify-content: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0.5, 0.9); /* Sombra para darle profundidad */
+}
+
+
+.text{
+    text-align: center;
+    font-size: 1.3rem;
+    color: #ffffff;
+    justify-content: center;
+    flex: 1; /* Ocupa todo el espacio disponible */
 }
 
 .notification.success {

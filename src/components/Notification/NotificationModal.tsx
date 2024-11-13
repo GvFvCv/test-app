@@ -14,12 +14,7 @@ interface NotificationModalProps {
 const NotificationModal: React.FC<NotificationModalProps> = ({ showNotificationsCard, onClose }) => {
   const [notifications, setNotifications] = useState<any[]>([]);
   const [recommendations, setRecommendations] = useState([]);
-  interface Suggestion {
-    titulo_recomendacion?: string;
-    sugerencia?: string;
-  }
-  
-  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [suggestions, setSuggestions] = useState([]);
   const [activeList, setActiveList] = useState('notifications');
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -50,53 +45,19 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ showNotifications
   const renderList = () => {
     switch (activeList) {
       case 'notifications':
-        return notifications.map((notification, index) => (
+        return notifications.map((notifications, index) => (
           <IonItem key={index} button={true} detail={false}>
-            <div className="unread-indicator-wrapper" slot="start">
-              <div className="unread-indicator"></div>
-            </div>
             <IonLabel>
-              {/* Muestra el título de la notificación si existe */}
-              {notification.title && (
-                <IonText>{notification.title}</IonText>
-              )}
-              <br />
-              {/* Muestra el mensaje de la notificación si existe */}
-              {notification.message && (
-                <IonNote color="medium" className="ion-text-wrap">
-                  {notification.message}
-                </IonNote>
-              )}
+              <IonText>{notifications}</IonText>
             </IonLabel>
-            <div className="metadata-end-wrapper" slot="end">
-              <IonNote color="medium">06:11</IonNote>
-              <IonIcon color="medium" icon={chevronForward}></IonIcon>
-            </div>
           </IonItem>
         ));
       case 'suggestions':
         return suggestions.map((suggestion, index) => (
           <IonItem key={index} button={true} detail={false}>
-            <div className="unread-indicator-wrapper" slot="start">
-              <div className="unread-indicator"></div>
-            </div>
             <IonLabel>
-              {/* Muestra el título de recomendación si existe */}
-              {suggestion.titulo_recomendacion && (
-                <IonText>{suggestion.titulo_recomendacion}</IonText>
-              )}
-              <br />
-              {/* Muestra la recomendación si existe */}
-              {suggestion.sugerencia && (
-                <IonNote color="medium" className="ion-text-wrap">
-                  {suggestion.sugerencia}
-                </IonNote>
-              )}
+              <IonText>{suggestion}</IonText>
             </IonLabel>
-            <div className="metadata-end-wrapper" slot="end">
-              <IonNote color="medium">06:11</IonNote>
-              <IonIcon color="medium" icon={chevronForward}></IonIcon>
-            </div>
           </IonItem>
         ));
       case 'recommendations':

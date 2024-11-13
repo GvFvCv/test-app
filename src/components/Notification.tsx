@@ -48,9 +48,10 @@ const NotificationComponent: React.FC<NotificationProps> = ({ message, type, dur
 
     return (
         <div className={`notification ${type} ${visible ? 'show' : 'hide'}`}>
-            {message}
+            <span className='text'>{message}</span>
         </div>
     );
 };
 
 export default NotificationComponent;
+
