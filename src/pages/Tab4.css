@@ -40,16 +40,26 @@ ion-header[collapse="condense"] ion-title {
 }
 
 .eee-1 {
-  color: #ffffff;
-  background-color: #5a2e91 !important;
+  display: fixed;
   font-weight: bold;
+  font-size: 1rem;
+  color: #ffffff;
+  margin-bottom: 0rem;
+  background-color: #7045ff;
+  padding: 1%;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Título de la página "AJUSTES" */
-.eef-2{
-  font-size: 2.6rem;
-  background-color: #5a2e91 !important;
+.eef-2 {
+  display: fixed;
   font-weight: bold;
+  font-size: 2.5rem;
+  color: #ffffff;
+  background-color: #7045ff;
+  padding: 4% 1%;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Título de la página "AJUSTES" */

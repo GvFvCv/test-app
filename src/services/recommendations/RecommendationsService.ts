@@ -1,52 +1,74 @@
-// RecommendationsService.ts
-
-// Función para generar un número aleatorio entre 1 y 3
-const getRandomTypeRecommendation = (): number => {
-  return Math.floor(Math.random() * 3) + 1;
-};
-
 export const fetchRecommendations = async () => {
   try {
-    const user_id = 1; // Valor manual para user_id
-    const type_recommendation = 1; // Valor manual para type_recommendation
+    const formData = new FormData();
+    const registerResponse = localStorage.getItem('registerResponse');
+    if (registerResponse) {
+      const parsedResponse = JSON.parse(registerResponse);
+      const userId = parsedResponse.id_user;
+      if (userId) {
+        formData.append('user_id', userId);
+      } else {
+        throw new Error('User ID not found in registerResponse');
+      }
+    } else {
+      throw new Error('registerResponse not found in localStorage');
+    }
+
+    const randomLimit = Math.ceil(Math.random() * 3);
+    for (let i = 0; i < randomLimit; i++) {
+      const randomType = Math.ceil(Math.random() * 3);
+      formData.append('type_recommendation', randomType.toString());
+    }
 
     const response = await fetch('http://127.0.0.1:8000/app/recomendacion_compra/', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        user_id: 1,
-        type_recommendation: getRandomTypeRecommendation()
-      })
+      body: formData,
     });
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
+
     const contentType = response.headers.get('content-type');
     if (!contentType || !contentType.includes('application/json')) {
-      const text = await response.text(); // Leer la respuesta como texto
+      const text = await response.text();
       throw new Error(`Received non-JSON response: ${text}`);
     }
+
     const data = await response.json();
-    if (!data.recommendation || !Array.isArray(data.recommendation)) {
-      throw new Error('Invalid recommendations format');
+
+    // Validar que `data` contiene `recommendation` y que es un array o un mensaje válido
+    if (!data.recommendation) {
+      return [{ recommendation: "aun no hay recomendaciones para ti" }];
     }
-    return data.recommendation.map((item: { recomendacion: string }) => item.recomendacion);
+
+    // Si `recommendation` no es un array, devuélvelo envuelto en un array
+    return Array.isArray(data.recommendation) ? data.recommendation : [{ recommendation: data.recommendation }];
+    
   } catch (error) {
     console.error('Error fetching recommendations:', error);
-    return [];
+    return [{ recommendation: "aun no hay recomendaciones para ti" }];
   }
 };
 
 export const saveToLocalStorage = (key: string, data: any) => {
-  const existingData = JSON.parse(localStorage.getItem(key) || '[]');
-  existingData.push(data);
+  let existingData = JSON.parse(localStorage.getItem(key) || '[]');
+  if (Array.isArray(existingData)) {
+    existingData.push(data);
+  } else {
+    existingData = [data];
+  }
   localStorage.setItem(key, JSON.stringify(existingData));
 };
 
 export const fetchRecommendationsOnceADay = async () => {
-  const recommendations = await fetchRecommendations();
-  saveToLocalStorage('recommendationsHistory', { date: new Date(), recommendations });
-  return recommendations;
+  try {
+    const recommendations = await fetchRecommendations();
+    const dateEntry = { date: new Date(), recommendations: recommendations || [] };
+    saveToLocalStorage('recommendationsHistory', dateEntry);
+    return recommendations || [];
+  } catch (error) {
+    console.error('Error fetching recommendations once a day:', error);
+    return [];
+  }
 };

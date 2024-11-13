@@ -1,7 +1,6 @@
 .tab-2 {
-  background-color: #5a2e91;
-  /* Fondo negro */
-  display: flex;
+  background-color: #7045ff;
+  display: fixed;
   justify-content: center;
   align-items: center;
   height: 100%;
@@ -12,7 +11,7 @@
 }
 
 .explore-container {
-  display: flex;
+  display: fixed;
   justify-content: center;
   align-items: center;
   height: 100%;
@@ -23,7 +22,7 @@
 h1 {
   font-size: 3rem; /* Tamaño del texto del título */
   color: white; /* Color del texto */
-  background-color: #7045ff; /* Fondo del título */
+  background-color: #5a2e91; /* Fondo del título */
   text-align: center; /* Centrar el texto */
   margin: 0 auto; /* Márgenes automáticos para centrar en la página */
   padding: 1rem 0; /* Espaciado interno */
@@ -53,4 +52,140 @@ ion-header[collapse="condense"] ion-title {
   padding: 4% 1%;
   align-items: center;
   justify-content: center;
+}
+
+
+
+
+/* From Uiverse.io by alexruix */ 
+.loader {
+  width: 100px;
+  height: 80px;
+  position: relative;
+  padding-top: 30rem;
+  bottom: 20px; /* Ajusta este valor según sea necesario */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-text {
+  position: relative;
+  top: -30px;
+  left: -20px;
+  padding: 0;
+  margin: 0;
+  color: #5c27fc;
+  animation: text_713 3.5s ease both infinite;
+  font-size: 14px;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.load {
+  background-color: #9A79FF;
+  border-radius: 10px; 
+  display: block; 
+  height: 14px;
+  width: 46px; 
+  bottom: 0;
+  position: absolute;
+  transform: translateX(64px); 
+  animation: loading_713 3.5s ease both infinite;  
+}
+
+.load::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: #bfadf4;
+  border-radius: inherit;
+  animation: loading2_713 3.5s ease both infinite;
+}
+
+@keyframes text_713 {
+  0% {
+    letter-spacing: 1px;
+    transform: translateX(0px);
+  }
+
+  40% {
+    letter-spacing: 2px;
+    transform: translateX(26px);
+  }
+
+  80% {
+    letter-spacing: 1px;
+    transform: translateX(32px);
+  }
+
+  90% {
+    letter-spacing: 2px;
+    transform: translateX(0px);
+  }
+
+  100% {
+    letter-spacing: 1px;
+    transform: translateX(0px);
+  }
+}
+
+@keyframes loading_713 {
+  0% {
+    width: 16px;
+    transform: translateX(0px);
+  }
+
+  40% {
+    width: 100%;
+    transform: translateX(0px);
+  }
+
+  80% {
+    width: 16px;
+    transform: translateX(64px);
+  }
+
+  90% {
+    width: 100%;
+    transform: translateX(0px);
+  }
+
+  100% {
+    width: 16px;
+    transform: translateX(0px);
+  }
+}
+
+@keyframes loading2_713 {
+  0% {
+    transform: translateX(0px);
+    width: 16px;
+  }
+
+  40% {
+    transform: translateX(0%);
+    width: 80%;
+  }
+
+  80% {
+    width: 100%;
+    transform: translateX(0px);
+  }
+
+  90% {
+    width: 80%;
+    transform: translateX(15px);
+  }
+
+  100% {
+    transform: translateX(0px);
+    width: 16px;
+  }
 }
