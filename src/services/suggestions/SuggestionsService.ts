@@ -12,7 +12,7 @@ export const fetchSuggestions = async () => {
       throw new Error('User ID not found in registerResponse');
     }
 
-    const response = await fetch(`http://127.0.0.1:8000/app/notificaciones4/?user_id=${userId}`, {
+    const response = await fetch(`http://127.0.0.1:8000/app/notificaciones4_aviso_sugerencia/`, {
       method: 'GET'
     });
 
@@ -42,8 +42,7 @@ export const fetchSuggestions = async () => {
 
 export const saveToLocalStorage = (key: string, data: any) => {
   const existingData = JSON.parse(localStorage.getItem(key) || '[]');
-  existingData.push(data);
-  localStorage.setItem(key, JSON.stringify(existingData));
+  localStorage.setItem(key, JSON.stringify([...existingData, data]));
 };
 
 export const fetchSuggestionsOnceADay = async () => {

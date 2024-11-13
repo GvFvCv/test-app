@@ -10,6 +10,7 @@ const PantallaPrincipal: React.FC = () => {
   const [stateMinuta, setStateMinuta] = useState<string | null>(null);
   const [duration] = useState<number>(1000); // Duración en ms (ajustable)
   const [showNotification, setShowNotification] = useState<boolean>(false);
+  
 
   useEffect(() => {
     const fetchMinuta = async () => {
@@ -45,32 +46,29 @@ const PantallaPrincipal: React.FC = () => {
        setTimeout(() => {
          setShowNotification(true);
          localStorage.removeItem('loginSuccess'); // Limpiar el estado de ingreso exitoso
-       }, 4000); // Delay de 2 segundos
+       }, 5000); // Delay de 2 segundos
      }
 
   }, [duration]);
 
   return (
     <IonPage>
-      <IonLoading
-        isOpen={loading}
-        onDidDismiss={() => setLoading(false)}
-        message="Cargando..." // Mensaje de carga
-        spinner="lines" // Tipo de animación de carga
-        duration={1500} // Duración de la carga en milisegundos
-        cssClass= "custom-loading-tech" // Clase CSS personalizada
-      />
-      <IonContent className='tab-1' /* style={{ '--ion-background-color': '#7045ff' }} */>
+      {loading && (
+        <div className="loader">
+          <span className="loader-text">cargando...</span>
+          <span className="load"></span>
+        </div>
+      )}
+      <IonContent className='tab-1'>
         {/* Condicional para mostrar la minuta */}
         {!loading && (
           stateMinuta === "True" ? <MinutaOn /> : <MinutaOff />
         )}
         {showNotification && (
-          <Notification message="¡Ingreso exitoso!" type="success" />
+          <Notification  message="¡Ingreso exitoso!" type="success" />
         )}
       </IonContent>
     </IonPage>
   );
-};
-
+}
 export default PantallaPrincipal;

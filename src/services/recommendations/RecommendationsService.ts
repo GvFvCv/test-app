@@ -1,7 +1,25 @@
 // RecommendationsService.ts
+
+// Función para generar un número aleatorio entre 1 y 3
+const getRandomTypeRecommendation = (): number => {
+  return Math.floor(Math.random() * 3) + 1;
+};
+
 export const fetchRecommendations = async () => {
   try {
-    const response = await fetch('http://127.0.0.1:8000/app/notificaciones4/user_id');
+    const user_id = 1; // Valor manual para user_id
+    const type_recommendation = 1; // Valor manual para type_recommendation
+
+    const response = await fetch('http://127.0.0.1:8000/app/recomendacion_compra/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: 1,
+        type_recommendation: getRandomTypeRecommendation()
+      })
+    });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -11,10 +29,10 @@ export const fetchRecommendations = async () => {
       throw new Error(`Received non-JSON response: ${text}`);
     }
     const data = await response.json();
-    if (!data.recommendations || !Array.isArray(data.recommendations)) {
+    if (!data.recommendation || !Array.isArray(data.recommendation)) {
       throw new Error('Invalid recommendations format');
     }
-    return data.recommendations.map((item: { recommendation: string }) => item.recommendation);
+    return data.recommendation.map((item: { recomendacion: string }) => item.recomendacion);
   } catch (error) {
     console.error('Error fetching recommendations:', error);
     return [];
