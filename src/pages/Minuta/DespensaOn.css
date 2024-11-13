@@ -21,18 +21,27 @@
 
 /* Ajustes para el título grande centrado */
 h1 {
-  font-size: 3rem; /* Tamaño del texto del título */
-  color: white; /* Color del texto */
-  background-color: #7045ff; /* Fondo del título */
-  text-align: center; /* Centrar el texto */
-  margin: 0 auto; /* Márgenes automáticos para centrar en la página */
-  padding: 1rem 0; /* Espaciado interno */
-  width: 90%; /* Ancho para dejar margen a los lados */
+  font-size: 3rem;
+  /* Tamaño del texto del título */
+  color: white;
+  /* Color del texto */
+  background-color: #7045ff;
+  /* Fondo del título */
+  text-align: center;
+  /* Centrar el texto */
+  margin: 0 auto;
+  /* Márgenes automáticos para centrar en la página */
+  padding: 1rem 0;
+  /* Espaciado interno */
+  width: 90%;
+  /* Ancho para dejar margen a los lados */
 }
 
 ion-header[collapse="condense"] ion-title {
-  font-size: 1.2rem; /* Tamaño ajustado para el título colapsado */
-  color: #f4f4f5; /* Color gris claro */
+  font-size: 1.2rem;
+  /* Tamaño ajustado para el título colapsado */
+  color: #f4f4f5;
+  /* Color gris claro */
 }
 
 .ccc {
@@ -54,3 +63,31 @@ ion-header[collapse="condense"] ion-title {
   align-items: center;
   justify-content: center;
 }
+
+.btn_despensaon_1, .btn_despensaon_2 {
+  position: fixed;
+  bottom: 20px; /* Coloca el botón en la parte inferior */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.btn_despensaon_1 {
+  left: 20px; /* Botón en la esquina inferior izquierda */
+}
+
+.btn_despensaon_2 {
+  right: 20px; /* Botón en la esquina inferior derecha */
+}
+
+ion-icon {
+  font-size: 30px !important; /* Tamaño del icono */
+  display: block; /* Asegura que el icono se comporte como un bloque */
+}
+
+
+

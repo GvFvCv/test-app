@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonIcon, IonList, IonGrid, IonRow, IonCol, IonItem, IonLabel, IonSpinner, IonItemSliding, IonItemOptions, IonItemOption, IonModal, IonButton, IonInput, IonSelect, IonSelectOption, IonItemDivider } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonIcon, IonList, IonGrid, IonAlert, IonRow, IonCol, IonItem, IonLabel, IonSpinner, IonItemSliding, IonItemOptions, IonItemOption, IonModal, IonButton, IonInput, IonSelect, IonSelectOption, IonItemDivider } from '@ionic/react';
 import './DespensaOn.css';
-import { pencil, trash } from 'ionicons/icons';
+import { pencil, trash, checkmarkCircleOutline, add } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 
 // Interfaz para los alimentos en la dispensa
@@ -11,6 +11,7 @@ interface Alimento {
   unit_measurement: string;
   load_alimento: string;
   uso_alimento: string;
+  status_in_minuta?: boolean;
 }
 
 const Despensa: React.FC = () => {
@@ -20,6 +21,7 @@ const Despensa: React.FC = () => {
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [formData, setFormData] = useState<Alimento>({ id_alimento: 0, name_alimento: '', unit_measurement: '', load_alimento: '', uso_alimento: '' });
   const [selectedAlimento, setSelectedAlimento] = useState<Alimento | null>(null);
+  const [showAlert, setShowAlert] = useState(false);
   const history = useHistory();
 
   const handleEdit = (alimento: Alimento) => {
@@ -99,12 +101,24 @@ const Despensa: React.FC = () => {
 
       console.log('Alimento eliminado');
       // Después de eliminar, redirigir a otra página si es necesario
+
       history.push('/tab2');
+      window.location.reload();
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
+  // Función para verificar si hay alimentos con status_in_minuta = true
+  const checkAlimentosConMinuta = () => {
+    const alimentosConMinuta = alimentos.filter(alimento => alimento.status_in_minuta === true);
+
+    if (alimentosConMinuta.length > 0) {
+      setShowAlert(true); // Mostrar alerta si hay alimentos asociados a una minuta
+    } else {
+      handleDeleteAllAlimentos(); // Eliminar directamente si no hay alimentos en minuta
+    }
+  };
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
@@ -245,23 +259,42 @@ const Despensa: React.FC = () => {
       </div>
 
       <div>
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-              <IonButton color="success" expand="block" shape="round" routerLink="/Tab3">
-                Ingresar alimentos
-                <IonIcon icon={pencil} slot="start" />
-              </IonButton>
-            </IonCol>
-            <IonCol>
-              <IonButton color="danger" expand="block" shape="round" onClick={() => handleDeleteAllAlimentos()}>
-                Vaciar despensa
-                <IonIcon icon={trash} slot="start" />
-              </IonButton>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+        <IonCol>
+          <IonButton className='btn_despensaon_1' color="success" shape="round" routerLink="/Tab3">
+            <h3><IonIcon icon={add} /></h3>
+          </IonButton>
+        </IonCol>
+        <IonCol>
+          <IonButton className="btn_despensaon_2" color="danger" shape="round" onClick={() => checkAlimentosConMinuta()}>
+            <h3><IonIcon icon={trash} /></h3>
+          </IonButton>
+        </IonCol>
       </div>
+
+      {/* Alerta de confirmación */}
+      <IonAlert
+        isOpen={showAlert}
+        onDidDismiss={() => setShowAlert(false)}
+        header={'Confirmar eliminación'}
+        message={'Si eliminas todos los alimentos de la despensa y hay alimentos asociados a una minuta activa, tendrás que rehacer la minuta. ¿Deseas continuar?'}
+        buttons={[
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => {
+              setShowAlert(false);
+            }
+          },
+          {
+            text: 'Eliminar',
+            handler: () => {
+              handleDeleteAllAlimentos();
+              setShowAlert(false);
+            }
+          }
+        ]}
+      />
+
 
       <IonContent>
         <IonList>
@@ -269,8 +302,19 @@ const Despensa: React.FC = () => {
             <IonItemSliding key={alimento.id_alimento}>
               <IonItem>
                 <IonLabel>
-                  <h2>{alimento.name_alimento}</h2>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <h2 style={{ marginRight: '8px' }}>{alimento.name_alimento}</h2>
+                    {/* Mostrar la imagen solo si status_in_minuta es true, al lado del nombre */}
+                    {alimento.status_in_minuta && (
+                      <img
+                        src="resources\cutting.png"
+                        alt="Status"
+                        style={{ width: '20px', height: '20px' }} // Ajusta el tamaño aquí
+                      />
+                    )}
+                  </div>
                 </IonLabel>
+
                 <IonLabel slot='end'>
                   <p>Cantidad: {alimento.load_alimento} {alimento.unit_measurement}</p>
                 </IonLabel>
