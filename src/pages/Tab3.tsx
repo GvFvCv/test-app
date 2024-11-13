@@ -276,14 +276,12 @@ const Tab3: React.FC = () => {
               <>
                 <IonImg src={photo} alt="Foto capturada" />
 
-                <IonButton color="success" expand="block" shape="round" onClick={EnviarBoletaEP}>
-                  Aceptar
-                  <IonIcon icon={checkmark} slot="start" />
+                <IonButton className='btn_despensaon_1' color="success" expand="block" shape="round" onClick={EnviarBoletaEP}>
+                  <h3><IonIcon icon={checkmark} slot="start" /></h3>
                 </IonButton>
 
-                <IonButton onClick={retakePhoto} expand="block" shape="round" color="danger">
-                  Retomar Foto
-                  <IonIcon icon={close} slot="start" />
+                <IonButton className="btn_despensaon_2" onClick={retakePhoto} expand="block" shape="round" color="danger">
+                  <h3><IonIcon icon={close} slot="start" /></h3>
                 </IonButton>
 
                 {/* Componente de carga */}
