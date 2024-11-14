@@ -5,7 +5,7 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-    color: rgb(255, 255, 255);
+    color: #ffffff;
     /* Texto en blanco para contraste */
     text-align: center;
     /* Alineación central del texto */
@@ -16,7 +16,7 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-    background-color: rgb(96, 48, 255);
+    background-color: #6030ff;
 }
 
 
@@ -36,6 +36,8 @@ ion-header[collapse="condense"] ion-title {
 }
 
 .bba {
+    display: fixed;
+    font-weight: bold;
     font-size: 1rem;
     color: #ffffff;
     margin-bottom: 0rem;
@@ -46,6 +48,7 @@ ion-header[collapse="condense"] ion-title {
 }
 
 .bbb {
+    display: fixed;
     font-weight: bold;
     font-size: 2.5rem;
     color: #ffffff;
@@ -54,6 +57,70 @@ ion-header[collapse="condense"] ion-title {
     align-items: center;
     justify-content: center;
 }
+
+
+
+
+.modalContent {
+    max-height: 100vh; /* Limita la altura para permitir scroll en el contenido */
+    overflow-y: auto; /* Activa el scroll solo en el contenido */
+    padding: 1rem; /* Espaciado interno */
+    background-color: #ffffff; /* Fondo blanco */
+    font-size: 1.5rem;
+}
+
+.back-button {
+    position: absolute;
+    top: 1px;
+    left: rem;
+    font-size: 4rem !important;
+}
+
+
+.modalcap {
+    position: sticky; /* Fija el elemento en la parte superior de la ventana */
+    top: -0; /* Posiciona el elemento en la parte superior */
+    color: #6200ff;
+    margin-bottom: 1rem;
+    background-color: #ffff;
+    padding: auto;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem; /* Tamaño de fuente */
+    font-weight: bold; 
+    z-index: 1; /* Coloca el elemento por encima de los demás */
+}
+
+.modaltext {
+    position: sticky; /* Fija el elemento en la parte superior de la ventana */
+    font-weight: bold;
+    text-align: center;
+    font-size: 2.2rem;
+    color: #6200ff;
+    background-color: #ffff;
+    padding: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-button ion-icon {
+    font-size: 4rem !important;
+    position: sticky;
+    z-index: 1;
+
+}
+
+
+.mostratIntruccion {
+    position: sticky; /* Fija el elemento en la parte superior de la ventana */
+    top: 0; /* Posiciona el elemento en la parte superior */
+    font-size: 1rem; /* Tamaño de fuente */
+    font-weight: bold; 
+    padding: 1%;
+    align-items: center; 
+    justify-content: center;  /* Coloca el elemento por encima de los demás */
+}
+
 
 /* Estilos para el título en el header */
 

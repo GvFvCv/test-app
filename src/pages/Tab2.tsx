@@ -55,17 +55,15 @@ const PantallaPrincipal: React.FC = () => {
   
   return (
     <IonPage>
-      <IonLoading
-        isOpen={loading}
-        onDidDismiss={() => setLoading(false)}
-        message="Cargando..."
-        spinner="lines"
-        duration={1500}
-        cssClass="custom-loading-tech"
-      />
+      {loading && (
+        <div className="loader">
+          <span className="loader-text">cargando...</span>
+          <span className="load"></span>
+        </div>
+      )}
       <IonContent className='tab-1'>
         {!loading && (
-          // Comparar 'status' con la cadena "true"
+          
           stateMinuta === "true" ? <DespensaOn /> : <DespensaOff />
         )}
         {showNotification && (

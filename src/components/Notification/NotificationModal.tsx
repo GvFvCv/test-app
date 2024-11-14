@@ -1,10 +1,10 @@
+import { IonModal, IonHeader, IonToolbar, IonButton, IonIcon, IonContent, IonList, IonItem, IonLabel, IonText, IonNote } from '@ionic/react';
+import { arrowBack, notificationsOutline, chatbubbleEllipsesOutline, bulbOutline } from 'ionicons/icons';
+import './NotificationModal.css';
 import { useEffect, useState } from 'react';
 import { fetchNotificationsOnceADay } from '../../services/notifications/NotificationsService';
-import { fetchRecommendationsOnceADay } from '../../services/recommendations/RecommendationsService';
-import { fetchSuggestionsOnceADay } from '../../services/suggestions/SuggestionsService';
-import { IonModal, IonHeader, IonToolbar, IonButton, IonIcon, IonContent, IonList, IonItem, IonLabel, IonText, IonNote } from '@ionic/react';
-import { arrowBack, notificationsOutline, chatbubbleEllipsesOutline, bulbOutline, chevronForward } from 'ionicons/icons';
-import './NotificationModal.css';
+import { fetchSuggestionsOnceADay   } from '../../services/suggestions/SuggestionsService';
+import {fetchRecommendationsOnceADay }  from '../../services/recommendations/RecommendationsService';
 
 interface NotificationModalProps {
   showNotificationsCard: boolean;
@@ -12,9 +12,9 @@ interface NotificationModalProps {
 }
 
 const NotificationModal: React.FC<NotificationModalProps> = ({ showNotificationsCard, onClose }) => {
-  const [notifications, setNotifications] = useState<any[]>([]);
-  const [recommendations, setRecommendations] = useState([]);
-  const [suggestions, setSuggestions] = useState([]);
+  const [notifications, setNotifications] = useState<string[]>([]);
+  const [recommendations, setRecommendations] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
   const [activeList, setActiveList] = useState('notifications');
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -29,9 +29,9 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ showNotifications
     const updateDateInterval = setInterval(updateDate, 120000);  // Cada 2 minutos
 
     // Ejecutar inmediatamente al montar el componente
-    fetchNotificationsOnceADay().then(setNotifications);
-    fetchSuggestionsOnceADay().then(setSuggestions);
-    fetchRecommendationsOnceADay().then(setRecommendations);
+    fetchNotificationsOnceADay().then(data => setNotifications(data.map((item: any) => item.notification)));
+    fetchSuggestionsOnceADay().then(data => setSuggestions(data.map((item: any) => item.suggestion)));
+    fetchRecommendationsOnceADay().then(data => setRecommendations(data.map((item: any) => item.recommendation)));
     updateDate();
 
     return () => {
@@ -45,10 +45,10 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ showNotifications
   const renderList = () => {
     switch (activeList) {
       case 'notifications':
-        return notifications.map((notifications, index) => (
+        return notifications.map((notification, index) => (
           <IonItem key={index} button={true} detail={false}>
             <IonLabel>
-              <IonText>{notifications}</IonText>
+              <IonText>{notification}</IonText>
             </IonLabel>
           </IonItem>
         ));

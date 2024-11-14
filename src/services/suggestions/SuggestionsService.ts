@@ -8,11 +8,12 @@ export const fetchSuggestions = async () => {
 
     const parsedResponse = JSON.parse(registerResponse); // Parsear el objeto JSON
     const userId = parsedResponse.id_user; // Obtener el ID del usuario
+    const date = parsedResponse.date; // Obtener la fecha de registro
     if (!userId) {
       throw new Error('User ID not found in registerResponse');
     }
 
-    const response = await fetch(`http://127.0.0.1:8000/app/notificaciones4_aviso_sugerencia/`, {
+    const response = await fetch(`http://127.0.0.1:8000/app/sugerencia_de_uso/`, {
       method: 'GET'
     });
 

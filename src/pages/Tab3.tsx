@@ -219,19 +219,21 @@ const Tab3: React.FC = () => {
 
         {/* Modal captura boleta */}
         <IonModal isOpen={showModal}>
-          <IonContent className="ion-padding">
-            <div className='bba'>
-              <h1 className='bbb'>CAPTURAR</h1>
+          <IonContent className="modalContent">
+            <div className='modalcap'>
+              <h1 className='modaltext'>CAPTURA</h1>
+              <IonButton fill="clear" onClick={() => setShowModal(false)} className='back-button'>
+                <IonIcon icon={arrowBack} slot="icon-only" style={{ color: '#fff', fontSize: '4rem' }} />
+              </IonButton>        
             </div>
+            
 
-            <IonButton fill="clear" onClick={() => setShowModal(false)}>
-              <IonIcon icon={arrowBack} slot="start" color='success' />
-            </IonButton>
+            
             <br /><br />
 
             {showInstructions ? (
 
-              <IonCard>
+              <IonCard className='mostratIntruccion'>
                 <IonCardHeader>
                   <IonTitle>Instrucciones</IonTitle>
                 </IonCardHeader>
