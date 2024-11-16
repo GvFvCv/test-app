@@ -5,8 +5,10 @@ export const fetchRecommendations = async () => {
     if (registerResponse) {
       const parsedResponse = JSON.parse(registerResponse);
       const userId = parsedResponse.id_user;
-      if (userId) {
-        formData.append('user_id', userId);
+      const type_recommendation = 3;
+      if (userId && type_recommendation) {
+        formData.append('user_id', userId.toString());
+        formData.append('type_recommendation', type_recommendation.toString());
       } else {
         throw new Error('User ID not found in registerResponse');
       }
@@ -14,11 +16,11 @@ export const fetchRecommendations = async () => {
       throw new Error('registerResponse not found in localStorage');
     }
 
-    const randomLimit = Math.ceil(Math.random() * 3);
+    /* const randomLimit = Math.ceil(Math.random() * 3);
     for (let i = 0; i < randomLimit; i++) {
       const randomType = Math.ceil(Math.random() * 3);
       formData.append('type_recommendation', randomType.toString());
-    }
+    } */
 
     const response = await fetch('http://127.0.0.1:8000/app/recomendacion_compra/', {
       method: 'POST',
@@ -29,6 +31,7 @@ export const fetchRecommendations = async () => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
+    // Validar que el tipo de contenido es JSON
     const contentType = response.headers.get('content-type');
     if (!contentType || !contentType.includes('application/json')) {
       const text = await response.text();
@@ -64,9 +67,12 @@ export const saveToLocalStorage = (key: string, data: any) => {
 export const fetchRecommendationsOnceADay = async () => {
   try {
     const recommendations = await fetchRecommendations();
-    const dateEntry = { date: new Date(), recommendations: recommendations || [] };
+    const mappedRecommendations = recommendations.map((rec: any) => ({
+      titulo_recomendacion: rec.titulo_recomendacion || rec.recomendacion
+    }));
+    const dateEntry = { date: new Date(), recommendations: mappedRecommendations || [] };
     saveToLocalStorage('recommendationsHistory', dateEntry);
-    return recommendations || [];
+    return mappedRecommendations || [];
   } catch (error) {
     console.error('Error fetching recommendations once a day:', error);
     return [];
