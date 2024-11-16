@@ -3,7 +3,7 @@ import { arrowBack, notificationsOutline, chatbubbleEllipsesOutline, bulbOutline
 import './NotificationModal.css';
 import { useEffect, useState } from 'react';
 import { fetchNotificationsOnceADay } from '../../services/notifications/NotificationsService';
-import { fetchSuggestionsOnceADay   } from '../../services/suggestions/SuggestionsService';
+import { fetchSuggestions } from '../../services/suggestions/SuggestionsService';
 import {fetchRecommendationsOnceADay }  from '../../services/recommendations/RecommendationsService';
 
 interface NotificationModalProps {
@@ -13,7 +13,7 @@ interface NotificationModalProps {
 
 const NotificationModal: React.FC<NotificationModalProps> = ({ showNotificationsCard, onClose }) => {
   const [notifications, setNotifications] = useState<string[]>([]);
-  const [recommendations, setRecommendations] = useState<string[]>([]);
+  const [recommendations, setRecommendations] = useState<{ titulo_recomendacion: string, recomendacion:string }[]>([]);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [activeList, setActiveList] = useState('notifications');
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -22,16 +22,26 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ showNotifications
     setCurrentDate(new Date());
   };
 
+  
+
   useEffect(() => {
     const fetchNotificationsInterval = setInterval(fetchNotificationsOnceADay, 86400000); // Cada 24 horas
-    const fetchSuggestionsInterval = setInterval(fetchSuggestionsOnceADay, 86400000); // Cada 24 horas
+    const fetchSuggestionsInterval = setInterval(fetchSuggestions, 86400000); // Cada 24 horas
     const fetchRecommendationsInterval = setInterval(fetchRecommendationsOnceADay, 86400000); // Cada 24 horas
     const updateDateInterval = setInterval(updateDate, 120000);  // Cada 2 minutos
 
     // Ejecutar inmediatamente al montar el componente
-    fetchNotificationsOnceADay().then(data => setNotifications(data.map((item: any) => item.notification)));
-    fetchSuggestionsOnceADay().then(data => setSuggestions(data.map((item: any) => item.suggestion)));
-    fetchRecommendationsOnceADay().then(data => setRecommendations(data.map((item: any) => item.recommendation)));
+    fetchNotificationsOnceADay().then(data => 
+      setNotifications(data.map((item: any) => item.notification)));
+
+      fetchSuggestions().then((data: { sugerencia: string }[]) => {
+        const parsedSuggestions = data.map((item: { sugerencia: string }) => item.sugerencia);
+        setSuggestions(parsedSuggestions);
+      });
+
+    fetchRecommendationsOnceADay().then(data => 
+      setRecommendations(data.map((item: any) => ({ 
+        titulo_recomendacion: item.titulo_recomendacion || "Sin Tituto"}))));
     updateDate();
 
     return () => {
@@ -45,13 +55,17 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ showNotifications
   const renderList = () => {
     switch (activeList) {
       case 'notifications':
-        return notifications.map((notification, index) => (
-          <IonItem key={index} button={true} detail={false}>
-            <IonLabel>
-              <IonText>{notification}</IonText>
-            </IonLabel>
-          </IonItem>
-        ));
+        return (
+          <IonList inset={true}>
+            {notifications.map((notification, index) => (
+              <IonItem key={index} button={false} detail={false}>
+                <IonLabel>
+                  <IonText>{notification}</IonText>
+                </IonLabel>
+              </IonItem>
+            ))}
+          </IonList>
+        );
       case 'suggestions':
         return suggestions.map((suggestion, index) => (
           <IonItem key={index} button={true} detail={false}>
@@ -60,14 +74,24 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ showNotifications
             </IonLabel>
           </IonItem>
         ));
-      case 'recommendations':
-        return recommendations.map((recommendation, index) => (
-          <IonItem key={index} button={true} detail={false}>
-            <IonLabel>
-              <IonText>{recommendation}</IonText>
-            </IonLabel>
-          </IonItem>
-        ));
+        case 'recommendations':
+          return recommendations.length > 0 ? (
+            recommendations.map((recommendation, index) => (
+              <IonItem key={index} button={false} detail={false}>
+                <IonLabel>
+                  <IonText>
+                    <h3>{recommendation.titulo_recomendacion}</h3>
+                  </IonText>
+                </IonLabel>
+              </IonItem>
+            ))
+          ) : (
+            <IonItem>
+              <IonLabel>
+                <IonText>No hay recomendaciones disponibles.</IonText>
+              </IonLabel>
+            </IonItem>
+          );
       default:
         return null;
     }
@@ -87,7 +111,7 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ showNotifications
       </IonHeader>
       <IonContent>
         <IonList inset={true}>
-          <IonItem button={true} onClick={() => setActiveList('notifications')}>
+          <IonItem button={true} onClick={() => setActiveList('notifications')} style={{ minHeight: '60px' }}>
             <IonIcon color="primary" slot="start" icon={notificationsOutline} size="large"></IonIcon>
             <IonLabel>Notificaciones</IonLabel>
             <IonNote slot="end">{notifications.length}</IonNote>
@@ -97,7 +121,7 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ showNotifications
             <IonLabel>Sugerencias</IonLabel>
             <IonNote slot="end">{suggestions.length}</IonNote>
           </IonItem>
-          <IonItem button={true} onClick={() => setActiveList('recommendations')}>
+          <IonItem button={true} onClick={() => setActiveList('recommendations')} style={{ minHeight: '0px' }}>
             <IonIcon color="tertiary" slot="start" icon={bulbOutline} size="large"></IonIcon>
             <IonLabel>Recomendación MinutIA</IonLabel>
             <IonNote slot="end">{recommendations.length}</IonNote>
