@@ -191,7 +191,7 @@ const Despensa: React.FC = () => {
     }
   };
 
-
+  
   useEffect(() => {
     const fetchAlimentos = async () => {
       try {
