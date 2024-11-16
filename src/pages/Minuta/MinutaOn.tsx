@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { IonButton, IonModal, IonContent, IonHeader, IonTitle, IonToolbar, IonLoading, IonIcon, IonPage, IonCard, IonCardContent, IonCardHeader, IonCardTitle } from '@ionic/react';
+import { IonButton, IonModal, IonContent, IonList, IonItem, IonLabel, IonInput, IonItemDivider, IonHeader, IonAlert, IonTitle, IonCol, IonToolbar, IonLoading, IonIcon, IonPage, IonCard, IonCardContent, IonCardHeader, IonCardTitle } from '@ionic/react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './MinutaOn.css';
 import { Clock } from 'lucide-react';
-import { arrowBack } from 'ionicons/icons';
+import { arrowBack, pencil, add, trash } from 'ionicons/icons';
 
 interface Minuta {
   id_minuta: number;
@@ -52,6 +52,9 @@ const MinutaOn: React.FC = () => {
   const [diaActual, setDiaActual] = useState(new Date().getDate());
   const [visible, setVisible] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  const [mostrarSegundaAlerta, setMostrarSegundaAlerta] = useState(false);
+  const [mostrarModal, setMostrarModal] = useState(false);
 
   const handleResponse = () => {
     setVisible(false);
@@ -103,6 +106,7 @@ const MinutaOn: React.FC = () => {
 
     fetchMinutas();
   }, []);
+
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -229,6 +233,57 @@ const MinutaOn: React.FC = () => {
   };
 
 
+  const handleDeactivateMinuta = async () => {
+    const user = localStorage.getItem('registerResponse');
+    if (!user) {
+      console.error('No se encontró el objeto de usuario en el localStorage');
+      return;
+    }
+  
+    const userObj = JSON.parse(user);
+    const userId = userObj.id_user;
+  
+    if (!userId || !idListaMinuta) {
+      console.error('Faltan datos para enviar la solicitud PUT');
+      return;
+    }
+  
+    let ListaMinuta_id = idListaMinuta;
+
+
+    const url = 'http://127.0.0.1:8000/app/desactivate_minuta/';
+  
+    // Crear un objeto FormData y agregar los campos necesarios
+    const formData = new FormData();
+    formData.append('user_id', userId.toString());  // Asegúrate de convertir a string si es necesario
+    formData.append('ListaMinuta_id', ListaMinuta_id.toString());
+  
+    console.log('Enviando solicitud PUT:', formData);
+
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        body: formData,  // Pasar el FormData como cuerpo de la solicitud
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error al enviar la solicitud PUT');
+      }
+  
+      const data = await response.json();
+      console.log('Respuesta del servidor:', data);
+  
+      setReceta(data.receta);
+
+      window.location.reload();
+    } catch (error: any) {
+      console.error('Error al enviar la solicitud PUT:', error);
+    } finally {
+      setLoading(false);  // Finaliza el loading
+    }
+  };
+
+
   return (
     <IonPage className='tab-1'>
       <IonContent>
@@ -236,6 +291,31 @@ const MinutaOn: React.FC = () => {
           <div className='bba'>
             <h1 className='bbb'>MINUTA</h1>
           </div>
+
+          <div>
+            <IonCol>
+              <IonButton className='btn_despensaon_1' color="success" shape="round" onClick={() => setMostrarModal(true)}>
+                <h3><IonIcon icon={pencil} /></h3>
+              </IonButton>
+            </IonCol>
+            <IonCol>
+              <IonButton className="btn_despensaon_2" color="danger" shape="round" onClick={() => handleDeactivateMinuta()}>
+                <h3><IonIcon icon={trash} /></h3>
+              </IonButton>
+            </IonCol>
+          </div>
+
+
+          <IonModal isOpen={mostrarModal} onDidDismiss={() => setMostrarModal(false)}>
+            <div>
+              <div className='bba'>
+                <h1 className='bbb'>AJUSTES DE MEDIDAS</h1>
+              </div>
+              {/* Aquí puedes agregar los campos de entrada para las medidas personalizadas */}
+              <IonButton onClick={() => setMostrarModal(false)}>Cerrar</IonButton>
+            </div>
+          </IonModal>
+
 
           <Calendar className="calendar-container"
             onClickDay={onDayClick}
@@ -282,7 +362,7 @@ const MinutaOn: React.FC = () => {
                         color="success"
                         expand="block"
                         shape='round'
-                        onClick={() => { handleAlertaResponse(true); handleResponse() }}
+                        onClick={() => setMostrarSegundaAlerta(true)} // Al presionar "Sí", mostramos la segunda alerta
                       >
                         Sí
                       </IonButton>
@@ -291,7 +371,7 @@ const MinutaOn: React.FC = () => {
                         color="danger"
                         expand="block"
                         shape='round'
-                        onClick={() => { handleAlertaResponse(false); handleResponse() }}
+                        onClick={() => { handleAlertaResponse(false); handleResponse(); }}
                       >
                         No
                       </IonButton>
@@ -299,8 +379,31 @@ const MinutaOn: React.FC = () => {
                   </IonCard>
                   : null
               )}
+
+              <IonAlert
+                isOpen={mostrarSegundaAlerta}
+                onDidDismiss={() => setMostrarSegundaAlerta(false)}
+                header={'Medidas de la receta'}
+                message={'Al aceptar, se descontaran todos aquellos ingredientes de la despensa utilizados en función a la receta. Si utilizo medidas personalizadas, debera editarlas antes.'}
+                buttons={[
+                  {
+                    text: 'Editar medidas',
+                    handler: () => {
+                      setMostrarModal(true); // Abrir el modal
+                    },
+                  },
+                  {
+                    text: 'Aceptar',
+                    handler: () => {
+                      handleAlertaResponse(true); // Continuar con el flujo normal
+                    },
+                  },
+                ]}
+              />
             </div>
           </div>
+
+
 
           <IonModal className='instructions-modal' isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
             <div className='bba'>
@@ -337,6 +440,7 @@ const MinutaOn: React.FC = () => {
               )}
             </IonContent>
           </IonModal>
+          <br /><br /><br /><br /><br />
         </div>
       </IonContent>
     </IonPage>

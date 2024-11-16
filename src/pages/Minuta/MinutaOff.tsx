@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IonAlert, IonPage, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonSelect, IonSelectOption, IonList, IonButton, IonInput, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCardSubtitle, IonIcon, IonToast, IonCheckbox } from '@ionic/react';
+import { IonAlert, IonPage, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonLoading, IonItem, IonLabel, IonSelect, IonSelectOption, IonList, IonButton, IonInput, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCardSubtitle, IonIcon, IonToast, IonCheckbox } from '@ionic/react';
 import './MinutaOff.css';
 import { useHistory } from 'react-router-dom';
 import { restaurant, cafe, moon, colorFill } from 'ionicons/icons';
@@ -7,7 +7,7 @@ import { restaurant, cafe, moon, colorFill } from 'ionicons/icons';
 const MinutaOff: React.FC = () => {
   // Simulación de datos: lista de minutas
   const [minutas, setMinutas] = useState<string[]>([]);
-
+  const [loading, setLoading] = useState(false);
   // Estado para controlar el modal
   const [showModal, setShowModal] = useState(false);
 
@@ -76,7 +76,7 @@ const MinutaOff: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('Form Submitted', formData);
-
+    setLoading(true);  // Inicia el loading
     // Verificar que user_id y dispensa_id estén presentes
     if (!formData.user_id || !formData.dispensa_id) {
       console.error('user_id o dispensa_id no están presentes en formData');
@@ -125,9 +125,12 @@ const MinutaOff: React.FC = () => {
       });
 
       setShowModal(false);
-      //history.push('/tab2');
+      history.push('/tab1');
+      window.location.reload();
     } catch (error: any) {
       console.error('Error en el registro:', error.message);
+    } finally {
+      setLoading(false);  // Finaliza el loading
     }
   };
 
@@ -179,9 +182,9 @@ const handleCheckboxChange = (event: any) => {
         {/* Modal para mostrar las preferencias */}
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
           <IonContent className="ion-padding">
-            {/* <div className='bba'>
+            <div className='bba'>
               <h1 className='bbb'>CREA TU MINUTA</h1>
-            </div> */}
+            </div>
             <IonCard color="default" className='card-pref'>
               <form onSubmit={handleSubmit} className='form-content'>
                 <IonCardHeader>
@@ -285,6 +288,11 @@ const handleCheckboxChange = (event: any) => {
                 color="danger"
                 position="middle"
               />
+            {/* Componente de carga */}
+            <IonLoading
+                  isOpen={loading}
+                  message={'Creando minuta...'}
+                />
           </IonContent>
         </IonModal>
       </IonContent>
