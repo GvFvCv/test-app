@@ -100,3 +100,9 @@ ion-label ion-note {
   width: 40%;
 }
 
+
+
+.notification-container {
+  max-height: 400px; /* Ajusta este valor según sea necesario */
+  overflow-y: auto; /* Permite el desplazamiento vertical */
+}
