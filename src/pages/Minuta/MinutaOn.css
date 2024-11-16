@@ -195,3 +195,83 @@ h2 {
   padding: 2%;
   align-items: normal;
 }
+
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Altura máxima del modal para evitar que ocupe toda la pantalla */
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.modal-header {
+  margin-bottom: 10px;
+}
+
+.modal-body {
+  flex: 1; /* Permite que este contenedor crezca dentro del modal */
+  overflow-y: auto; /* Activa la barra de desplazamiento vertical si el contenido excede la altura */
+  padding: 10px;
+  border: 1px solid #ccc; /* Opcional, solo para separar visualmente */
+  border-radius: 5px;
+}
+
+.minuta-card {
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.minuta-card h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #7045ff;
+}
+
+.ingrediente-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.edit-card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  z-index: 1000;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 400px;
+}
+
+.edit-card h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.edit-card p {
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.edit-card ion-input {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.modal-body {
+  overflow-y: auto;
+  max-height: calc(100vh - 150px);
+}

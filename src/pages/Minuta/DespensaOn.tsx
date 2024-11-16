@@ -132,7 +132,6 @@ const Despensa: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
       // Obtener user_id y dispensa_id de localStorage
       const user = localStorage.getItem('registerResponse');
@@ -146,24 +145,26 @@ const Despensa: React.FC = () => {
       const userId = userObj.id_user;
       const dispensaId = userObj.dispensa; // Asegúrate de que este campo exista en tu objeto
 
-      console.log("ID de usuario:", userObj);
-
       if (!userId || !dispensaId) {
         console.error('Faltan datos necesarios: userId o dispensaId');
         return;
       }
 
-      // Combinar formData con userId y dispensaId
+      // Excluir el campo 'status_in_minuta' de formData
+      const { status_in_minuta, ...formDataWithoutStatusInMinuta } = formData;
+
+      // Combinar formData sin 'status_in_minuta' con userId, dispensaId y añadir uso_alimento
       const dataToSubmit = {
-        ...formData,
+        ...formDataWithoutStatusInMinuta,
         id_user: userId,
-        dispensa: dispensaId
+        dispensa: dispensaId,
+        uso_alimento: formData.uso_alimento // Agregar 'uso_alimento'
       };
 
       console.log('Datos a enviar:', dataToSubmit);
       console.log(JSON.stringify(dataToSubmit, null, 2)); // Muestra el JSON formateado para facilitar la lectura
 
-      const response = await fetch(`http://127.0.0.1:8000/app/edit_alimento/${formData.id_alimento}`, {
+      const response = await fetch(`http://127.0.0.1:8000/app/edit_alimento/${dataToSubmit.id_alimento}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json', // Especificar que se envía JSON
@@ -190,7 +191,7 @@ const Despensa: React.FC = () => {
     }
   };
 
-
+  
   useEffect(() => {
     const fetchAlimentos = async () => {
       try {
@@ -319,7 +320,7 @@ const Despensa: React.FC = () => {
                   <p>Cantidad: {alimento.load_alimento} {alimento.unit_measurement}</p>
                 </IonLabel>
               </IonItem>
-
+              
               {/* Opciones de deslizar a la izquierda */}
               <IonItemOptions side="start">
                 <IonItemOption color="success" onClick={() => handleEdit(alimento)}>
@@ -338,6 +339,7 @@ const Despensa: React.FC = () => {
             </IonItemSliding>
           ))}
         </IonList>
+        <br /><br /><br /><br /><br /><br />
       </IonContent>
 
       {/* Modal para editar alimento */}
@@ -389,22 +391,6 @@ const Despensa: React.FC = () => {
                 onIonChange={handleInputChange}
                 required
               />
-            </IonItem>
-
-            {/* Unidad de medida */}
-            <IonItem className='form-item'>
-              <IonSelect
-                name="uso_alimento"
-                label='Uso del Alimento'
-                labelPlacement='floating'
-                value={formData.uso_alimento}
-                placeholder="Seleccione una opción"
-                onIonChange={handleSelectChange}
-              >
-                <IonSelectOption value="desayuno">Desayuno</IonSelectOption>
-                <IonSelectOption value="almuerzo">Almuerzo</IonSelectOption>
-                <IonSelectOption value="cena">Cena</IonSelectOption>
-              </IonSelect>
             </IonItem>
 
             {/* Botón de envío */}
