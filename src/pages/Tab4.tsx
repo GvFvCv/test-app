@@ -2,15 +2,18 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem,
 import React, { useState } from 'react';
 import './Tab4.css';
 import NotificationModal from '../components/Notification/NotificationModal'; // Asegúrate de que la ruta sea correcta
+import ObjetivosOn from '../components/Objetivos/ObjetivosOn';
+import ObjetivosOff from '../components/Objetivos/ObjetivosOff';
 
 const Tab4: React.FC = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState('es');
   const [showModal, setShowModal] = useState(false);
+  const [showObjetivosModal, setShowObjetivosModal] = useState(false);
+  const [stateObjetivos, setStateObjetivos] = useState("False");
 
   return (
-    <IonPage className='tab-4 ion-page' >
+    <IonPage className='tab-4 ion-page'>
       <div className='eee-1'>
         <h1 className='eef-2'>AJUSTES</h1>
       </div>
@@ -38,21 +41,20 @@ const Tab4: React.FC = () => {
             <IonToggle className='togles' checked={darkMode} onIonChange={(e) => setDarkMode(e.detail.checked)} />
           </IonItem>
           <IonItem className='list-1'>
-            <IonLabel>
+            <IonLabel onClick={() => setShowObjetivosModal(true)}>
               <div className='op-3'>
                 <h2 className='op-33'>
-                Idioma
+                Objetivos
                 </h2>
               </div>
             </IonLabel>
-            <IonSelect value={selectedLanguage} onIonChange={(e) => setSelectedLanguage(e.detail.value)}>
-              <IonSelectOption value="es">Español</IonSelectOption>
-              <IonSelectOption value="en">Inglés</IonSelectOption>
-            </IonSelect>
           </IonItem>
         </IonList>
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
           <NotificationModal showNotificationsCard={showModal} onClose={() => setShowModal(false)} />
+        </IonModal>
+        <IonModal isOpen={showObjetivosModal} onDidDismiss={() => setShowObjetivosModal(false)}>
+          {stateObjetivos === "True" ? <ObjetivosOn /> : <ObjetivosOff />}
         </IonModal>
       </IonContent>
     </IonPage>
