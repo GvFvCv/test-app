@@ -1,0 +1,350 @@
+.tab-4 {
+    height: 100%;
+    color: rgb(255, 255, 255); /* Texto en blanco para contraste */
+    background-color: #5a2e91 !important;
+  }
+  
+  .ion-page {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  
+  .tab-4 {
+    background-image: url('/public/assets/apple.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+  }
+  
+  /* 
+  .explore-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: rgb(96,48,255);
+  }
+   */
+  /* Ajustes para el título grande centrado */
+  
+  
+  .ion-padding {
+    background-color: #5a2e91 !important;
+  }
+  
+  ion-header[collapse="condense"] ion-title {
+    font-size: 1.2rem; /* Tamaño ajustado para el título colapsado */
+    color: #f4f4f5; /* Color gris claro */
+  }
+  
+  .eee-1 {
+    display: fixed;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #ffffff;
+    margin-bottom: 0rem;
+    background-color: #7045ff;
+    padding: 1%;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .eef-2 {
+    display: fixed;
+    font-weight: bold;
+    font-size: 2.5rem;
+    color: #ffffff;
+    background-color: #7045ff;
+    padding: 4% 1%;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Título de la página "AJUSTES" */
+  .op-1, .op-2, .op-3 {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #000000;
+    margin: 1rem 0;
+  }
+  
+  
+  /* Estilo para los textos de las opciones */
+  .op-11, .op-22, .op-33 {
+    font-size: 1.5rem;  
+    padding: 0.5rem 0; 
+    text-align: left;
+  } 
+  
+  /* Estilo general para los ítems de las listas */
+  .list-1 {
+    --background: #ffffff; /* Fondo claro para los ítems */
+    border-radius: 10px; /* Bordes redondeados para dar un toque moderno */
+    margin: 0.5rem 0; /* Espaciado entre ítems */
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Sombra sutil para resaltar cada opción */
+    display: flex; /* Alinea los elementos horizontalmente */
+    justify-items: center; /* Centra los elementos horizontalmente */
+    align-items: center; /* Centra los elementos verticalmente */
+  }
+  
+  /* Personalización de los toggles */
+  .togles {
+    --background: #ffffff; /* Fondo claro para los toggles */
+    border-radius: 10px; /* Bordes redondeados para dar un toque moderno */
+    margin: 0.5rem 0; /* Espaciado entre toggles */
+    padding: 1rem;
+    display: flex; /* Alinea los elementos horizontalmente */
+    justify-items: center; /* Centra los elementos horizontalmente */
+    align-items: center; /* Centra los elementos verticalmente */
+  }
+  
+  .list-not{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000000;
+    border-radius: 4%;
+  }
+  
+  .modern-button {
+    border: 3px solid #6200ff;
+    border-radius: 6px; 
+    background-color: #6200ff;
+  }
+  
+  
+  .boton_retroceso {
+    color: #1a0e8b; 
+    font-size: 4rem;
+  }
+
+
+  /* ------------------- TARJETAS -----------------------*/ 
+  
+  /* Animación para deslizarse hacia la posición */
+  .card_1 {
+    width: 320px;
+    height: 200px;
+    perspective: 1000px;
+    margin: 1rem;
+    opacity: 0; /* Oculto inicialmente */
+    transform: translateX(300px); /* Fuera de la posición inicial */
+    transition: transform 1s ease-out, opacity 1s ease-out; /* Suave entrada */
+  }
+  
+  .card_1.slide-in {
+    opacity: 1; /* Visible */
+    transform: translateX(0); /* Posición final */
+  }
+  
+  
+  .card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.9s;
+  }
+  
+  .card_1.flipped .card-inner {
+    transform: rotateY(180deg);
+  }
+  
+  .card-content_1 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-around;
+    align-items: center;
+    border-radius: 2.5em;    
+    box-shadow: 7px 6px #323232;
+    transition: box-shadow 0.5s ease; /* Animación suave */
+  }
+  
+  .card_1 .card-top_1, .card_1 .card-bottom_1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  
+  .card-front {
+    background: #f3f3f3;
+  }
+  
+  .card-back {
+    background: #ffffff;
+    display:flow-root ;
+    transform: rotateY(180deg);
+  }
+  
+  
+  /* GLOBALES */ 
+  
+  .Good {
+    color: #02972f; /* Cambia este color por el que prefieras */
+    font-weight: bold; /* Opcional: para destacar aún más */
+  }
+  
+  .Bad {
+    color: #ff5733; /* Cambia este color por el que prefieras */
+    font-weight: bold; /* Opcional: para destacar aún más */
+  }
+  
+  .card-back-info_1{
+    padding: 0.3rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #1F2937;
+    margin: 1rem;
+  }
+  
+  .card-back-info_2 {
+    padding: 0.3rem;
+    font-size: 1.1rem;
+    color: #1F2937;
+    margin: 1rem;
+    text-align: justify;
+  }
+  
+  /* TARJETA 1 */ 
+  
+  .labelEstadisticas_1_1 {
+    font-weight: bold;
+    font-size: 2rem;
+    color: #1F2937;
+    margin: 1.3rem;
+  }
+  
+  .labelEstadisticas_1_2 {
+    font-weight: bold;
+    font-size: 4rem;
+    color: #02972f;
+    margin: 1rem;
+    margin-right: 5rem;
+  }
+  
+  .labelEstadisticas_1_3 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #1F2937;
+    margin: 1rem;
+  }
+  
+  
+  /* TARJETA 2 */ 
+  
+  .labelEstadisticas_2_1 {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #1F2937;
+    margin: 1.5rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  
+  .labelEstadisticas_2_2 {
+    font-weight: bold;
+    font-size: 4rem;
+    color: #02972f;
+    margin: 1px;
+    margin-bottom: 1.5rem;
+  }
+  
+  
+  /* TARJETA 3 */ 
+  
+  .labelEstadisticas_3_1 {
+    font-weight: bold;
+    font-size: 2rem;
+    color: #1F2937;
+    margin: 1rem;
+    text-align: right;
+    margin-right: 2rem;
+  }
+  
+  .labelEstadisticas_3_2 {
+    font-weight: bold;
+    font-size: 4rem;
+    color: #02972f;
+    margin: 1rem;
+    margin-left: 2rem;
+  }
+  
+  .labelEstadisticas_3_3 {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #1F2937;
+    margin: 1rem;
+    text-align: center;
+  }
+  
+  
+  /* TARJETA 4 */ 
+  
+  .labelEstadisticas_4_1 {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #1F2937;
+    margin: 1.5rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  
+  .labelEstadisticas_4_2 {
+    font-weight: bold;
+    font-size: 4rem;
+    color: #02972f;
+    margin: 1px;
+    margin-bottom: 1.5rem;
+  }
+  
+  
+  /* TARJETA 5 */ 
+  
+  .labelEstadisticas_5_1 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 2rem;
+    color: #1F2937;
+    margin: 1.3rem;
+  }
+  
+  .labelEstadisticas_5_2 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #1F2937;
+    margin: 1rem;
+    margin-top: 0;
+  }
+  
+  .Good_2 {
+    color: #02972f; /* Cambia este color por el que prefieras */
+    font-weight: bold; /* Opcional: para destacar aún más */
+    font-size: 4rem;
+  }
+  
+  
+  /* TARJETA 6 y 7 (tarjetas pequeñas) */ 
+  
+  .labelEstadisticas_6_1 {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #1F2937;
+    margin: 3rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  
+  .labelEstadisticas_6_2 {
+    font-weight: bold;
+    font-size: 4rem;
+    color: #ff5733;
+    margin-top: 0;
+  }
+
+  
