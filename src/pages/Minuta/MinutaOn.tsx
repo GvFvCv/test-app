@@ -119,7 +119,7 @@ const MinutaOn: React.FC = () => {
       const dia = fechaActual.getDate();
       setHoraActual(hora);
       setDiaActual(dia);
-      if (dia === diaActual && hora >= 7 && hora < 14) {
+      if (dia === diaActual && hora >= 0 && hora < 24) {
         setMostrarAlerta(true);
       } else {
         setMostrarAlerta(false);
