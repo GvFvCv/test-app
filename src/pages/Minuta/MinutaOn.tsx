@@ -6,24 +6,24 @@ import './MinutaOn.css';
 import { Clock } from 'lucide-react';
 import { arrowBack, pencil, add, trash } from 'ionicons/icons';
 
-interface Minuta {
+interface Minuta {  // Definir la interfaz Minuta
   id_minuta: number;
   type_food: string;
   name_food: string;
   fecha: string;
 }
 
-interface Ingrediente {
+interface Ingrediente { //  Definir la interfaz Ingrediente
   nombre: string;
   cantidad: string;
 }
 
-interface Receta {
+interface Receta { // Definir la interfaz Receta
   ingredientes: Ingrediente[];
   paso_a_paso: string[];
 }
 
-interface ApiResponse {
+interface ApiResponse {  // Definir la interfaz ApiResponse
   lista_minuta: {
     id_lista_minuta: number;
     nombre_lista_minuta: string;
@@ -39,7 +39,7 @@ interface ApiResponse {
   minutas: Minuta[];
 }
 
-const MinutaOn: React.FC = () => {
+const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
   const [minutas, setMinutas] = useState<Minuta[]>([]);
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [recipesForDay, setRecipesForDay] = useState<Minuta[]>([]);
