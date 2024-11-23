@@ -246,17 +246,17 @@ const Estadisticas: React.FC = () => {
                   <div className="card-content_1 card-front">
                     <div className="card-top_1">
                       <IonLabel className="labelEstadisticas_1_1">Planes Creados </IonLabel>
-                      <IonLabel className="labelEstadisticas_1_2">{estadisticas.total_planes_creados}</IonLabel>
+                      <IonLabel className="labelEstadisticas_1_2">{estadisticas.total_planes_creados || 0}</IonLabel>
                     </div>
                     <div className="card-bottom_1">
-                      <IonLabel className="labelEstadisticas_1_3">Realizados: <span className='Good'>{estadisticas.total_planes_realizados}</span></IonLabel>
-                      <IonLabel className="labelEstadisticas_1_3">No Realizados: <span className='Bad'>{estadisticas.total_planes_no_realizados}</span></IonLabel>
+                      <IonLabel className="labelEstadisticas_1_3">Realizados: <span className='Good'>{estadisticas.total_planes_realizados || 0}</span></IonLabel>
+                      <IonLabel className="labelEstadisticas_1_3">No Realizados: <span className='Bad'>{estadisticas.total_planes_no_realizados || 0}</span></IonLabel>
                     </div>
                   </div>
                   {/* Reverso de la tarjeta */}
                   <div className="card-content_1 card-back">
                     <p className="card-back-info_1">Sobre los planes:</p>
-                    <p className="card-back-info_2">{getCardBackText1(estadisticas.total_planes_creados, estadisticas.total_planes_realizados, estadisticas.total_planes_no_realizados)}</p>
+                    <p className="card-back-info_2">{getCardBackText1(estadisticas.total_planes_creados || 0, estadisticas.total_planes_realizados || 0, estadisticas.total_planes_no_realizados || 0)}</p>
                   </div>
                 </div>
               </IonCol>
@@ -273,13 +273,13 @@ const Estadisticas: React.FC = () => {
                       <IonLabel className="labelEstadisticas_2_1">Porcentaje de planes completados:</IonLabel>
                     </div>
                     <div className="card-bottom_1">
-                      <p className="labelEstadisticas_2_2">{estadisticas.proporcion_planes_completados} %</p>
+                      <p className="labelEstadisticas_2_2">{estadisticas.proporcion_planes_completados || 0} %</p>
                     </div>
                   </div>
                   {/* Reverso de la tarjeta */}
                   <div className="card-content_1 card-back">
                     <p className="card-back-info_1">Sobre el porcentaje:</p>
-                    <p className="card-back-info_2">{getCardBackText2(estadisticas.proporcion_planes_completados)}</p>
+                    <p className="card-back-info_2">{getCardBackText2(estadisticas.proporcion_planes_completados || 0)}</p>
                   </div>
                 </div>
               </IonCol>
@@ -297,8 +297,8 @@ const Estadisticas: React.FC = () => {
                       <IonLabel className="labelEstadisticas_3_1">Alimentos Ingresados</IonLabel>
                     </div>
                     <div className="card-bottom_1">
-                      <IonLabel className="labelEstadisticas_3_3">% Aprovechado:{" "}<span className="Good">{estadisticas?.porcentaje_alimentos_aprovechados?.toFixed(2)}</span> %</IonLabel>
-                      <IonLabel className="labelEstadisticas_3_3">Promedio Duración:{" "}<span className="Good">{estadisticas?.promedio_duracion_alimentos?.toFixed(1)}</span> días</IonLabel>
+                      <IonLabel className="labelEstadisticas_3_3">% Aprovechado:{" "}<span className="Good">{estadisticas?.porcentaje_alimentos_aprovechados?.toFixed(2) || 0}</span> %</IonLabel>
+                      <IonLabel className="labelEstadisticas_3_3">Promedio Duración:{" "}<span className="Good">{estadisticas?.promedio_duracion_alimentos?.toFixed(1) || 0}</span> días</IonLabel>
                     </div>
                   </div>
                   {/* Reverso de la tarjeta */}
@@ -317,10 +317,10 @@ const Estadisticas: React.FC = () => {
                   {/* Frente de la tarjeta */}
                   <div className="card-content_1 card-front">
                     <div className="card-top_1">
-                      <IonLabel className="labelEstadisticas_6_1">Desperdicios:</IonLabel>
+                      <IonLabel className="labelEstadisticas_6_1">Alimentos desperdiciados:</IonLabel>
                     </div>
                     <div className="card-bottom_1">
-                      <p className="labelEstadisticas_6_2">{estadisticas.total_desperdicio_alimentos}</p>
+                      <p className="labelEstadisticas_6_2">{estadisticas.total_desperdicio_alimentos || 0}</p>
                     </div>
                   </div>
                   {/* Reverso de la tarjeta */}
@@ -339,7 +339,7 @@ const Estadisticas: React.FC = () => {
                       <IonLabel className="labelEstadisticas_6_1">Deperdicio actual:</IonLabel>
                     </div>
                     <div className="card-bottom_1">
-                      <p className="labelEstadisticas_6_2">{estadisticas.desperdicio_actual}</p>
+                      <p className="labelEstadisticas_6_2">{(estadisticas.desperdicio_actual || 0).toFixed(0)}%</p>
                     </div>
                   </div>
                   {/* Reverso de la tarjeta */}
@@ -360,7 +360,7 @@ const Estadisticas: React.FC = () => {
                       <IonLabel className="labelEstadisticas_4_1">Reducción Desperdicios:</IonLabel>
                     </div>
                     <div className="card-bottom_1">
-                      <p className="labelEstadisticas_4_2">{estadisticas.reduccion_desperdicio} %</p>
+                      <p className="labelEstadisticas_4_2">{(estadisticas.reduccion_desperdicio || 0).toFixed(2)} %</p>
                     </div>
                   </div>
                   {/* Reverso de la tarjeta */}
@@ -380,11 +380,11 @@ const Estadisticas: React.FC = () => {
                   {/* Frente de la tarjeta */}
                   <div className="card-content_1 card-front">
                     <div className="card-top_1">
-                      <IonLabel className="labelEstadisticas_5_1">Minutas Creadas <span className='Good_2'>{estadisticas.total_minutas_creadas}</span></IonLabel>
+                      <IonLabel className="labelEstadisticas_5_1">Minutas Creadas <span className='Good_2'>{estadisticas.total_minutas_creadas || 0}</span></IonLabel>
                     </div>
                     <div className="card-bottom_1">
-                      <IonLabel className="labelEstadisticas_5_2">Realizadas: <span className='Good'>{estadisticas.total_minutas_realizadas}</span></IonLabel>
-                      <IonLabel className="labelEstadisticas_5_2">No Realizadas: <span className='Bad'>{estadisticas.total_minutas_no_realizadas}</span></IonLabel>
+                      <IonLabel className="labelEstadisticas_5_2">Realizadas: <span className='Good'>{estadisticas.total_minutas_realizadas || 0}</span></IonLabel>
+                      <IonLabel className="labelEstadisticas_5_2">No Realizadas: <span className='Bad'>{estadisticas.total_minutas_no_realizadas || 0}</span></IonLabel>
                     </div>
                   </div>
                   {/* Reverso de la tarjeta */}
