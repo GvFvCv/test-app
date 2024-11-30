@@ -15,6 +15,7 @@ interface Alimento {
 }
 
 const Despensa: React.FC = () => {
+  const [deletingId, setDeletingId] = useState<number | null>(null);
   const [alimentos, setAlimentos] = useState<Alimento[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -22,6 +23,8 @@ const Despensa: React.FC = () => {
   const [formData, setFormData] = useState<Alimento>({ id_alimento: 0, name_alimento: '', unit_measurement: '', load_alimento: '', uso_alimento: '' });
   const [selectedAlimento, setSelectedAlimento] = useState<Alimento | null>(null);
   const [showAlert, setShowAlert] = useState(false);
+  const [showIndividualAlert, setShowIndividualAlert] = useState(false);
+
   const history = useHistory();
 
   const handleEdit = (alimento: Alimento) => {
@@ -32,41 +35,73 @@ const Despensa: React.FC = () => {
 
   const handleDelete = async (alimentoId: number) => {
     try {
-      const user = localStorage.getItem('registerResponse');
-      if (!user) {
-        throw new Error('No se encontró el objeto de usuario en el localStorage');
+      // Encuentra el alimento que se intenta eliminar
+      const alimento = alimentos.find((alimento) => alimento.id_alimento === alimentoId);
+      if (!alimento) throw new Error('Alimento no encontrado');
+
+      // Si el alimento está asociado a una minuta, muestra la alerta
+      if (alimento.status_in_minuta) {
+        setSelectedAlimento(alimento); // Usa el estado para el modal
+        setShowIndividualAlert(true);
+        return;
       }
 
-      const userObj = JSON.parse(user);
-      const userId = userObj.id_user;
-      const dispensa = userObj.dispensa; // Asegúrate de que dispensa_id esté en el objeto
-
-      if (!userId || !dispensa) {
-        throw new Error('No se encontró el ID de usuario o el ID de la dispensa en el objeto de usuario');
-      }
-
-      // Construir la URL con los parámetros requeridos
-      const url = `http://127.0.0.1:8000/app/delete_alimento/?user_id=${userId}&dispensa_id=${dispensa}&alimento_id=${alimentoId}`;
-
-      // Hacer la solicitud DELETE
-      const response = await fetch(url, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al eliminar el alimento');
-      }
-
-      console.log('Alimento eliminado');
-      // Después de eliminar, redirigir a otra página si es necesario
-      history.push('/tab2');
+      // Ejecutar el proceso de eliminación con animación
+      await executeDeleteWithAnimation(alimentoId);
     } catch (error) {
       console.error('Error:', error);
     }
   };
+
+  // Nueva función para gestionar la eliminación con animación
+  const executeDeleteWithAnimation = async (alimentoId: number) => {
+    const animationId = `alimento-${alimentoId}`;
+    const element = document.getElementById(animationId);
+    if (element) {
+      element.classList.add('fade-out');
+      await new Promise((resolve) => setTimeout(resolve, 500)); // Esperar la duración de la animación
+    }
+
+    // Proceder con la eliminación
+    await deleteAlimentoFromAPI(alimentoId);
+    setAlimentos((prevAlimentos) => prevAlimentos.filter((a) => a.id_alimento !== alimentoId));
+  };
+
+  // Llamar a executeDeleteWithAnimation después de confirmar desde la alerta
+  const confirmDeleteAlimento = async () => {
+    if (selectedAlimento) {
+      await executeDeleteWithAnimation(selectedAlimento.id_alimento);
+      setSelectedAlimento(null);
+      setShowIndividualAlert(false);
+    }
+  };
+
+
+  const deleteAlimentoFromAPI = async (alimentoId: number) => {
+    const user = localStorage.getItem('registerResponse');
+    if (!user) throw new Error('No se encontró el objeto de usuario en el localStorage');
+
+    const userObj = JSON.parse(user);
+    const userId = userObj.id_user;
+    const dispensa = userObj.dispensa;
+
+    if (!userId || !dispensa) throw new Error('No se encontró el ID de usuario o el ID de la dispensa en el objeto de usuario');
+
+    const url = `http://127.0.0.1:8000/app/delete_alimento/?user_id=${userId}&dispensa_id=${dispensa}&alimento_id=${alimentoId}`;
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!response.ok) throw new Error('Error al eliminar el alimento');
+
+    // Elimina el alimento de la lista
+    setAlimentos(prev => prev.filter(alimento => alimento.id_alimento !== alimentoId));
+  };
+
+
+
 
   const handleDeleteAllAlimentos = async () => {
     try {
@@ -191,7 +226,7 @@ const Despensa: React.FC = () => {
     }
   };
 
-  
+
   useEffect(() => {
     const fetchAlimentos = async () => {
       try {
@@ -272,7 +307,7 @@ const Despensa: React.FC = () => {
         </IonCol>
       </div>
 
-      {/* Alerta de confirmación */}
+      {/* Alerta de confirmación ELIMINACION MASIVA */}
       <IonAlert
         isOpen={showAlert}
         onDidDismiss={() => setShowAlert(false)}
@@ -300,36 +335,26 @@ const Despensa: React.FC = () => {
       <IonContent>
         <IonList>
           {alimentos.map((alimento) => (
-            <IonItemSliding key={alimento.id_alimento}>
+            <IonItemSliding key={alimento.id_alimento} id={`alimento-${alimento.id_alimento}`}>
               <IonItem>
                 <IonLabel>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <h2 style={{ marginRight: '8px' }}>{alimento.name_alimento}</h2>
-                    {/* Mostrar la imagen solo si status_in_minuta es true, al lado del nombre */}
                     {alimento.status_in_minuta && (
                       <img
-                        src="resources\cutting.png"
+                        src="resources/cutting.png"
                         alt="Status"
-                        style={{ width: '20px', height: '20px' }} // Ajusta el tamaño aquí
+                        style={{ width: '20px', height: '20px' }}
                       />
                     )}
                   </div>
                 </IonLabel>
-
-                <IonLabel slot='end'>
+                <IonLabel slot="end">
                   <p>Cantidad: {alimento.load_alimento} {alimento.unit_measurement}</p>
                 </IonLabel>
               </IonItem>
-              
-              {/* Opciones de deslizar a la izquierda */}
-              <IonItemOptions side="start">
-                <IonItemOption color="success" onClick={() => handleEdit(alimento)}>
-                  <IonIcon slot="start" icon={pencil} />
-                  Editar
-                </IonItemOption>
-              </IonItemOptions>
 
-              {/* Opciones de deslizar a la derecha */}
+              {/* Opciones de deslizar */}
               <IonItemOptions side="end">
                 <IonItemOption color="danger" onClick={() => handleDelete(alimento.id_alimento)}>
                   <IonIcon slot="start" icon={trash} />
@@ -341,6 +366,27 @@ const Despensa: React.FC = () => {
         </IonList>
         <br /><br /><br /><br /><br /><br />
       </IonContent>
+
+      {/* Alerta de confirmación ELIMINACION INDIVIDUAL */}
+      <IonAlert
+        isOpen={showIndividualAlert}
+        onDidDismiss={() => setShowIndividualAlert(false)}
+        header={'Alimento asociado a minuta'}
+        message={`El alimento "${selectedAlimento?.name_alimento}" está asociado a una minuta activa. Si lo eliminas, tendrás que rehacer la minuta. ¿Deseas continuar?`}
+        buttons={[
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => {
+              setShowIndividualAlert(false);
+            },
+          },
+          {
+            text: 'Eliminar',
+            handler: confirmDeleteAlimento, // Aquí llamamos a la función de confirmación
+          },
+        ]}
+      />
 
       {/* Modal para editar alimento */}
       <IonModal isOpen={showEditModal}>

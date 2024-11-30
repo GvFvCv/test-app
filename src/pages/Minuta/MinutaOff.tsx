@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IonAlert, IonPage, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonLoading, IonItem, IonLabel, IonSelect, IonSelectOption, IonList, IonButton, IonInput, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCardSubtitle, IonIcon, IonToast, IonCheckbox } from '@ionic/react';
+import { IonAlert, IonPage, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonLoading, IonItem, IonLabel, IonSelect, IonSelectOption, IonList, IonButton, IonInput, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCardSubtitle, IonIcon, IonToast, IonCheckbox, IonImg } from '@ionic/react';
 import './MinutaOff.css';
 import { useHistory } from 'react-router-dom';
 import { restaurant, cafe, moon, colorFill } from 'ionicons/icons';
@@ -102,13 +102,13 @@ const MinutaOff: React.FC = () => {
       if (!response.ok) {
         const errorData = await response.json();
         console.error('Error al crear la minuta:', errorData);
-        
-       // Establecer el mensaje de toast con el campo correcto
-      setToastMessage(errorData.error || errorData.detail || 'Ocurrió un error al crear la minuta.');
-      setShowToast(true);
 
-      // Opcional: Retornar para detener la ejecución
-      return;
+        // Establecer el mensaje de toast con el campo correcto
+        setToastMessage(errorData.error || errorData.detail || 'Ocurrió un error al crear la minuta.');
+        setShowToast(true);
+
+        // Opcional: Retornar para detener la ejecución
+        return;
       }
 
       const data = await response.json();
@@ -117,7 +117,7 @@ const MinutaOff: React.FC = () => {
       setFormData({
         user_id: '',
         dispensa_id: '',
-       /*  name_minuta: '', */
+        /*  name_minuta: '', */
         start_date: '',
         people_number: '',
         dietary_preference: '',
@@ -134,22 +134,29 @@ const MinutaOff: React.FC = () => {
     }
   };
 
-// Función para manejar los cambios de selección
-const handleCheckboxChange = (event: any) => {
-  const { value, checked } = event.target;
-  let updatedTypeFood = formData.type_food.split(',').map(item => item.trim()).filter(item => item !== '');
+  // Función para manejar los cambios de selección
+  const handleCheckboxChange = (event: any) => {
+    const { value, checked } = event.target;
+    let updatedTypeFood = formData.type_food.split(',').map(item => item.trim()).filter(item => item !== '');
 
-  if (checked) {
-    // Si está marcado, añadimos el valor al array
-    updatedTypeFood.push(value);
-  } else {
-    // Si está desmarcado, lo removemos del array
-    updatedTypeFood = updatedTypeFood.filter(item => item !== value);
-  }
+    if (checked) {
+      // Si está marcado, añadimos el valor al array
+      updatedTypeFood.push(value);
+    } else {
+      // Si está desmarcado, lo removemos del array
+      updatedTypeFood = updatedTypeFood.filter(item => item !== value);
+    }
 
-  // Actualizamos type_food como una cadena concatenada sin comas iniciales
-  setFormData({ ...formData, type_food: updatedTypeFood.join(', ') });
-};
+    // Actualizamos type_food como una cadena concatenada sin comas iniciales
+    setFormData({ ...formData, type_food: updatedTypeFood.join(', ') });
+  };
+
+  const getLocalDate = () => {
+    const today = new Date();
+    today.setMinutes(today.getMinutes() - today.getTimezoneOffset()); // Ajustar a la zona horaria local
+    return today.toISOString().split('T')[0];
+  };
+
 
   return (
     <IonPage className='page-on'>
@@ -157,27 +164,34 @@ const handleCheckboxChange = (event: any) => {
         <div className='ddd'>
           <h1 className='dda'>MINUTA</h1>
         </div>
-        {minutas.length === 0 ? (
-          <IonCard className='card-minuta'>
-            <IonCardHeader className='no-minuta-1'>
-              NO EXISTE MINUTA
-            </IonCardHeader>
-            <IonCardContent className='no-minuta-2'>
-              DEBES CREAR TU MINUTA
-            </IonCardContent>
-          </IonCard>
-        ) : (
-          <div className='lista-minutas'>
-            {minutas.map((minuta, index) => (
-              <IonCard key={index} className='minuta-item'>
-                <IonCardHeader>{minuta}</IonCardHeader>
-              </IonCard>
-            ))}
+
+
+        <div className="container_MinutaOff">
+          <div className="card_MinutaOff">
+            <IonImg src='resources\NoMinuta.png'></IonImg>
+            <div className="content_MinutaOff">
+              <br />
+              <a>
+                <span className="title_MinutaOff">
+                  NO TIENES MINUTAS.
+                </span>
+              </a>
+              
+              <p className="desc_MinutaOff">
+                No tienes una minuta activa, ¡Crea una minuta para comenzar a planificar tus comidas!
+              </p>
+              <br />
+              <IonButton expand="block" color="success" shape="round" onClick={() => setShowModal(true)}>
+                Crear Minuta
+              </IonButton>
+
+              <IonButton expand="block" shape="round" routerLink="/Tab2">
+                Ver Despensa
+              </IonButton>
+            </div>
           </div>
-        )}
-        <IonButton className="crear" onClick={() => setShowModal(true)}>
-          CREAR
-        </IonButton>
+        </div>
+
 
         {/* Modal para mostrar las preferencias */}
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
@@ -201,8 +215,16 @@ const handleCheckboxChange = (event: any) => {
                 {/* Input para la fecha de inicio */}
                 <IonItem>
                   <IonLabel position="floating">Fecha de inicio</IonLabel>
-                  <IonInput type="date" name="start_date" value={formData.start_date} onIonChange={handleInputChange} required></IonInput>
+                  <IonInput
+                    type="date"
+                    name="start_date"
+                    value={formData.start_date}
+                    min={getLocalDate()} // Usar la fecha ajustada a la zona horaria local
+                    onIonChange={handleInputChange}
+                    required
+                  ></IonInput>
                 </IonItem>
+
 
                 {/* Combobox para la cantidad de usuarios */}
                 <IonItem>
@@ -236,39 +258,36 @@ const handleCheckboxChange = (event: any) => {
 
                 {/* Checkbox para seleccionar tipo de comida */}
                 <IonList>
-                  <IonItem>
+                  <IonItem className="form-item">
                     <IonLabel>Tipo de Comida</IonLabel>
+                    <div style={{ display: 'flex', flexDirection: 'column', marginTop: '10px' }}>
+                      <IonItem lines="none">
+                        <IonCheckbox
+                          value="desayuno"
+                          checked={formData.type_food.includes("desayuno")}
+                          onIonChange={handleCheckboxChange}
+                        />
+                        <IonLabel style={{ marginLeft: '10px' }}>Desayuno</IonLabel>
+                      </IonItem>
+                      <IonItem lines="none">
+                        <IonCheckbox
+                          value="almuerzo"
+                          checked={formData.type_food.includes("almuerzo")}
+                          onIonChange={handleCheckboxChange}
+                        />
+                        <IonLabel style={{ marginLeft: '10px' }}>Almuerzo</IonLabel>
+                      </IonItem>
+                      <IonItem lines="none">
+                        <IonCheckbox
+                          value="cena"
+                          checked={formData.type_food.includes("cena")}
+                          onIonChange={handleCheckboxChange}
+                        />
+                        <IonLabel style={{ marginLeft: '10px' }}>Cena</IonLabel>
+                      </IonItem>
+                    </div>
                   </IonItem>
 
-                  <IonItem>
-                    <IonLabel>Desayuno</IonLabel>
-                    <IonCheckbox
-                      slot="end"
-                      value="desayuno"
-                      checked={formData.type_food.includes("desayuno")}
-                      onIonChange={handleCheckboxChange}
-                    />
-                  </IonItem>
-
-                  <IonItem>
-                    <IonLabel>Almuerzo</IonLabel>
-                    <IonCheckbox
-                      slot="end"
-                      value="almuerzo"
-                      checked={formData.type_food.includes("almuerzo")}
-                      onIonChange={handleCheckboxChange}
-                    />
-                  </IonItem>
-
-                  <IonItem>
-                    <IonLabel>Cena</IonLabel>
-                    <IonCheckbox
-                      slot="end"
-                      value="cena"
-                      checked={formData.type_food.includes("cena")}
-                      onIonChange={handleCheckboxChange}
-                    />
-                  </IonItem>
                 </IonList>
                 {/* Botón para guardar las preferencias */}
                 <IonButton expand="block" shape="round" color="success" type="submit">
@@ -280,24 +299,24 @@ const handleCheckboxChange = (event: any) => {
               </form>
             </IonCard>
             {/* Componente de Alerta usando IonToast */}
-              <IonToast
-                isOpen={showToast}
-                onDidDismiss={() => setShowToast(false)}
-                message={toastMessage}
-                duration={3000}
-                color="danger"
-                position="middle"
-              />
+            <IonToast
+              isOpen={showToast}
+              onDidDismiss={() => setShowToast(false)}
+              message={toastMessage}
+              duration={3000}
+              color="danger"
+              position="middle"
+            />
             {/* Componente de carga */}
             <IonLoading
-                  isOpen={loading}
-                  message={'Creando minuta...'}
-                />
+              isOpen={loading}
+              message={'Creando minuta...'}
+            />
           </IonContent>
         </IonModal>
       </IonContent>
     </IonPage>
-    
+
   );
 };
 
