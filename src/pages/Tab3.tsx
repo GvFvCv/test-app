@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonLoading, IonImg, IonIcon, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonModal, IonCheckbox, IonLabel, IonItem, IonInput, IonList, IonSelect, IonSelectOption, IonFooter, IonAlert } from '@ionic/react';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import {  } from '@ionic/pwa-elements/loader';
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
+defineCustomElements(window);
 import { camera, checkmark, close, arrowBack, pencil, information, addCircleOutline, image, umbrella } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import { enviarDatos } from '../services/ingresoboleta';
@@ -30,6 +33,10 @@ const Tab3: React.FC = () => {
     load_alimento: '',
     uso_alimento: ''
   });
+
+  const irADespensa = () => {
+    history.push('/tab2');
+  };
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
@@ -197,6 +204,23 @@ const Tab3: React.FC = () => {
     localStorage.setItem('showInstructions', visible.toString());
   };
 
+  const handleCheckboxChange = (event: CustomEvent, option: string) => {
+    const isChecked = event.detail.checked;
+
+    setFormData((prevFormData) => {
+      const updatedUsoAlimento = isChecked
+        ? [...prevFormData.uso_alimento.split(',').filter(Boolean), option] // Agregar opción seleccionada
+        : prevFormData.uso_alimento
+          .split(',')
+          .filter((item) => item !== option && item !== ''); // Quitar opción desmarcada
+
+      return {
+        ...prevFormData,
+        uso_alimento: updatedUsoAlimento.join(','), // Concatenar con comas
+      };
+    });
+  };
+
 
   return (
     <IonPage color={'light'}>
@@ -224,11 +248,11 @@ const Tab3: React.FC = () => {
               <h1 className='modaltext'>CAPTURA</h1>
               <IonButton fill="clear" onClick={() => setShowModal(false)} className='back-button'>
                 <IonIcon icon={arrowBack} slot="icon-only" style={{ color: '#fff', fontSize: '4rem' }} />
-              </IonButton>        
+              </IonButton>
             </div>
-            
 
-            
+
+
             <br /><br />
 
             {showInstructions ? (
@@ -315,8 +339,11 @@ const Tab3: React.FC = () => {
 
         {/* Modal de ingreso manual */}
         <IonModal isOpen={showManualInputModal}>
-          <div className='form-title'>
-            <h1>REGISTRO DE ALIMENTOS</h1>
+          <div className='modalcap'>
+            <h1 className='modaltext'>REGISTRO DE ALIMENTO</h1>
+            <IonButton fill="clear" onClick={() => setShowManualInputModal(false)} className='back-button'>
+              <IonIcon icon={arrowBack} slot="icon-only" style={{ color: '#fff', fontSize: '4rem' }} />
+            </IonButton>
           </div>
           <IonContent className='food-entry-page'>
             <form onSubmit={handleSubmit} className='form-content'>
@@ -364,31 +391,47 @@ const Tab3: React.FC = () => {
                 />
               </IonItem>
 
-              {/* Unidad de medida */}
+              {/* Uso del alimento */}
               <IonItem className='form-item'>
-                <IonSelect
-                  name="uso_alimento"
-                  label='Uso del Alimento'
-                  labelPlacement='floating'
-                  value={formData.uso_alimento}
-                  placeholder="Seleccione una opción"
-                  onIonChange={handleSelectChange}
-                >
-                  <IonSelectOption value="desayuno">Desayuno</IonSelectOption>
-                  <IonSelectOption value="almuerzo">Almuerzo</IonSelectOption>
-                  <IonSelectOption value="cena">Cena</IonSelectOption>
-                </IonSelect>
+                <IonLabel>Uso del Alimento</IonLabel>
+                <div style={{ display: 'flex', flexDirection: 'column', marginTop: '10px' }}>
+                  <IonItem lines="none">
+                    <IonCheckbox
+                      value="desayuno"
+                      checked={formData.uso_alimento.includes('desayuno')}
+                      onIonChange={(e) => handleCheckboxChange(e, 'desayuno')}
+                    />
+                    <IonLabel style={{ marginLeft: '10px' }}>Desayuno</IonLabel>
+                  </IonItem>
+                  <IonItem lines="none">
+                    <IonCheckbox
+                      value="almuerzo"
+                      checked={formData.uso_alimento.includes('almuerzo')}
+                      onIonChange={(e) => handleCheckboxChange(e, 'almuerzo')}
+                    />
+                    <IonLabel  style={{ marginLeft: '10px' }}>Almuerzo</IonLabel>
+                  </IonItem>
+                  <IonItem lines="none">
+                    <IonCheckbox
+                      value="cena"
+                      checked={formData.uso_alimento.includes('cena')}
+                      onIonChange={(e) => handleCheckboxChange(e, 'cena')}
+                    />
+                    <IonLabel style={{ marginLeft: '10px' }}>Cena</IonLabel>
+                  </IonItem>
+                </div>
               </IonItem>
+
+
 
               {/* Botón de envío */}
               <div className='form-button'>
                 <IonButton expand="block" shape="round" color="success" type="submit">
                   Registrar Alimento
                 </IonButton>
-                <IonButton expand="block" shape="round" color="danger" onClick={() => setShowManualInputModal(false)}>
-                  Cancelar
+                <IonButton expand="block" shape="round" color="" onClick={irADespensa}>
+                  Despensa
                 </IonButton>
-
               </div>
             </form>
           </IonContent>
