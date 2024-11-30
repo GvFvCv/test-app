@@ -458,10 +458,7 @@ const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
     }
   };
   
-
-
-
-
+  
 
   return (
     <IonPage className='tab-1'>
@@ -628,7 +625,6 @@ const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
               />
             </div>
           </div>
-
 
 
           <IonModal className='instructions-modal' isOpen={showModal} onDidDismiss={() => setShowModal(false)}>

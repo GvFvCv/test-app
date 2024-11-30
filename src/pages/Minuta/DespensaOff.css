@@ -176,6 +176,60 @@ ion-checkbox::part(container) {
 
 
 
+/* Contenedor principal para centrar la tarjeta */
+.container_DespensaOff {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Para que ocupe toda la altura de la pantalla */
+  padding: 1rem; /* Color de fondo opcional */
+}
+
+/* Tarjeta */
+.card_DespensaOff {
+  max-width: 350px;
+  width: 100%; /* Para que sea fluida */
+  border-radius: 0.5rem;
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  border: 1px solid transparent;
+  overflow: hidden; /* Evitar desbordamientos */
+}
+
+/* Imagen */
+.image_DespensaOff {
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+  background-color: rgb(239, 205, 255);
+}
+
+/* Contenido */
+.content_DespensaOff {
+  padding: 1.1rem;
+  text-align: center; /* Centrar texto */
+}
+
+/* Título */
+.title_DespensaOff {
+  color: #111827;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+}
+
+/* Descripción */
+.desc_DespensaOff {
+  margin-top: 0.5rem;
+  color: #43474e;
+  font-size: 1rem;
+  line-height: 1.25rem;
+}
+
+/* Botones */
+.content_DespensaOff IonButton {
+  margin-top: 0.75rem;
+}
+
 
 
 
