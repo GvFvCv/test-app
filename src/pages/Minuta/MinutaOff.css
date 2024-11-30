@@ -223,3 +223,144 @@ ion-checkbox::part(container) {
 .content_MinutaOff IonButton {
     margin-top: 0.75rem;
 }
+
+
+
+/* From Uiverse.io by alexruix */
+.loader-background2 {
+    position: fixed; /* Cubre toda la pantalla */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white; /* Fondo blanco */
+    z-index: 9998; /* Debajo del loader */
+}
+
+.loaderMinutaOff {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999; /* Por encima del fondo */
+    width: 100px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader-textMinutaOff {
+    position: relative;
+    color: #5c27fc;
+    animation: text_713 3.5s ease both infinite;
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.loadMinutaOff {
+    background-color: #9A79FF;
+    border-radius: 10px;
+    display: block;
+    height: 14px;
+    width: 46px;
+    position: relative;
+    animation: loading_713 3.5s ease both infinite;
+}
+
+.loadMinutaOff::before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-color: #bfadf4;
+    border-radius: inherit;
+    animation: loading2_713 3.5s ease both infinite;
+}
+
+
+
+@keyframes text_713 {
+    0% {
+        letter-spacing: 1px;
+        transform: translateX(0px);
+    }
+
+    40% {
+        letter-spacing: 2px;
+        transform: translateX(26px);
+    }
+
+    80% {
+        letter-spacing: 1px;
+        transform: translateX(32px);
+    }
+
+    90% {
+        letter-spacing: 2px;
+        transform: translateX(0px);
+    }
+
+    100% {
+        letter-spacing: 1px;
+        transform: translateX(0px);
+    }
+}
+
+@keyframes loading_713 {
+    0% {
+        width: 16px;
+        transform: translateX(0px);
+    }
+
+    40% {
+        width: 100%;
+        transform: translateX(0px);
+    }
+
+    80% {
+        width: 16px;
+        transform: translateX(64px);
+    }
+
+    90% {
+        width: 100%;
+        transform: translateX(0px);
+    }
+
+    100% {
+        width: 16px;
+        transform: translateX(0px);
+    }
+}
+
+@keyframes loading2_713 {
+    0% {
+        transform: translateX(0px);
+        width: 16px;
+    }
+
+    40% {
+        transform: translateX(0%);
+        width: 80%;
+    }
+
+    80% {
+        width: 100%;
+        transform: translateX(0px);
+    }
+
+    90% {
+        width: 80%;
+        transform: translateX(15px);
+    }
+
+    100% {
+        transform: translateX(0px);
+        width: 16px;
+    }
+}

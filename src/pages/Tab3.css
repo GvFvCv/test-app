@@ -62,10 +62,14 @@ ion-header[collapse="condense"] ion-title {
 
 
 .modalContent {
-    max-height: 100vh; /* Limita la altura para permitir scroll en el contenido */
-    overflow-y: auto; /* Activa el scroll solo en el contenido */
-    padding: 1rem; /* Espaciado interno */
-    background-color: #ffffff; /* Fondo blanco */
+    max-height: 100vh;
+    /* Limita la altura para permitir scroll en el contenido */
+    overflow-y: auto;
+    /* Activa el scroll solo en el contenido */
+    padding: 1rem;
+    /* Espaciado interno */
+    background-color: #ffffff;
+    /* Fondo blanco */
     font-size: 1.5rem;
 }
 
@@ -78,21 +82,26 @@ ion-header[collapse="condense"] ion-title {
 
 
 .modalcap {
-    position: sticky; /* Fija el elemento en la parte superior de la ventana */
-    top: -0; /* Posiciona el elemento en la parte superior */
+    position: sticky;
+    /* Fija el elemento en la parte superior de la ventana */
+    top: -0;
+    /* Posiciona el elemento en la parte superior */
     color: #6200ff;
     margin-bottom: 1rem;
     background-color: #ffff;
     padding: auto;
     align-items: center;
     justify-content: center;
-    font-size: 2.2rem; /* Tamaño de fuente */
-    font-weight: bold; 
-    z-index: 1; /* Coloca el elemento por encima de los demás */
+    font-size: 2.2rem;
+    /* Tamaño de fuente */
+    font-weight: bold;
+    z-index: 1;
+    /* Coloca el elemento por encima de los demás */
 }
 
 .modaltext {
-    position: sticky; /* Fija el elemento en la parte superior de la ventana */
+    position: sticky;
+    /* Fija el elemento en la parte superior de la ventana */
     font-weight: bold;
     text-align: center;
     font-size: 2.2rem;
@@ -112,13 +121,17 @@ ion-header[collapse="condense"] ion-title {
 
 
 .mostratIntruccion {
-    position: sticky; /* Fija el elemento en la parte superior de la ventana */
-    top: 0; /* Posiciona el elemento en la parte superior */
-    font-size: 1rem; /* Tamaño de fuente */
-    font-weight: bold; 
+    position: sticky;
+    /* Fija el elemento en la parte superior de la ventana */
+    top: 0;
+    /* Posiciona el elemento en la parte superior */
+    font-size: 1rem;
+    /* Tamaño de fuente */
+    font-weight: bold;
     padding: 1%;
-    align-items: center; 
-    justify-content: center;  /* Coloca el elemento por encima de los demás */
+    align-items: center;
+    justify-content: center;
+    /* Coloca el elemento por encima de los demás */
 }
 
 
@@ -192,4 +205,143 @@ h1 {
 .custom-alert .alert-button {
     background: #8b09ab;
     color: #5ee8a1;
+}
+
+/* From Uiverse.io by alexruix */
+.loader-background {
+    position: fixed; /* Cubre toda la pantalla */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white; /* Fondo blanco */
+    z-index: 9998; /* Debajo del loader */
+}
+
+.loaderTab3 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999; /* Por encima del fondo */
+    width: 100px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader-textTab3 {
+    position: relative;
+    color: #5c27fc;
+    animation: text_713 3.5s ease both infinite;
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.loadTab3 {
+    background-color: #9A79FF;
+    border-radius: 10px;
+    display: block;
+    height: 14px;
+    width: 46px;
+    position: relative;
+    animation: loading_713 3.5s ease both infinite;
+}
+
+.loadTab3::before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-color: #bfadf4;
+    border-radius: inherit;
+    animation: loading2_713 3.5s ease both infinite;
+}
+
+
+
+@keyframes text_713 {
+    0% {
+        letter-spacing: 1px;
+        transform: translateX(0px);
+    }
+
+    40% {
+        letter-spacing: 2px;
+        transform: translateX(26px);
+    }
+
+    80% {
+        letter-spacing: 1px;
+        transform: translateX(32px);
+    }
+
+    90% {
+        letter-spacing: 2px;
+        transform: translateX(0px);
+    }
+
+    100% {
+        letter-spacing: 1px;
+        transform: translateX(0px);
+    }
+}
+
+@keyframes loading_713 {
+    0% {
+        width: 16px;
+        transform: translateX(0px);
+    }
+
+    40% {
+        width: 100%;
+        transform: translateX(0px);
+    }
+
+    80% {
+        width: 16px;
+        transform: translateX(64px);
+    }
+
+    90% {
+        width: 100%;
+        transform: translateX(0px);
+    }
+
+    100% {
+        width: 16px;
+        transform: translateX(0px);
+    }
+}
+
+@keyframes loading2_713 {
+    0% {
+        transform: translateX(0px);
+        width: 16px;
+    }
+
+    40% {
+        transform: translateX(0%);
+        width: 80%;
+    }
+
+    80% {
+        width: 100%;
+        transform: translateX(0px);
+    }
+
+    90% {
+        width: 80%;
+        transform: translateX(15px);
+    }
+
+    100% {
+        transform: translateX(0px);
+        width: 16px;
+    }
 }

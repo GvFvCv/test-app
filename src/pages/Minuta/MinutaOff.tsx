@@ -8,6 +8,7 @@ const MinutaOff: React.FC = () => {
   // Simulación de datos: lista de minutas
   const [minutas, setMinutas] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState<string>('Cargando...');
   // Estado para controlar el modal
   const [showModal, setShowModal] = useState(false);
 
@@ -76,7 +77,12 @@ const MinutaOff: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('Form Submitted', formData);
-    setLoading(true);  // Inicia el loading
+    const texts = ['Analizando Preferencias...', 'Analizando Despensa...', 'Validando Información...', 'Creando Minuta...', 'Planificando Minuta...'];
+    let index = 0;// Cambia dinámicamente el texto mientras dura la carga
+    const interval = setInterval(() => {
+      setLoadingText(texts[index]);
+      index = (index + 1) % texts.length;
+    }, 4000);
     // Verificar que user_id y dispensa_id estén presentes
     if (!formData.user_id || !formData.dispensa_id) {
       console.error('user_id o dispensa_id no están presentes en formData');
@@ -91,6 +97,7 @@ const MinutaOff: React.FC = () => {
     console.log('Form Data to Send:', formDataToSend);
 
     try {
+      setLoading(true);  // Inicia el loading
       const response = await fetch('http://127.0.0.1:8000/app/create_minuta/', {
         method: 'POST',
         headers: {
@@ -176,7 +183,7 @@ const MinutaOff: React.FC = () => {
                   NO TIENES MINUTAS.
                 </span>
               </a>
-              
+
               <p className="desc_MinutaOff">
                 No tienes una minuta activa, ¡Crea una minuta para comenzar a planificar tus comidas!
               </p>
@@ -252,7 +259,6 @@ const MinutaOff: React.FC = () => {
                     <IonSelectOption value="hiperproteica">Hiperproteica</IonSelectOption>
                     <IonSelectOption value="gluten">Sin gluten</IonSelectOption>
                     <IonSelectOption value="flexitariana">Flexitariana</IonSelectOption>
-                    <IonSelectOption value="economica">Económica</IonSelectOption>
                   </IonSelect>
                 </IonItem>
 
@@ -308,10 +314,16 @@ const MinutaOff: React.FC = () => {
               position="middle"
             />
             {/* Componente de carga */}
-            <IonLoading
-              isOpen={loading}
-              message={'Creando minuta...'}
-            />
+            {loading && (
+              <>
+                <div className="loader-background2"></div> {/* Fondo blanco */}
+                <div className="loaderMinutaOff">
+                  <span className="loader-textMinutaOff">{loadingText}</span>
+                  <span className="loadMinutaOff"></span>
+                </div>
+              </>
+            )}
+
           </IonContent>
         </IonModal>
       </IonContent>
