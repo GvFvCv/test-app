@@ -5,7 +5,7 @@ export const fetchRecommendations = async () => {
     if (registerResponse) {
       const parsedResponse = JSON.parse(registerResponse);
       const userId = parsedResponse.id_user;
-      const type_recommendation = 3;
+      const type_recommendation = 2;
       if (userId && type_recommendation) {
         formData.append('user_id', userId.toString());
         formData.append('type_recommendation', type_recommendation.toString());
