@@ -273,7 +273,7 @@ const Estadisticas: React.FC = () => {
                       <IonLabel className="labelEstadisticas_2_1">Porcentaje de planes completados:</IonLabel>
                     </div>
                     <div className="card-bottom_1">
-                      <p className="labelEstadisticas_2_2">{estadisticas.proporcion_planes_completados || 0} %</p>
+                      <p className="labelEstadisticas_2_2">{(estadisticas.proporcion_planes_completados || 0).toFixed(1)} %</p>
                     </div>
                   </div>
                   {/* Reverso de la tarjeta */}
