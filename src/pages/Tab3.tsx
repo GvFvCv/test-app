@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonLoading, IonImg, IonIcon, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonModal, IonCheckbox, IonLabel, IonItem, IonInput, IonList, IonSelect, IonSelectOption, IonFooter, IonAlert } from '@ionic/react';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import {  } from '@ionic/pwa-elements/loader';
+import { } from '@ionic/pwa-elements/loader';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 defineCustomElements(window);
 import { camera, checkmark, close, arrowBack, pencil, information, addCircleOutline, image, umbrella } from 'ionicons/icons';
@@ -19,6 +19,7 @@ const Tab3: React.FC = () => {
   const [foodItems, setFoodItems] = useState<string[]>([]); // Estado para almacenar alimentos ingresados
   const [food, setFood] = useState<string>(""); // Estado para manejar el input de alimentos
   const [loading, setLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState<string>('Cargando...');
   const [showInstructions, setShowInstructions] = useState(true);
   const history = useHistory();
   let imageboleta = "";
@@ -143,8 +144,16 @@ const Tab3: React.FC = () => {
   };
 
   const EnviarBoletaEP = async () => {
-    setLoading(true);
+
+    const texts = ['Analizando Boleta...', 'Verificando Información...', 'Cargando Alimentos...', 'Organizando Despensa...', 'Casi Listo...'];
+    let index = 0;// Cambia dinámicamente el texto mientras dura la carga
+    const interval = setInterval(() => {
+      setLoadingText(texts[index]);
+      index = (index + 1) % texts.length;
+    }, 4000);
+
     try {
+      setLoading(true);
       // Recuperar el objeto de usuario del localStorage
       const user = localStorage.getItem('registerResponse');
       if (!user) {
@@ -176,6 +185,7 @@ const Tab3: React.FC = () => {
       ShowAlert(`Error al enviar la foto: ${(error as Error).message}`);
     } finally {
       setLoading(false);  // Finaliza el loading
+      clearInterval(interval); // Detén el cambio de texto
     }
   };
 
@@ -311,10 +321,16 @@ const Tab3: React.FC = () => {
                 </IonButton>
 
                 {/* Componente de carga */}
-                <IonLoading
-                  isOpen={loading}
-                  message={'Ingresando alimentos...'}
-                />
+                {loading && (
+                  <>
+                    <div className="loader-background"></div> {/* Fondo blanco */}
+                    <div className="loaderTab3">
+                      <span className="loader-textTab3">{loadingText}</span>
+                      <span className="loadTab3"></span>
+                    </div>
+                  </>
+                )}
+
 
               </>
             )}
@@ -409,7 +425,7 @@ const Tab3: React.FC = () => {
                       checked={formData.uso_alimento.includes('almuerzo')}
                       onIonChange={(e) => handleCheckboxChange(e, 'almuerzo')}
                     />
-                    <IonLabel  style={{ marginLeft: '10px' }}>Almuerzo</IonLabel>
+                    <IonLabel style={{ marginLeft: '10px' }}>Almuerzo</IonLabel>
                   </IonItem>
                   <IonItem lines="none">
                     <IonCheckbox

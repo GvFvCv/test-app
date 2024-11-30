@@ -55,7 +55,7 @@ const PantallaPrincipal: React.FC = () => {
     <IonPage>
       {loading && (
         <div className="loader">
-          <span className="loader-text">cargando...</span>
+          <span className="loader-text">Comprobando Minuta...</span>
           <span className="load"></span>
         </div>
       )}
