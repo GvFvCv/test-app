@@ -60,6 +60,10 @@ const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
   const [ingredienteSeleccionado, setIngredienteSeleccionado] = useState(null);
   const [cantidadEditada, setCantidadEditada] = useState('');
 
+  const ShowAlert = (message: string) => {
+    alert(message);
+  };
+
   const handleResponse = () => {
     setVisible(false);
   };
@@ -197,45 +201,61 @@ const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
 
   const handleAlertaResponse = async (realizado: boolean) => {
     try {
-      const user = localStorage.getItem('registerResponse');
-      if (!user) {
-        throw new Error('No se encontró el objeto de usuario en el localStorage');
-      }
+        const user = localStorage.getItem('registerResponse');
+        if (!user) {
+            throw new Error('No se encontró el objeto de usuario en el localStorage');
+        }
 
-      const userObj = JSON.parse(user);
-      const userId = userObj.id_user;
+        const userObj = JSON.parse(user);
+        const userId = userObj.id_user;
 
-      const url = 'http://127.0.0.1:8000/app/contol_minuta/';
+        const url = 'http://127.0.0.1:8000/app/contol_minuta/';
 
-      const requestData = {
-        user_id: userId,
-        date: new Date().toISOString().split('T')[0],
-        realizado: realizado ? 'true' : 'false',
-      };
+        const requestData = {
+            user_id: userId,
+            date: new Date().toISOString().split('T')[0],
+            realizado: realizado ? 'true' : 'false',
+        };
 
-      console.log('Enviando respuesta de control de minuta:', requestData);
+        console.log('Enviando respuesta de control de minuta:', requestData);
 
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-      });
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData),
+        });
 
-      if (!response.ok) {
-        throw new Error('Error al enviar la respuesta de control de minuta');
-      }
+        if (!response.ok) {
+            throw new Error('Error al enviar la respuesta de control de minuta');
+        }
 
-      console.log('Control de minuta enviado correctamente');
+        console.log('Control de minuta enviado correctamente');
+        const responseData = await response.json();
+        console.log('Respuesta del servidor:', responseData);
 
-      // Aquí, oculta la tarjeta después de hacer clic
-      setMostrarAlerta(false);
+        // Extraer el mensaje y los descuentos del servidor
+        const message = responseData.message || "Ingreso de alimentos exitoso"; // Mensaje por defecto si no se encuentra el mensaje
+        const descuentos = responseData.descuento || [];
+
+        // Construir el mensaje de alerta con los descuentos
+        let alertaMensaje = `${message}\n\nDescuentos:\n`;
+        descuentos.forEach(descuento => {
+            alertaMensaje += `- ${descuento.name_alimento}: ${descuento.cantidad_descontada} ${descuento.unidad_medida}\n`;
+        });
+
+        // Mostrar alerta con el mensaje recibido del backend
+        setMostrarAlerta(true);
+        setMostrarSegundaAlerta(false); // Cerrar la segunda alerta si está abierta
+
+        // Mostrar la segunda alerta con el mensaje y descuentos
+        ShowAlert(alertaMensaje);
+        setMostrarSegundaAlerta(true);
     } catch (error) {
-      console.error('Error al enviar la respuesta de control de minuta:', error);
+        console.error('Error al enviar la respuesta de control de minuta:', error);
     }
-  };
-
+};
 
   const handleDeactivateMinuta = async () => {
     const user = localStorage.getItem('registerResponse');
@@ -460,6 +480,7 @@ const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
               </IonButton>
             </IonCol>
           </div>
+          
 
 
           <IonModal isOpen={mostrarModal} onDidDismiss={() => setMostrarModal(false)}>
