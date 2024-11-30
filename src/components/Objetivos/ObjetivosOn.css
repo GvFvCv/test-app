@@ -1,0 +1,223 @@
+.tab-4 {
+  height: 100%;
+  color: rgb(255, 255, 255); /* Texto en blanco para contraste */
+  background-color: #5a2e91 !important;
+  background-image: url("/public/assets/apple.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+.ion-page {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.ion-padding {
+  background-color: #5a2e91 !important;
+}
+
+ion-header[collapse="condense"] ion-title {
+  font-size: 1.2rem; /* Tamaño ajustado para el título colapsado */
+  color: #f4f4f5; /* Color gris claro */
+}
+
+.eee-1 {
+  display: fixed;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #ffffff;
+  margin-bottom: 0rem;
+  background-color: #7045ff;
+  padding: 1%;
+  align-items: center;
+  justify-content: center;
+}
+
+.eef-2 {
+  display: fixed;
+  font-weight: bold;
+  font-size: 2.5rem;
+  color: #ffffff;
+  background-color: #7045ff;
+  padding: 4% 1%;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Título de la página "AJUSTES" */
+.op-1,
+.op-2,
+.op-3 {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #000000;
+  margin: 1rem 0;
+}
+
+/* Estilo para los textos de las opciones */
+.op-11,
+.op-22,
+.op-33 {
+  font-size: 1.5rem;
+  padding: 0.5rem 0;
+  text-align: left;
+}
+
+/* Estilo general para los ítems de las listas */
+.list-1 {
+  --background: #ffffff; /* Fondo claro para los ítems */
+  border-radius: 10px; /* Bordes redondeados para dar un toque moderno */
+  margin: 0.5rem 0; /* Espaciado entre ítems */
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Sombra sutil para resaltar cada opción */
+  display: flex; /* Alinea los elementos horizontalmente */
+  justify-items: center; /* Centra los elementos horizontalmente */
+  align-items: center; /* Centra los elementos verticalmente */
+}
+
+/* Personalización de los toggles */
+.togles {
+  --background: #ffffff; /* Fondo claro para los toggles */
+  border-radius: 10px; /* Bordes redondeados para dar un toque moderno */
+  margin: 0.5rem 0; /* Espaciado entre toggles */
+  padding: 1rem;
+  display: flex; /* Alinea los elementos horizontalmente */
+  justify-items: center; /* Centra los elementos horizontalmente */
+  align-items: center; /* Centra los elementos verticalmente */
+}
+
+.list-not {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #000000;
+  border-radius: 4%;
+}
+
+.modern-button {
+  border: 3px solid #6200ff;
+  border-radius: 6px;
+  background-color: #6200ff;
+}
+
+.boton_retroceso {
+  color: #1a0e8b;
+  font-size: 4rem;
+}
+
+/* ------------------- TARJETAS -----------------------*/
+
+.card_1 {
+  width: 500px !important;
+  height: 260px !important;
+  perspective: 1000px;
+  margin: 1rem;
+  opacity: 0; /* Oculto inicialmente */
+  transform: translateX(300px); /* Fuera de la posición inicial */
+  transition: transform 1s ease-out, opacity 1s ease-out; /* Suave entrada */
+  border-radius: 2.5em;
+}
+
+.card_1.slide-in {
+  opacity: 1; /* Visible */
+  transform: translateX(0); /* Posición final */
+}
+
+.card_1.flipped .card-inner {
+  transform: rotateY(180deg); /* Gira la tarjeta 180 grados */
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.9s;
+}
+
+.card-content_1 { /* Contenido de la tarjeta */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden; /* Oculta el contenido trasero */
+  flex-direction: column; /* Alinea los elementos verticalmente */
+  justify-content: center; /* Centra los elementos horizontalmente */
+  align-items: center; /* Centra los elementos verticalmente */
+  border-radius: 1.5em; /* Bordes redondeados */ 
+  box-shadow: 7px 6px #323232; /* Sombra suave */
+  transition: box-shadow 0.5s ease; /* Animación suave */
+  text-align: center; /* Alinea el texto al centro */
+}
+
+.card-front {
+  background: #f3f3f3;
+  text-align: center;
+  justify-content: center;
+    align-items: center;
+}
+
+.card-back {
+  background: #ffffff;
+  display: flow-root;
+  transform: rotateY(180deg);
+}
+
+.card-top_1 {
+    display: flex;
+    flex-direction: column; /* Apilar los elementos verticalmente */
+    justify-content: center; /* Centrar verticalmente */
+    align-items: center; /* Centrar horizontalmente */
+    text-align: center; /* Centrar texto */
+  }
+
+.card-back-info_1 {
+  padding: 0.3rem;
+  font-size: 2.1rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin: 1rem;
+    text-align: center;
+}
+
+.card-back-info_2 {
+  padding: 0.3rem;
+  font-size: 3rem;
+    font-weight: bold;
+  color: #121aff;
+  margin: 1rem;
+  text-align: center;
+}
+
+.texto-1 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #cc16ff; /* Cambia si deseas otro color */
+}
+
+.centered-label {
+    padding: 0.3rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #1c08f4;
+    margin: 1rem;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.highlighted-text {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #0000ff; /* Cambia si deseas otro color */
+    margin: 5px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.large-text {
+    font-size: 2rem;
+    color: #0008e9;
+}
