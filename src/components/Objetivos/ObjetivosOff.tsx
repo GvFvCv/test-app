@@ -60,12 +60,16 @@ const ObjetivosOff: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-
-    if (!formData.user_id) {
-      console.error('Falta el ID del usuario');
+    // rexuperar el id del usuario desde el localStorage
+    const user = localStorage.getItem('registerResponse');
+    if (!user) {
+      console.error('No se encontró el objeto de usuario en el localStorage');
       return;
     }
 
+    // anexar el id del usuario al formData
+    const userObj = JSON.parse(user);
+   
     try {
       const response = await fetch('http://127.0.0.1:8000/app/crear_objetivo/', {
         method: 'POST',
@@ -86,7 +90,7 @@ const ObjetivosOff: React.FC = () => {
       console.log('Objetivo creado con éxito:', data);
 
       setFormData({
-        user_id: data.user_id,
+        user_id: userObj.id_user,
         id_tipo_objetivo: '',
         meta_objetivo: '',
       });
@@ -105,8 +109,8 @@ const ObjetivosOff: React.FC = () => {
     <IonPage className='page-on'>
       <IonLoading isOpen={loading} message="Cargando objetivos..." duration={1000} />
       <IonContent>
-        <div className='header-container'>
-          <h1 className='header-title'>Objetivos</h1>
+        <div className='obj-1'>
+          <h1 className='obj-2'>Objetivos</h1>
         </div>
          {!loading && (
           <>
@@ -125,7 +129,9 @@ const ObjetivosOff: React.FC = () => {
         )}
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
           <IonContent className="ion-padding">
-            <h1>Crear Nuevo Objetivo</h1>
+            <div className='obj-1'>
+              <h1 className='obj-2'>Crear Nuevo Objetivo</h1>
+            </div>
             <form onSubmit={handleSubmit}>
               <IonItem>
                 <h3> Tipo de Objetivo</h3>

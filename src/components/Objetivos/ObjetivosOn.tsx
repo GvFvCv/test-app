@@ -144,7 +144,7 @@ const ObjetivosOn: React.FC = () => {
     <IonPage className='tab-4'>
        <IonHeader>
         <div className="bba">
-          <h1 className="bbb">Objetivos</h1>
+          <h1 className="bbb">OBJETIVOS</h1>
           <IonButton fill="clear" onClick={irAtras} className='back-button'>
             <IonIcon icon={arrowBack} slot="icon-only" className='boton_retroceso'/>
           </IonButton>
@@ -155,7 +155,7 @@ const ObjetivosOn: React.FC = () => {
         {objetivo ? (
             <IonGrid>
             <IonRow>
-              <IonCol className={`card_1 ${animateCards ? "slide-in" : ""} ${isFlipped1 ? "flipped" : ""}`}
+              <IonCol className={`card_1 ${animateCards ? "slide-in" : ""}`}
                onClick={() => setIsFlipped1(!isFlipped1)}>
 
                 <div className="card-inner">
@@ -165,25 +165,29 @@ const ObjetivosOn: React.FC = () => {
                     </div>
                     <div className="card-top_1">
                       <h3 className="texto-1">Meta</h3>
-                      <h3 className="highlighted-text">{objetivo.meta_total}</h3>
+                      <h3 className="highlighted-meta">{objetivo.meta_total}</h3>
                     </div>
                   </div>
                 </div>                
               </IonCol>
             </IonRow>
             <IonRow>
-              <IonCol className={`card_1 ${animateCards ? "slide-in" : ""} ${isFlipped1 ? "flipped" : ""}`}
+              <IonCol className={`card_2 ${animateCards ? "slide-in" : ""}`}
                onClick={() => setIsFlipped1(!isFlipped1)}>
 
-                <div className="card-inner">
-                  <div className="card-content_1 card-front">
-                    <div className="card-top_1">
-                      <h3 className='texto-1' >Progreso acumulado</h3>
-                      <h3 className="highlighted-text">{progreso?.progreso_acumulado}</h3>
+                <div className="card-inner-2">
+                  <div className="card-content_2 card-front-2">
+                  <div className="card-top_2">
+                      <h3 className='texto-2' >Progreso Diario</h3>
+                      <h3 className="highlighted-text-2">{progreso?.progreso_diario}</h3>
                     </div>
-                    <div className="card-top_1">
-                      <h3 className="texto-1">{progreso?.fecha}</h3>
-                      <h3 className="highlighted-text"></h3>
+                    <div className="card-top_2">
+                      <h3 className='texto-2' >Progreso Acumulado</h3>
+                      <h3 className="highlighted-text-2">{progreso?.progreso_acumulado}</h3>
+                    </div>
+                    <div className="card-top_2">
+                      <h3 className="texto-fecha">Fecha</h3>
+                      <h3 className="highlighted-text-fecha">{progreso?.fecha}</h3>
                     </div>
                   </div>
                 </div>                
