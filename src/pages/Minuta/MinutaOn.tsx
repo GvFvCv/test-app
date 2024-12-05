@@ -225,12 +225,7 @@ const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
       const userId = userObj.id_user;
 
       const url = 'http://127.0.0.1:8000/app/contol_minuta/';
-        const requestData = {
-            user_id: userId,
-            date: new Date().toISOString().split('T')[0],
-            realizado: realizado ? 'True' : 'False',
-        };
-
+        
       const requestData = {
         user_id: userId,
         date: new Date().toISOString().split('T')[0],

@@ -361,13 +361,14 @@ const Despensa: React.FC = () => {
                 </IonLabel>
               </IonItem>
 
-              {/* Opciones de deslizar */}
+              {/* Opciones de deslizar 
               <IonItemOptions side="start">
                 <IonItemOption color="success" onClick={() => handleEdit(alimento)}>
                   <IonIcon slot="start" icon={pencil} />
                   Editar
                 </IonItemOption>
               </IonItemOptions>
+              */}
               <IonItemOptions side="end">
                 <IonItemOption color="danger" onClick={() => handleDelete(alimento.id_alimento)}>
                   <IonIcon slot="start" icon={trash} />
