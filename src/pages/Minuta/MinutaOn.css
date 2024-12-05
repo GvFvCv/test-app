@@ -86,7 +86,7 @@ ion-header[collapse="condense"] ion-title {
   margin: 0 auto;
   /* Centra el calendario horizontalmente */
   border: none;
-  color: #7045ff;
+  color: #000000;
 }
 
 .calendar-container {
@@ -135,8 +135,9 @@ ion-header[collapse="condense"] ion-title {
 
 /* Personaliza los botones de navegación (anterior/siguiente) */
 .react-calendar__navigation button {
-  color: #2dd36f;
+  color: #000000;
   font-size: 18px;
+  font-style: bold;
 }
 
 .recipes-section-1 {
@@ -274,4 +275,78 @@ h2 {
 .modal-body {
   overflow-y: auto;
   max-height: calc(100vh - 150px);
+}
+
+.alerta {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+.alerta.success {
+  color: #155724;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+}
+.alerta.error {
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+
+/* From Uiverse.io by alexruix */ 
+.input-group {
+  display: flex;
+  align-items: center;
+  margin: 1rem;
+}
+
+.input {
+  min-height: 50px;
+  max-width: 100%;
+  padding: 0 1rem;
+  color: #000;
+  font-size: 15px;
+  border: 1px solid #5e4dcd;
+  border-radius: 6px 0 0 6px;
+  background-color: transparent;
+}
+
+.button--submit {
+  min-height: 50px;
+  padding: .5em 1em;
+  border: none;
+  border-radius: 0 6px 6px 0;
+  background-color: #5e4dcd;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color .3s ease-in-out;
+}
+
+.button--submit:hover {
+  background-color: #5e5dcd;
+}
+
+.input:focus, .input:focus-visible {
+  border-color: #3898EC;
+  outline: none;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: #999;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.close-button:hover {
+  color: #5e4dcd; /* Cambiar color al pasar el mouse */
 }

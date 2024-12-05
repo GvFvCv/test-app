@@ -58,7 +58,12 @@ const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
   const [mostrarModal, setMostrarModal] = useState(false);
 
   const [ingredienteSeleccionado, setIngredienteSeleccionado] = useState(null);
-  const [cantidadEditada, setCantidadEditada] = useState('');
+  const [cantidadEditada, setCantidadEditada] = useState(ingredienteSeleccionado?.cantidad || "");
+
+  const [alertaResultado, setAlertaResultado] = useState({ mostrar: false, mensaje: '', tipo: '' });
+
+  const [alerta, setAlerta] = useState({ mostrar: false, mensaje: '', tipo: '' });
+
 
   const ShowAlert = (message: string) => {
     alert(message);
@@ -121,16 +126,23 @@ const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
       const fechaActual = new Date();
       const hora = fechaActual.getHours();
       const dia = fechaActual.getDate();
+      const fechaKey = `${fechaActual.getFullYear()}-${fechaActual.getMonth() + 1}-${dia}`; // Formato: YYYY-MM-DD
+
       setHoraActual(hora);
       setDiaActual(dia);
-      if (dia === diaActual && hora >= 0 && hora < 24) {
+
+      // Verificar si la alerta ya fue mostrada hoy
+      const alertaMostradaHoy = localStorage.getItem('alertaProcesada');
+      if (alertaMostradaHoy === fechaKey) {
+        setMostrarAlerta(false); // No mostrar si ya fue procesada
+      } else if (hora >= 0 && hora < 24) {
         setMostrarAlerta(true);
-      } else {
-        setMostrarAlerta(false);
       }
     }, 1000);
+
     return () => clearInterval(intervalId);
   }, [diaActual]);
+
 
   const onDayClick = (value: Date) => {
     const selectedDate = value.toISOString().split('T')[0];
@@ -201,61 +213,75 @@ const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
 
   const handleAlertaResponse = async (realizado: boolean) => {
     try {
-        const user = localStorage.getItem('registerResponse');
-        if (!user) {
-            throw new Error('No se encontró el objeto de usuario en el localStorage');
-        }
+      const fechaActual = new Date();
+      const fechaKey = `${fechaActual.getFullYear()}-${fechaActual.getMonth() + 1}-${fechaActual.getDate()}`;
 
-        const userObj = JSON.parse(user);
-        const userId = userObj.id_user;
+      const user = localStorage.getItem('registerResponse');
+      if (!user) {
+        throw new Error('No se encontró el objeto de usuario en el localStorage');
+      }
 
-        const url = 'http://127.0.0.1:8000/app/contol_minuta/';
+      const userObj = JSON.parse(user);
+      const userId = userObj.id_user;
 
-        const requestData = {
-            user_id: userId,
-            date: new Date().toISOString().split('T')[0],
-            realizado: realizado ? 'true' : 'false',
-        };
+      const url = 'http://127.0.0.1:8000/app/contol_minuta/';
 
-        console.log('Enviando respuesta de control de minuta:', requestData);
+      const requestData = {
+        user_id: userId,
+        date: new Date().toISOString().split('T')[0],
+        realizado: realizado ? 'true' : 'false',
+      };
 
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestData),
-        });
+      console.log('Enviando respuesta de control de minuta:', requestData);
 
-        if (!response.ok) {
-            throw new Error('Error al enviar la respuesta de control de minuta');
-        }
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
 
-        console.log('Control de minuta enviado correctamente');
-        const responseData = await response.json();
-        console.log('Respuesta del servidor:', responseData);
+      if (!response.ok) {
+        throw new Error('Error al enviar la respuesta de control de minuta');
+      }
 
-        // Extraer el mensaje y los descuentos del servidor
-        const message = responseData.message || "Ingreso de alimentos exitoso"; // Mensaje por defecto si no se encuentra el mensaje
-        const descuentos = responseData.descuento || [];
+      const responseData = await response.json();
+      console.log('Respuesta del servidor:', responseData);
 
-        // Construir el mensaje de alerta con los descuentos
-        let alertaMensaje = `${message}\n\nDescuentos:\n`;
-        descuentos.forEach(descuento => {
-            alertaMensaje += `- ${descuento.name_alimento}: ${descuento.cantidad_descontada} ${descuento.unidad_medida}\n`;
-        });
+      const message = responseData.message || "Ingreso de alimentos exitoso";
+      const descuentos = responseData.descuento || [];
 
-        // Mostrar alerta con el mensaje recibido del backend
-        setMostrarAlerta(true);
-        setMostrarSegundaAlerta(false); // Cerrar la segunda alerta si está abierta
+      let alertaMensaje = `${message}\n\nDescuentos:\n`;
+      descuentos.forEach(descuento => {
+        alertaMensaje += `- ${descuento.name_alimento}: ${descuento.cantidad_descontada} ${descuento.unidad_medida}\n`;
+      });
 
-        // Mostrar la segunda alerta con el mensaje y descuentos
-        ShowAlert(alertaMensaje);
-        setMostrarSegundaAlerta(true);
+      // Marcar la alerta como procesada en localStorage
+      localStorage.setItem('alertaProcesada', fechaKey);
+
+      // Ocultar la alerta
+      setMostrarAlerta(false);
+
+      // Configurar y mostrar la alerta de resultado
+      setAlertaResultado({
+        mostrar: true,
+        mensaje: alertaMensaje,
+        tipo: 'success', // Éxito
+      });
+
     } catch (error) {
-        console.error('Error al enviar la respuesta de control de minuta:', error);
+      console.error('Error al enviar la respuesta de control de minuta:', error);
+
+      // Configurar y mostrar la alerta de error
+      setAlertaResultado({
+        mostrar: true,
+        mensaje: 'Error al realizar la operación. Por favor, inténtelo nuevamente.',
+        tipo: 'error', // Error
+      });
     }
-};
+  };
+
 
   const handleDeactivateMinuta = async () => {
     const user = localStorage.getItem('registerResponse');
@@ -381,84 +407,94 @@ const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
       console.error('No se encontró el objeto de usuario en el localStorage');
       return;
     }
-  
+
     const userObj = JSON.parse(user);
-    const userId = userObj.id_user;  // Suponemos que es un número entero
-  
-    // Verificar que ingredienteSeleccionado y cantidadEditada sean válidos
+    const userId = userObj.id_user;
+
     if (!userId || !ingredienteSeleccionado || !cantidadEditada) {
       console.error('Faltan datos para enviar la solicitud PUT');
       return;
     }
-  
-    // Encontrar la minuta asociada al ingrediente seleccionado
+
     const seleccionadaMinuta = minutas.find(minuta =>
       minuta.ingredientes.some(ingrediente => ingrediente.id_ingrediente === ingredienteSeleccionado.id_ingrediente)
     );
-  
+
     if (!seleccionadaMinuta) {
       console.error('No se encontró la minuta para el ingrediente seleccionado');
       return;
     }
-  
-    // Verificar que la fecha esté disponible en la minuta
+
     const fecha = seleccionadaMinuta.fecha;
-    if (!fecha) {
-      console.error('El campo fecha está ausente en la minuta');
-      return;
-    }
-  
-    // Mostrar la fecha y otros valores antes de enviar la solicitud
-    console.log('date:', fecha);
-  
-    // Asegúrate de convertir los valores a los tipos correctos
-    const cantidadConvertida = parseInt(cantidadEditada, 10);  // Convertir a Integer
-    const userIdConvertido = parseInt(userId, 10);  // Convertir a Integer
-    const idIngredienteConvertido = parseInt(ingredienteSeleccionado.id_ingrediente, 10);  // Convertir a Integer
-  
-    // Verificar si las conversiones fueron exitosas
-    if (isNaN(cantidadConvertida) || isNaN(userIdConvertido) || isNaN(idIngredienteConvertido)) {
-      console.error('Error: uno o más valores no son números válidos');
-      return;
-    }
-  
+    const cantidadConvertida = parseInt(cantidadEditada, 10);
+    const userIdConvertido = parseInt(userId, 10);
+    const idIngredienteConvertido = parseInt(ingredienteSeleccionado.id_ingrediente, 10);
+
     const url = 'http://127.0.0.1:8000/app/edit_productos_minuta_diaria/';
-  
     const formData = new FormData();
-    formData.append('user_id', userIdConvertido.toString());  // Convertir a String
-    formData.append('date', fecha);  // Usar la fecha de la minuta (ya es un string)
-    formData.append('id_ingrediente', idIngredienteConvertido.toString());  // Convertir a String
-    formData.append('cantidad', cantidadConvertida.toString());  // Convertir a String
-  
-    // Mostrar el contenido de FormData antes de enviar
-    console.log('Contenido de FormData antes de enviar:');
-    formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
-  
+    formData.append('user_id', userIdConvertido.toString());
+    formData.append('date', fecha);
+    formData.append('id_ingrediente', idIngredienteConvertido.toString());
+    formData.append('cantidad', cantidadConvertida.toString());
+
     try {
       const response = await fetch(url, {
         method: 'PUT',
         body: formData,
       });
-  
+
       if (!response.ok) {
         throw new Error('Error al enviar la solicitud PUT');
       }
-  
+
       const data = await response.json();
       console.log('Respuesta del servidor:', data);
-  
-      alert('Cambios guardados con éxito');
-      setIngredienteSeleccionado(null);  // Cerrar la tarjeta de edición
-      window.location.reload();  // Actualizar la página
+
+      // Actualizar el estado de minutas
+      setMinutas((prevMinutas) =>
+        prevMinutas.map((minuta) => {
+          if (minuta.id_minuta === seleccionadaMinuta.id_minuta) {
+            return {
+              ...minuta,
+              ingredientes: minuta.ingredientes.map((ingrediente) =>
+                ingrediente.id_ingrediente === idIngredienteConvertido
+                  ? { ...ingrediente, cantidad: cantidadConvertida }
+                  : ingrediente
+              ),
+            };
+          }
+          return minuta;
+        })
+      );
+
+      // Mostrar alerta de éxito
+      setAlerta({
+        mostrar: true,
+        tipo: 'success',
+        mensaje: 'Alimento editado correctamente!',
+      });
+
+      setIngredienteSeleccionado(null);
     } catch (error) {
       console.error('Error al enviar la solicitud PUT:', error);
-      alert('Ocurrió un error al guardar los cambios');
+
+      setAlerta({
+        mostrar: true,
+        mensaje: 'Error al editar el alimento',
+        tipo: 'error',
+      });
     }
   };
-  
-  
+
+
+  useEffect(() => {
+    if (alerta.mostrar) {
+      setTimeout(() => {
+        setAlerta((prevAlert) => ({ ...prevAlert, mostrar: false }));
+      }, 3000);  // Oculta la alerta después de 3 segundos
+    }
+  }, [alerta.mostrar]);
+
 
   return (
     <IonPage className='tab-1'>
@@ -480,63 +516,88 @@ const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
               </IonButton>
             </IonCol>
           </div>
-          
+
 
 
           <IonModal isOpen={mostrarModal} onDidDismiss={() => setMostrarModal(false)}>
-            <div className="modal-content">
+            <IonHeader>
               <div className="bba">
-                <h1 className="bbb">AJUSTES DE MEDIDAS</h1>
+                <h1 className="bbb">EDITAR ALIMENTO</h1>
+                <IonButton fill="clear" onClick={() => setMostrarModal(false)} className='back-button'>
+                  <IonIcon icon={arrowBack} slot="icon-only" className='boton_retroceso' />
+                </IonButton>
               </div>
-              <br />
-              <IonButton onClick={() => setMostrarModal(false)}>Cerrar</IonButton>
-              <br /><br />
-              <div className="modal-body">
-                {minutas.map((minuta) => (
-                  <div key={minuta.id_minuta} className="minuta-card">
-                    <h2>{minuta.name_food}</h2>
-                    <p>Tipo de comida: {minuta.type_food}</p>
-                    <p>Fecha: {minuta.fecha}</p>
-                    <h3>Ingredientes:</h3>
-                    <ul>
-                      {minuta.ingredientes.map((ingrediente) => (
-                        <li key={ingrediente.id_ingrediente} className="ingrediente-item">
-                          <span>
-                            {ingrediente.nombre} - {ingrediente.cantidad} {ingrediente.tipo_medida}
-                          </span>
-                          <IonButton
-                            size="small"
-                            onClick={() => handleEditClick(minuta.id_minuta, ingrediente)}
-                          >
-                            Editar
-                          </IonButton>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+            </IonHeader>
+            <div className="modal-body">
+              {minutas.map((minuta) => (
+                <div key={minuta.id_minuta} className="minuta-card">
+                  <h2>{minuta.name_food}</h2>
+                  <p>Tipo de comida: {minuta.type_food}</p>
+                  <p>Fecha: {minuta.fecha}</p>
+                  <h3>Ingredientes:</h3>
+                  <ul>
+                    {minuta.ingredientes.map((ingrediente) => (
+                      <li key={ingrediente.id_ingrediente} className="ingrediente-item">
+                        <span>
+                          {ingrediente.nombre} - {ingrediente.cantidad} {ingrediente.tipo_medida}
+                        </span>
+                        <IonButton
+                          size="small"
+                          expand="block" shape="round"
+                          color="success"
+                          onClick={() => handleEditClick(minuta.id_minuta, ingrediente)}
+                        >
+                          <IonIcon icon={pencil} />
+                        </IonButton>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
 
-                {/* Tarjeta de edición fija */}
-                {ingredienteSeleccionado && (
-                  <div className="edit-card">
-                    <h3>Editar ingrediente</h3>
-                    <p>{ingredienteSeleccionado.nombre}</p>
+              {/* Tarjeta de edición fija */}
+              {ingredienteSeleccionado && (
+                <div className="edit-card">
+                  {/* Botón "X" para cerrar */}
+                  <button
+                    className="close-button"
+                    onClick={() => setIngredienteSeleccionado(null)}
+                  >
+                    &times;
+                  </button>
+
+                  <h3>Editar ingrediente:</h3>
+                  <p>{ingredienteSeleccionado.nombre}</p>
+                  <div className="input-group">
                     <input
                       type="number"
-                      value={cantidadEditada}
-                      onChange={handleCantidadChange}  // Actualizar cantidadEditada al cambiar el input
+                      className="input"
+                      id="Email"
+                      name="Email"
                       placeholder="Cantidad"
+                      value={cantidadEditada || ""}
+                      onChange={handleCantidadChange}
                     />
-                    <IonButton onClick={guardarCambios}>Guardar cambios</IonButton>
-                    <IonButton color="light" onClick={() => setIngredienteSeleccionado(null)}>
-                      Cancelar
-                    </IonButton>
+                    <input
+                      className="button--submit"
+                      onClick={guardarCambios}
+                      type="submit"
+                      value="Editar"
+                    />
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </IonModal>
 
+
+          <IonAlert
+            isOpen={alertaResultado.mostrar}
+            onDidDismiss={() => setAlertaResultado({ ...alertaResultado, mostrar: false })}
+            header={alertaResultado.tipo === 'success' ? '¡Éxito!' : 'Error'}
+            message={alertaResultado.mensaje}
+            buttons={['Aceptar']}
+          />
 
 
 
@@ -570,7 +631,7 @@ const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
             )}
             <div>
               {mostrarAlerta && (
-                visible ?
+                visible ? (
                   <IonCard className="mt-4">
                     <IonCardHeader>
                       <IonCardTitle>Alerta</IonCardTitle>
@@ -584,8 +645,11 @@ const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
                         className="mt-2"
                         color="success"
                         expand="block"
-                        shape='round'
-                        onClick={() => setMostrarSegundaAlerta(true)} // Al presionar "Sí", mostramos la segunda alerta
+                        shape="round"
+                        onClick={() => {
+                          setMostrarSegundaAlerta(true);
+                          handleResponse(); // Registrar como procesada
+                        }}
                       >
                         Sí
                       </IonButton>
@@ -593,15 +657,19 @@ const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
                         className="mt-2"
                         color="danger"
                         expand="block"
-                        shape='round'
-                        onClick={() => { handleAlertaResponse(false); handleResponse(); }}
+                        shape="round"
+                        onClick={() => {
+                          handleAlertaResponse(false);
+                          handleResponse(); // Registrar como procesada
+                        }}
                       >
                         No
                       </IonButton>
                     </IonCardContent>
                   </IonCard>
-                  : null
+                ) : null
               )}
+
 
               <IonAlert
                 isOpen={mostrarSegundaAlerta}
@@ -664,8 +732,8 @@ const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
           </IonModal>
           <br /><br /><br /><br /><br />
         </div>
-      </IonContent>
-    </IonPage>
+      </IonContent >
+    </IonPage >
   );
 };
 
