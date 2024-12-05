@@ -222,7 +222,7 @@ ion-header[collapse="condense"] ion-title {
   padding: 0.3rem;
   font-size: 3rem;
     font-weight: bold;
-  color: #121aff;
+  color: #7045ff;
   margin: 1rem;
   text-align: center;
 }
@@ -230,26 +230,26 @@ ion-header[collapse="condense"] ion-title {
 .texto-1 {
     font-size: 1.8rem;
     font-weight: bold;
-    color: #cc16ff; /* Cambia si deseas otro color */
+    color: #4e00eb; /* Cambia si deseas otro color */
 }
 
 .texto-2 {
     font-size: 1.8rem;
     font-weight: bold;
-    color: #1e16ff; /* Cambia si deseas otro color */
+    color: #4e00eb; /* Cambia si deseas otro color */
 }
 
 .texto-fecha {
     font-size: 1.8rem;
     font-weight: bold;
-    color: #cc16ff; /* Cambia si deseas otro color */
+    color: #4e00eb; /* Cambia si deseas otro color */
 }
 
 .centered-label {
     padding: 0.3rem;
     font-size: 1.1rem;
     font-weight: bold;
-    color: #1c08f4;
+    color: #4e00eb;
     margin: 1rem;
     text-align: center;
     align-items: center;
@@ -259,7 +259,7 @@ ion-header[collapse="condense"] ion-title {
 .highlighted-text {
     font-size: 2rem;
     font-weight: bold;
-    color: #0000ff; /* Cambia si deseas otro color */
+    color: #4e00eb; /* Cambia si deseas otro color */
     margin: 5px;
     justify-content: center;
     align-items: center;
@@ -269,7 +269,7 @@ ion-header[collapse="condense"] ion-title {
 .highlighted-text-fecha {
     font-size: 2rem;
     font-weight: bold;
-    color: #0000ff; /* Cambia si deseas otro color */
+    color: #0cc202d2; /* Cambia si deseas otro color */
     margin: 5px;
     justify-content: center;
     align-items: center;
@@ -279,7 +279,7 @@ ion-header[collapse="condense"] ion-title {
 .highlighted-meta {
     font-size: 2rem;
     font-weight: bold;
-    color: #03eb03; /* Cambia si deseas otro color */
+    color: #0cc202d2; /* Cambia si deseas otro color */
     margin: 5px;
     justify-content: center;
     align-items: center;
@@ -289,7 +289,7 @@ ion-header[collapse="condense"] ion-title {
 .highlighted-text-2 {
     font-size: 2rem;
     font-weight: bold;
-    color: #00ff37; /* Cambia si deseas otro color */
+    color: #0cc202d2; /* Cambia si deseas otro color */
     margin: 5px;
     justify-content: center;
     align-items: center;

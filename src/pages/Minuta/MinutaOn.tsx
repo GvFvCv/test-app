@@ -214,7 +214,7 @@ const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
         const requestData = {
             user_id: userId,
             date: new Date().toISOString().split('T')[0],
-            realizado: realizado ? 'true' : 'false',
+            realizado: realizado ? 'True' : 'False',
         };
 
         console.log('Enviando respuesta de control de minuta:', requestData);
