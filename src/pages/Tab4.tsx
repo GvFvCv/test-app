@@ -1,10 +1,13 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonToggle, IonSelect, IonSelectOption, IonButton, IonModal, IonAlert } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonToggle, IonSelect,
+IonSelectOption, IonButton, IonModal, IonAlert, IonCard, IonIcon } from '@ionic/react';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './Tab4.css';
 import NotificationModal from '../components/Notification/NotificationModal'; // Asegúrate de que la ruta sea correcta
 import ObjetivosOn from '../components/Objetivos/ObjetivosOn';
 import ObjetivosOff from '../components/Objetivos/ObjetivosOff';
+import { barChartSharp, locateSharp, notificationsSharp } from 'ionicons/icons';
+
 
 const Tab4: React.FC = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
@@ -26,44 +29,34 @@ const Tab4: React.FC = () => {
       <IonContent className='ion-padding'>
         <IonList className='list-not'>
           <IonItem className='list-1'>
-            <IonLabel>
-              <div className='op-1'>
+            <IonLabel onClick={() => setShowModal(true)}>
+              <div className='op-1 label-container'>
                 <h2 className='op-11'>
-                  Notificaciones
+                  NOTIFICACIONES
                 </h2>
+                <IonIcon icon={notificationsSharp} className='icon' />
               </div>
             </IonLabel>
-            <IonToggle className='togles' checked={notificationsEnabled} onIonChange={(e) => setNotificationsEnabled(e.detail.checked)} />
-            <IonButton className='modern-button' onClick={() => setShowModal(true)}>Ver</IonButton>
-          </IonItem>
-          <IonItem className='list-1'>
-            <IonLabel>
-              <div className='op-2'>
-                <h2 className='op-22'>
-                  Modo Oscuro
-                </h2>
-              </div>
-            </IonLabel>
-            <IonToggle className='togles' checked={darkMode} onIonChange={(e) => setDarkMode(e.detail.checked)} />
           </IonItem>
           <IonItem className='list-1'>
             <IonLabel onClick={() => setShowObjetivosModal(true)}>
-              <div className='op-3'>
+              <div className='op-3 label-container'>
                 <h2 className='op-33'>
-                  Objetivos
+                  OBJETIVOS
                 </h2>
+                <IonIcon icon={locateSharp} className='icon' />
               </div>
             </IonLabel>
           </IonItem>
           <IonItem className='list-1'>
-            <IonLabel>
-              <div className='op-1'>
+            <IonLabel onClick={irAEstadisticas}>
+              <div className='op-1 label-container'>
                 <h2 className='op-11'>
-                  Estadisticas de Usuario
+                  ESTADÍSTICAS DE USO
                 </h2>
+                <IonIcon icon={barChartSharp} className='icon' />
               </div>
             </IonLabel>
-            <IonButton className='modern-button' onClick={irAEstadisticas}>Ver</IonButton>
           </IonItem>
         </IonList>
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
@@ -72,6 +65,15 @@ const Tab4: React.FC = () => {
         <IonModal isOpen={showObjetivosModal} onDidDismiss={() => setShowObjetivosModal(false)}>
           {stateObjetivos === "True" ? <ObjetivosOn /> : <ObjetivosOff />}
         </IonModal>
+        <IonCard className='instruccion'>
+          <IonIcon icon={notificationsSharp} className='iconnoti' />
+          <h2>
+            Intrucciones
+          </h2>
+          <p>
+            Para ver alguna de las opciones, simplemente haga clic en el nombre correspondiente en la lista. y se abrirá una ventana emergente con la información correspondiente.
+          </p>
+        </IonCard>
       </IonContent>
     </IonPage>
   );

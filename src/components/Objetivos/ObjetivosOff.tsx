@@ -1,8 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { IonPage, IonContent, IonLoading, IonButton, IonModal, IonItem, IonLabel, IonSelect, IonSelectOption, IonInput, IonCard, IonCardHeader, IonCardContent, IonToast } from '@ionic/react';
+import {
+  IonPage,
+  IonContent,
+  IonLoading,
+  IonButton,
+  IonModal,
+  IonItem,
+  IonLabel,
+  IonSelect,
+  IonSelectOption,
+  IonInput,
+  IonCard,
+  IonCardHeader,
+  IonCardContent,
+  IonToast,
+  IonIcon,
+} from '@ionic/react';
+import { arrowBack } from 'ionicons/icons';
 import './ObjetivosOff.css';
 import { useHistory } from 'react-router-dom';
 import ObjetivosOn from './ObjetivosOn';
+
+
+const MAX_META = 365 * 130; // Definimos el máximo permitido
 
 const ObjetivosOff: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -21,6 +41,7 @@ const ObjetivosOff: React.FC = () => {
   useEffect(() => {
     const fetchObjetivos = async () => {
       try {
+        setLoading(true);
         const user = localStorage.getItem('registerResponse');
         if (!user) throw new Error('No se encontró el objeto de usuario en el localStorage');
 
@@ -51,6 +72,17 @@ const ObjetivosOff: React.FC = () => {
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
+
+    // Validar meta_objetivo
+    if (name === 'meta_objetivo') {
+      const numericValue = parseInt(value, 10);
+      if (isNaN(numericValue) || numericValue < 1 || numericValue > MAX_META) {
+        setToastMessage(`La meta debe ser un número entre 1 y ${MAX_META}.`);
+        setShowToast(true);
+        return;
+      }
+    }
+
     setFormData({
       ...formData,
       [name]: value,
@@ -60,16 +92,14 @@ const ObjetivosOff: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    // rexuperar el id del usuario desde el localStorage
     const user = localStorage.getItem('registerResponse');
     if (!user) {
       console.error('No se encontró el objeto de usuario en el localStorage');
       return;
     }
 
-    // anexar el id del usuario al formData
     const userObj = JSON.parse(user);
-   
+
     try {
       const response = await fetch('http://127.0.0.1:8000/app/crear_objetivo/', {
         method: 'POST',
@@ -96,7 +126,7 @@ const ObjetivosOff: React.FC = () => {
       });
 
       setShowModal(false);
-      history.push('/objetivos');
+      history.push('/objetivos'); // Cambia '/nextRoute' según corresponda
       window.location.reload();
     } catch (error: any) {
       console.error('Error al crear el objetivo:', error.message);
@@ -105,16 +135,22 @@ const ObjetivosOff: React.FC = () => {
     }
   };
 
+  // Función para manejar "volver atrás"
+  const handleBack = () => {
+    history.push('/Tab4'); // Cambia '/previousRoute' según corresponda
+    window.location.reload();
+  };
+
   return (
-    <IonPage className='page-on'>
+    <IonPage className="page-on">
       <IonLoading isOpen={loading} message="Cargando objetivos..." duration={1000} />
       <IonContent>
-        <div className='obj-1'>
-          <h1 className='obj-2'>Objetivos</h1>
+        <div className="dheader">
+          <h1 className="dh2">OBJETIVOS</h1>
         </div>
-         {!loading && (
+        {!loading && (
           <>
-            {objetivos? (
+            {objetivos ? (
               <IonCard className="card-objetivos">
                 <IonCardHeader>No hay objetivos creados</IonCardHeader>
                 <IonCardContent>Debes crear tu primer objetivo</IonCardContent>
@@ -122,33 +158,65 @@ const ObjetivosOff: React.FC = () => {
             ) : (
               <ObjetivosOn />
             )}
-            <IonButton className="crear" onClick={() => setShowModal(true)}>
-              Crear Objetivo
+            <IonButton 
+            className='btnn'
+            shape="round"
+            color={objetivos ? 'success' : 'primary'} 
+            onClick={() => setShowModal(true)}>
+              Crear
+            </IonButton>
+            <IonButton 
+              className='btnn'
+              shape="round"
+              color="danger"
+              onClick= {() => { history.push('/Tab4'); window.location.reload(); }}
+            >
+              Cancelar
             </IonButton>
           </>
         )}
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
-          <IonContent className="ion-padding">
-            <div className='obj-1'>
-              <h1 className='obj-2'>Crear Nuevo Objetivo</h1>
+          <IonContent className="modal2">
+            <div className="dheader">
+              <h1 className="dh2">NUEVO OBJETIVO</h1>
             </div>
-            <form onSubmit={handleSubmit}>
-              <IonItem>
-                <h3> Tipo de Objetivo</h3>
-                <IonSelect name="id_tipo_objetivo" value={formData.id_tipo_objetivo} onIonChange={handleInputChange}>
+            <form className='form' onSubmit={handleSubmit}>
+              <IonItem className='itemm'>
+                <IonSelect
+                  label="Tipo de Objetivo:"
+                  placeholder="Selecciona"
+                  style={{ textAlign: 'justify', width: '100%' }}
+                  value={formData.id_tipo_objetivo}
+                  onIonChange={(e) =>
+                    handleInputChange({ target: { name: 'id_tipo_objetivo', value: e.detail.value } })
+                  }
+                >
                   <IonSelectOption value="1">Minutas completadas</IonSelectOption>
                   <IonSelectOption value="2">Lista de minutas completadas</IonSelectOption>
                 </IonSelect>
               </IonItem>
-              <IonItem>
-                <h3>  Meta del Objetivo</h3>
-                <span>Ingresa una cantidad segun el objetivo seleccionado</span>
-                <IonInput type="text" name="meta_objetivo" value={formData.meta_objetivo} onIonChange={handleInputChange} />
+              <IonItem className='itemm'>
+              <IonInput
+                type="number"
+                value={formData.meta_objetivo}
+                onIonChange={(e) =>
+                  handleInputChange({
+                    target: { name: 'meta_objetivo', value: parseFloat(e.detail.value ?? '') || '' },
+                  })
+                }
+                label="Meta:"
+                placeholder="Ingresa tu meta en número"
+              />
               </IonItem>
-              <IonButton expand="block" shape="round" color="success" type="submit">
+              <IonButton className='btnn' shape="round" color="success" type="submit">
                 Guardar
               </IonButton>
-              <IonButton expand="block" shape="round" color="danger" onClick={() => setShowModal(false)}>
+              <IonButton
+                className='btnn'
+                shape="round"
+                color="danger"
+                onClick={() => setShowModal(false)}
+              >
                 Cancelar
               </IonButton>
             </form>

@@ -73,22 +73,102 @@ ion-header[collapse="condense"] ion-title {
 
 /* Estilo para los textos de las opciones */
 .op-11, .op-22, .op-33 {
-  font-size: 1.5rem;  
+  font-size: 1rem;  
   padding: 0.5rem 0; 
-  text-align: left;
+  text-align: center !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: bolder !important;
 } 
 
-/* Estilo general para los ítems de las listas */
 .list-1 {
-  --background: #ffffff; /* Fondo claro para los ítems */
-  border-radius: 10px; /* Bordes redondeados para dar un toque moderno */
-  margin: 0.5rem 0; /* Espaciado entre ítems */
+  border-radius: 16px; /* Ajusta el radio para un look más fluido */
+  margin: 0.25rem 0; /* Espaciado entre ítems */
   padding: 1rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Sombra sutil para resaltar cada opción */
-  display: flex; /* Alinea los elementos horizontalmente */
+  height: 98px;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08); /* Sombras suaves para un estilo Material Design */
+  display: contents; /* Alinea los elementos horizontalmente */
   justify-items: center; /* Centra los elementos horizontalmente */
   align-items: center; /* Centra los elementos verticalmente */
 }
+
+.list-1 label {
+  margin-bottom: 0.25rem; /* Reduce el espacio inferior entre labels */
+  background: linear-gradient(135deg, #4b0082 0%, #8a2be2 100%);
+  border-radius: 16px; /* Bordes redondeados */
+  padding: 0.5rem 1rem; /* Espaciado interno */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08); /* Sombras suaves */
+  display: flex; /* Alinea los elementos horizontalmente */
+  align-items: center; /* Centra los elementos verticalmente */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el label */
+  transition: background-color 0.3s, box-shadow 0.3s;
+  color: #ffffff; /* Texto blanco */
+  font-weight: bold; /* Texto en negrita */
+}
+
+.list-1 label:active {
+  background-color: #d0d0d0;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.list-1 label h2 {
+  font-weight: bold; /* Asegura que el texto sea negrita */
+  margin: 0; /* Elimina el margen por defecto */
+}
+
+.label-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.instruccion{
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: #fcfcfc;
+  border-radius: 4%;
+  width: 100%;
+  margin: 25px  0 auto;
+  padding-bottom: 15%;
+}
+
+.instruccion h2{
+  font-size: 25px;
+  font-weight: bold;
+  color: #3300dc;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.instruccion p{
+  font-size: 1rem;
+  font-weight: bold;
+  color: #464646;
+  border-radius: 4%;
+  width: 100%;
+  margin: 15px  0 auto;
+  padding-bottom: 5%;
+}
+
+.iconnoti {
+  font-size: 22px !important;
+  color: #4712f3;
+  margin-left: auto;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  color: #4712f3;
+  margin-left: auto;
+}
+
 
 /* Personalización de los toggles */
 .togles {

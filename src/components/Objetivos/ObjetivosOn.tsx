@@ -141,7 +141,7 @@ const ObjetivosOn: React.FC = () => {
     };
 
   return (
-    <IonPage className='tab-4'>
+    <IonPage className='page-on'>
        <IonHeader>
         <div className="bba">
           <h1 className="bbb">OBJETIVOS</h1>
@@ -161,7 +161,7 @@ const ObjetivosOn: React.FC = () => {
                 <div className="card-inner">
                   <div className="card-content_1 card-front">
                     <div className="card-top_1">
-                      <h3 className="highlighted-text">{getObjetivoNombre(objetivo.id_tipo_objetivo)}</h3>
+                      <h3 className="highlighted-text">tipo: {getObjetivoNombre(objetivo.id_tipo_objetivo)}</h3>
                     </div>
                     <div className="card-top_1">
                       <h3 className="texto-1">Meta</h3>
