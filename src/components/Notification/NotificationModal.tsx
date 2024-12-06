@@ -32,16 +32,16 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ showNotifications
 
     // Ejecutar inmediatamente al montar el componente
     fetchNotificationsOnceADay().then(data => 
-      setNotifications(data.map((item: any) => item.notification)));
+      setNotifications(data.map((item: any) => item.notification || "No hay notificaciones disponibles para usted")));
 
       fetchSuggestions().then((data: { sugerencia: string }[]) => {
-        const parsedSuggestions = data.map((item: { sugerencia: string }) => item.sugerencia);
+        const parsedSuggestions = data.map((item: { sugerencia: string }) => item.sugerencia || "No hay sugerencias disponibles para usted");
         setSuggestions(parsedSuggestions);
       });
 
     fetchRecommendationsOnceADay().then(data => 
       setRecommendations(data.map((item: any) => ({ 
-        titulo_recomendacion: item.titulo_recomendacion || "Sin Tituto"}))));
+        titulo_recomendacion: item.titulo_recomendacion || "No hay recomendaciones disponibles para usted",}))));
     updateDate();
 
     return () => {
@@ -80,7 +80,7 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ showNotifications
               <IonItem key={index} button={false} detail={false}>
                 <IonLabel>
                   <IonText>
-                    <h3>{recommendation.titulo_recomendacion}</h3>
+                    {recommendation.titulo_recomendacion}
                   </IonText>
                 </IonLabel>
               </IonItem>
