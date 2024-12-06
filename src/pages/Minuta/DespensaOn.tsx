@@ -168,63 +168,70 @@ const Despensa: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Obtener user_id y dispensa_id de localStorage
+      // Obtener datos del usuario y la despensa desde localStorage
       const user = localStorage.getItem('registerResponse');
-      console.log("Contenido de localStorage:", user);
       if (!user) {
         console.error('No se encontró el objeto de usuario en el localStorage');
         return;
       }
-
+  
       const userObj = JSON.parse(user);
       const userId = userObj.id_user;
-      const dispensaId = userObj.dispensa; // Asegúrate de que este campo exista en tu objeto
-
+      const dispensaId = userObj.dispensa;
+  
       if (!userId || !dispensaId) {
         console.error('Faltan datos necesarios: userId o dispensaId');
         return;
       }
-
-      // Excluir el campo 'status_in_minuta' de formData
-      const { status_in_minuta, ...formDataWithoutStatusInMinuta } = formData;
-
-      // Combinar formData sin 'status_in_minuta' con userId, dispensaId y añadir uso_alimento
+  
+      // Crear el objeto de datos a enviar
+      const { id_alimento, name_alimento, unit_measurement, load_alimento, uso_alimento } = formData;
+  
       const dataToSubmit = {
-        ...formDataWithoutStatusInMinuta,
-        id_user: userId,
-        dispensa: dispensaId,
-        uso_alimento: formData.uso_alimento // Agregar 'uso_alimento'
+        user_id: userId,
+        dispensa_id: dispensaId,
+        alimento_id: id_alimento,
+        name_alimento,
+        unit_measurement,
+        load_alimento,
+        uso_alimento,
       };
-
-      console.log('Datos a enviar:', dataToSubmit);
-      console.log(JSON.stringify(dataToSubmit, null, 2)); // Muestra el JSON formateado para facilitar la lectura
-
-      const response = await fetch(`http://127.0.0.1:8000/app/edit_alimento/${dataToSubmit.id_alimento}`, {
+  
+      console.log('Datos a enviar:', JSON.stringify(dataToSubmit, null, 2));
+  
+      // Realizar la solicitud PUT al backend
+      const response = await fetch('http://127.0.0.1:8000/app/edit_alimento/', {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json', // Especificar que se envía JSON
+          'Content-Type': 'application/json', // Aseguramos el tipo de contenido
         },
-        body: JSON.stringify(dataToSubmit), // Convertir los datos a JSON
+        body: JSON.stringify(dataToSubmit), // Convertir datos a JSON
       });
-
+  
       if (!response.ok) {
         throw new Error('Error al actualizar el alimento');
       }
-
+  
       const updatedAlimento = await response.json();
-
-      // Actualizar la lista de alimentos localmente
+  
       setAlimentos((prevAlimentos) =>
         prevAlimentos.map((alimento) =>
-          alimento.id_alimento === updatedAlimento.id_alimento ? updatedAlimento : alimento
+          alimento.id_alimento === updatedAlimento.alimento_id
+            ? {
+                ...alimento,
+                name_alimento: updatedAlimento.name_alimento, // Actualizar nombre explícitamente
+                ...updatedAlimento, // Asegurarte de incluir el resto de campos
+              }
+            : alimento
         )
       );
-
+      
       setShowEditModal(false); // Cerrar el modal después de editar
     } catch (error) {
       console.error('Error:', error);
     }
   };
+  
 
 
   useEffect(() => {
@@ -354,7 +361,14 @@ const Despensa: React.FC = () => {
                 </IonLabel>
               </IonItem>
 
-              {/* Opciones de deslizar */}
+              {/* Opciones de deslizar 
+              <IonItemOptions side="start">
+                <IonItemOption color="success" onClick={() => handleEdit(alimento)}>
+                  <IonIcon slot="start" icon={pencil} />
+                  Editar
+                </IonItemOption>
+              </IonItemOptions>
+              */}
               <IonItemOptions side="end">
                 <IonItemOption color="danger" onClick={() => handleDelete(alimento.id_alimento)}>
                   <IonIcon slot="start" icon={trash} />

@@ -1,7 +1,7 @@
-import { IonContent, IonHeader, IonPage, IonLabel, IonCard, IonCardContent, IonButton, IonIcon, IonGrid, IonRow, IonCol } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonLabel, IonCard, IonCardContent, IonModal, IonToolbar, IonButtons, IonTitle, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonAlert } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 import './Estadisticas.css';
-import { arrowBack } from 'ionicons/icons';
+import { arrowBack, informationCircleOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 
 // Interfaz para los alimentos en la dispensa
@@ -34,6 +34,7 @@ const Estadisticas: React.FC = () => {
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const history = useHistory();
+  const [showModal, setShowModal] = useState(false);
 
   const irAEstadisticas = () => {
     history.push('/Tab4');
@@ -200,10 +201,10 @@ const Estadisticas: React.FC = () => {
   const getCardBackText6 = (totalDesperdicio: number) => {
     if (totalDesperdicio === 0) {
       return "¡Perfecto! No tienes desperdicios registrados.";
-    } else if (totalDesperdicio < 5) {
-      return `Muy bien, solo ${totalDesperdicio} desperdicio(s) hasta ahora.`;
+    } else if (totalDesperdicio < 10) {
+      return `Muy bien, solo ${totalDesperdicio} desperdicios hasta ahora.`;
     } else {
-      return `Lleva cuidado: ${totalDesperdicio} desperdicio(s) acumulados.`;
+      return `Atención: ${totalDesperdicio} desperdicios acumulados.`;
     }
   };
 
@@ -211,14 +212,16 @@ const Estadisticas: React.FC = () => {
   // TARJETA 7
 
   const getCardBackText7 = (desperdicioActual: number) => {
+    const roundedValue = desperdicioActual.toFixed(1); // Redondea a un decimal
     if (desperdicioActual === 0) {
       return "¡Genial! Sin desperdicio reciente.";
-    } else if (desperdicioActual < 2) {
-      return `Solo ${desperdicioActual} desperdicio(s) actual.`;
+    } else if (desperdicioActual < 10) {
+      return `Solo ${roundedValue} desperdicios actual.`;
     } else {
-      return `Atención: ${desperdicioActual} desperdicio(s) reciente(s).`;
+      return `Atención: ${roundedValue} desperdicios reciente(s).`;
     }
   };
+
 
 
 
@@ -228,7 +231,7 @@ const Estadisticas: React.FC = () => {
         <div className="bba">
           <h1 className="bbb">ESTADISTICAS</h1>
           <IonButton fill="clear" onClick={irAEstadisticas} className='back-button'>
-            <IonIcon icon={arrowBack} slot="icon-only" className='boton_retroceso'/>
+            <IonIcon icon={arrowBack} slot="icon-only" className='boton_retroceso' />
           </IonButton>
         </div>
       </IonHeader>
@@ -245,12 +248,11 @@ const Estadisticas: React.FC = () => {
                   {/* Frente de la tarjeta */}
                   <div className="card-content_1 card-front">
                     <div className="card-top_1">
-                      <IonLabel className="labelEstadisticas_1_1">Planes Creados </IonLabel>
-                      <IonLabel className="labelEstadisticas_1_2">{estadisticas.total_planes_creados || 0}</IonLabel>
+                      <IonLabel className="labelEstadisticas_5_1">Planes Creados <span className='Good_2'>{estadisticas.total_planes_creados || 0}</span></IonLabel>
                     </div>
                     <div className="card-bottom_1">
-                      <IonLabel className="labelEstadisticas_1_3">Realizados: <span className='Good'>{estadisticas.total_planes_realizados || 0}</span></IonLabel>
-                      <IonLabel className="labelEstadisticas_1_3">No Realizados: <span className='Bad'>{estadisticas.total_planes_no_realizados || 0}</span></IonLabel>
+                      <IonLabel className="labelEstadisticas_5_2">Realizados: <span className='Good'>{estadisticas.total_planes_realizados || 0}</span></IonLabel>
+                      <IonLabel className="labelEstadisticas_5_2">No Realizados: <span className='Bad'>{estadisticas.total_planes_no_realizados || 0}</span></IonLabel>
                     </div>
                   </div>
                   {/* Reverso de la tarjeta */}
@@ -293,8 +295,7 @@ const Estadisticas: React.FC = () => {
                   {/* Frente de la tarjeta */}
                   <div className="card-content_1 card-front">
                     <div className="card-top_1">
-                      <IonLabel className="labelEstadisticas_3_2">{estadisticas?.total_alimentos_ingresados}</IonLabel>
-                      <IonLabel className="labelEstadisticas_3_1">Alimentos Ingresados</IonLabel>
+                      <IonLabel className="labelEstadisticas_5_1">Alimentos Ingresados: <span className='Good_2'>{estadisticas?.total_alimentos_ingresados}</span></IonLabel>
                     </div>
                     <div className="card-bottom_1">
                       <IonLabel className="labelEstadisticas_3_3">% Aprovechado:{" "}<span className="Good">{estadisticas?.porcentaje_alimentos_aprovechados?.toFixed(2) || 0}</span> %</IonLabel>
@@ -349,6 +350,45 @@ const Estadisticas: React.FC = () => {
                 </div>
               </IonCol>
             </IonRow>
+
+            <div>
+              {/* Botón para abrir el modal */}
+              <IonButton
+                expand="block"
+                fill="clear"
+                onClick={() => setShowModal(true)}
+                className="ion-text-center"
+              >
+                <IonIcon icon={informationCircleOutline} size="large" style={{ color: 'white' }} />
+              </IonButton>
+
+
+              {/* Modal con información sobre desperdicios */}
+              <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
+                <IonHeader>
+                  <div className='modalcap'>
+                    <h1 className='modaltext'>Info. sobre desperdicios</h1>
+                    <IonButton fill="clear" onClick={() => setShowModal(false)} className='back-button'>
+                      <IonIcon icon={arrowBack} slot="icon-only" style={{ color: '#fff', fontSize: '4rem' }} />
+                    </IonButton>
+                  </div>
+                </IonHeader>
+                <IonContent>
+                  <div style={{ padding: '20px' }}>
+                    <strong>Alimentos desperdiciados:</strong><br /><br />
+                    Cantidad de alimentos que han sido desechados o no aprovechados históricamente.<br /><br /><br />
+
+                    <strong>Desperdicio Actual:</strong><br /><br />
+                    Porcentaje de alimentos que han sido desechados o no aprovechados en comparación con la minuta anterior.<br /><br />
+                    <br />
+                    <strong>Reducción de desperdicios:</strong><br /><br />
+                    Porcentaje de reducción de desperdicios en comparación con la minuta anterior.
+                  </div>
+                </IonContent>
+              </IonModal>
+            </div>
+
+
 
             {/* Tarjeta 6 */}
             <IonRow>
