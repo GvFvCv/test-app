@@ -426,7 +426,7 @@ const MinutaOn: React.FC = () => {  // Definir el componente MinutaOn
     }
 
     const fecha = seleccionadaMinuta.fecha;
-    const cantidadConvertida = parseInt(cantidadEditada, 10);
+    const cantidadConvertida = parseFloat(cantidadEditada, 10);
     const userIdConvertido = parseInt(userId, 10);
     const idIngredienteConvertido = parseInt(ingredienteSeleccionado.id_ingrediente, 10);
 
