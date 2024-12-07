@@ -29,7 +29,7 @@ interface ProgresoResponse {
   progreso: Progreso;
 }
 
-const ObjetivosOn: React.FC = () => {
+export const ObjetivosOn: React.FC = () => {
   const [objetivo, setObjetivo] = useState<Objetivo | null>(null);
   const [progreso, setProgreso] = useState<Progreso | null>(null);
   const [error, setError] = useState<string>('');
@@ -160,12 +160,13 @@ const ObjetivosOn: React.FC = () => {
 
                 <div className="card-inner">
                   <div className="card-content_1 card-front">
-                    <div className="card-top_1">
-                      <h3 className="highlighted-text">tipo: {getObjetivoNombre(objetivo.id_tipo_objetivo)}</h3>
+                    <div className="card-top_2">
+                        <h3 className="texto-fecha">N° Objetivo</h3>
+                        <h3 className="highlighted-text-fecha">{progreso?.objetivo}</h3>
                     </div>
                     <div className="card-top_1">
-                      <h3 className="texto-1">Meta</h3>
-                      <h3 className="highlighted-meta">{objetivo.meta_total}</h3>
+                      <h3 className='tipo'>Tipo</h3>
+                      <h3 className="highlighted-text">{getObjetivoNombre(objetivo.id_tipo_objetivo)}</h3>
                     </div>
                   </div>
                 </div>                
@@ -177,17 +178,13 @@ const ObjetivosOn: React.FC = () => {
 
                 <div className="card-inner-2">
                   <div className="card-content_2 card-front-2">
-                  <div className="card-top_2">
-                      <h3 className='texto-2' >Progreso Diario</h3>
-                      <h3 className="highlighted-text-2">{progreso?.progreso_diario}</h3>
+                    <div className="card-top_1">
+                      <h3 className="texto-1">Meta</h3>
+                      <h3 className="highlighted-meta">{objetivo.meta_total}</h3>
                     </div>
                     <div className="card-top_2">
                       <h3 className='texto-2' >Progreso Acumulado</h3>
                       <h3 className="highlighted-text-2">{progreso?.progreso_acumulado}</h3>
-                    </div>
-                    <div className="card-top_2">
-                      <h3 className="texto-fecha">Fecha</h3>
-                      <h3 className="highlighted-text-fecha">{progreso?.fecha}</h3>
                     </div>
                   </div>
                 </div>                
