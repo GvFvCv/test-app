@@ -68,7 +68,7 @@ export const fetchRecommendationsOnceADay = async () => {
   try {
     const recommendations = await fetchRecommendations();
     const mappedRecommendations = recommendations.map((rec: any) => ({
-      titulo_recomendacion: rec.titulo_recomendacion || rec.recomendacion
+      titulo_recomendacion: rec.titulo_recomendacion || rec.recomendacion || "Aun no hay recomendaciones para ti",
     }));
     const dateEntry = { date: new Date(), recommendations: mappedRecommendations || [] };
     saveToLocalStorage('recommendationsHistory', dateEntry);

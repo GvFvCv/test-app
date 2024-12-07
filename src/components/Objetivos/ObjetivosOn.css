@@ -111,7 +111,7 @@ ion-header[collapse="condense"] ion-title {
 
 .card_1 {
   width: 500px !important;
-  height: 260px !important;
+  height: 310px !important;
   perspective: 1000px;
   margin: 1rem;
   opacity: 0; /* Oculto inicialmente */
@@ -199,6 +199,7 @@ ion-header[collapse="condense"] ion-title {
     justify-content: center; /* Centrar verticalmente */
     align-items: center; /* Centrar horizontalmente */
     text-align: center; /* Centrar texto */
+    margin-top: -1%;
 }
 
 .card-top_2 {
@@ -228,19 +229,22 @@ ion-header[collapse="condense"] ion-title {
 }
 
 .texto-1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: bold;
     color: #4e00eb; /* Cambia si deseas otro color */
+    margin-top: 11%;
 }
 
 .texto-2 {
     font-size: 1.8rem;
     font-weight: bold;
     color: #4e00eb; /* Cambia si deseas otro color */
+    padding-top: 11%;
+    margin-top: -4%;
 }
 
 .texto-fecha {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: bold;
     color: #4e00eb; /* Cambia si deseas otro color */
 }
@@ -257,19 +261,33 @@ ion-header[collapse="condense"] ion-title {
 }
 
 .highlighted-text {
-    font-size: 2rem;
+    font-size: 1.7rem;
     font-weight: bold;
-    color: #4e00eb; /* Cambia si deseas otro color */
-    margin: 5px;
+    color: #099702d2; /* Cambia si deseas otro color */
+    margin: 6px;
     justify-content: center;
     align-items: center;
     text-align: center;
 }
 
+.tipo {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #4e00eb;
+  padding-right: 37%;
+  margin: 5px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: -11%;
+}
+
 .highlighted-text-fecha {
     font-size: 2rem;
     font-weight: bold;
-    color: #0cc202d2; /* Cambia si deseas otro color */
+    color: #099702d2; /* Cambia si deseas otro color */
     margin: 5px;
     justify-content: center;
     align-items: center;
@@ -279,7 +297,7 @@ ion-header[collapse="condense"] ion-title {
 .highlighted-meta {
     font-size: 2rem;
     font-weight: bold;
-    color: #0cc202d2; /* Cambia si deseas otro color */
+    color: #099702d2; /* Cambia si deseas otro color */
     margin: 5px;
     justify-content: center;
     align-items: center;
@@ -289,7 +307,7 @@ ion-header[collapse="condense"] ion-title {
 .highlighted-text-2 {
     font-size: 2rem;
     font-weight: bold;
-    color: #0cc202d2; /* Cambia si deseas otro color */
+    color: #099702d2; /* Cambia si deseas otro color */
     margin: 5px;
     justify-content: center;
     align-items: center;
@@ -305,15 +323,15 @@ ion-header[collapse="condense"] ion-title {
 
 
 .card_2 {
-    width: 500px !important;
-    height: 360px !important;
-    perspective: 1000px;
-    margin: 1rem;
-    opacity: 0; /* Oculto inicialmente */
-    transform: translateX(300px); /* Fuera de la posición inicial */
-    transition: transform 1s ease-out, opacity 1s ease-out; /* Suave entrada */
-    border-radius: 2.5em;
-  }
+  width: 500px !important;
+  height: 330px !important; 
+  perspective: 1000px;
+  margin: 1rem;
+  opacity: 0; /* Oculto inicialmente */
+  transform: translateX(300px); /* Fuera de la posición inicial */
+  transition: transform 1s ease-out, opacity 1s ease-out; /* Suave entrada */
+  border-radius: 2.5em;
+}
   
   .card_2.slide-in {
     opacity: 1; /* Visible */
